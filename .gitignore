@@ -1,4 +1,13 @@
-./build
-./nbproject
-./dist
+# Netbeans
+dist/
+build/
+nbproject/
 build.xml
+src/java/maintest.java
+
+.vscode
+package-lock.json
+node_modules
+.idea/
+*.iml
+out/

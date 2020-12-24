@@ -1,0 +1,69 @@
+DOCUMENTATION
+
+PROGRAMMER DEFINED FEATURE - Sam Ponik
+The feature I have chosen to do is to filter the books by a given genre with ajax 
+for nice user interface. 
+The files associated with the features
+/src/java/ajax/Ajax.java 
+/src/java/daos/BookDao.java
+/web/Javascript/ViewBooks.js
+
+PROGRAMMER DEFINED FEATURE - Arnas Montrimas
+
+
+PROGRAMMER DEFINED FEATURE - Malo Grall
+
+
+
+************FUNCTIONALITY**************
+The Algorithm that we have used for encryption is found in
+/src/java/encryption/BCrypt.java
+
+The methods we have Overriden and used to encrypt and decrypt the passwords are in
+Password reset and change methods are here also as they deal with the user table
+src/java/daos/UserDao.java
+
+Method for inserting security answers and checking a valid answer to a security question is in
+src/java/daos/SecurityAnswersDao.java
+
+Functionality for resetting password when old password is known is in (when the user is logged in and wishes to change is password)
+src/java/commands/PasswordResetCommand.java
+
+Functionality for forgetting password and resetting it is in
+src/java/commands/ForgotPasswordResetCommand.java
+
+Back-end register form validation and calling methods to save data
+src/java/commands/RegisterCommand.java
+
+Methods for saving by encrypting and also getting by decrypting payment details
+src/java/daos/PaymentDetailsDao.java
+
+Interface Provides sending mail functionality to 
+a class
+src/java/extraFunctionalityInterfaces/SendMailInterface.java
+
+Functionality for retrieving forgotten username (There are 2 parts to this functionality)
+PART 1 (Send an email to user with the pass code)
+src/java/commands/SendEmailCodeCommand.java
+
+PART 2 (Send an email to user with his username)
+src/java/commands/ValidateEmailCodeCommand.java 
+
+
+
+************TESTING**************
+Testing the Algorithm is in
+/test/bcryptests/TestBCrypt.java
+Test cases start at line 84
+
+Testing payment details methods
+test/daotests/PaymentDetailsDaoTest.java
+
+Testing UserDao methods
+test/daotests/UserDaoTest.java
+
+Testing security answers methods
+test/daotests/SecurityAnswersDaoTest.java
+
+Testing all PasswordResetDao methods is in
+/test/daotests/PasswordResetDaoTest.java
