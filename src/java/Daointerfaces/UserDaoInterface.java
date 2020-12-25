@@ -5,18 +5,9 @@ import Dtos.*;
 
 
 /**
- * @author Sam Ponik
+ * @author Sam Ponik and Malo and Arnas
  */
 public interface UserDaoInterface {
-
-    /**
-     * Returns true if the username is valid (if the username does not exist in the database)
-     * 
-     * @param username The username to validate
-     * @return boolean true/false
-     */
-    boolean validateUsername(String username);
-    
     /**
      * This method can be used to generate a string representing an account password
      * suitable for storing in a database. It will be an OpenBSD-style crypt(3) formatted
@@ -45,29 +36,19 @@ public interface UserDaoInterface {
      * 
      * @param username The username for the account
      * @param password The password for the account
-     * @param email The email for the account
      * @return int 0 if no user by that name else return the unique id
      */
-    int registerUser(String username,String email,String password);
+    int registerUser(String username, String password);
 
     /**
      *  If username and password don't match return 0
      *  If the account is inactive return -1
      * 
-     * @param username The username for login.
+     * @param email The username for login.
      * @param plaintext_password The password for login.
      * @return int Returns the unique ID of the user if Username and password match or -1 for inactive or 0 for bad login
      */
-    int validateLogin(String username,String plaintext_password);
-    
-     /**
-     * Returns the id (primary key) of the user by the specified username
-     * Returns 0 if no user exists by that username
-     * 
-     * @param username The username
-     * @return int 0 if no user by that name else return the unique id
-     */
-    int getIDByUsername(String username);
+    int validateLogin(String email,String plaintext_password);
     
      /**
      * Gets the user object by the primary key which is the ID
@@ -97,27 +78,10 @@ public interface UserDaoInterface {
      */
     boolean forgotPasswordReset(String new_plaintext_password,String username);
     
-     /**
-     * Updates the user's username if that username is available
-     * 
-     * @param newUsername The new username to update
-     * @param currentUsername The current username.
-     * @return boolean true/false
-     */
-    boolean changeUsername(String newUsername,String currentUsername);
-    
     /**
      * This method checks if a specified email address exists in the database
      * @param userEmail email address to be found in database
      * @return boolean true if found, false otherwise
      */
     boolean validateEmail(String userEmail);
-    
-    
-    /**
-     * This methods gets users username using his email
-     * @param userEmail email used to retrieve username
-     * @return String email retrieved
-     */
-    String getUsernameByEmail(String userEmail);
 }

@@ -9,15 +9,15 @@ public class CommandFactory {
         }
         
         switch (action) {
-            case "Register":
+            case "register":
             c = new RegisterCommand();    
             break;
             
-            case "Login":
+            case "login":
             c = new LoginCommand();
             break;
             
-            case "Logout":        
+            case "logout":        
             c = new LogoutCommand();
             break;
             
@@ -27,10 +27,6 @@ public class CommandFactory {
 
             case "changeLanguage":
             c = new ChangeLanguageCommand();     
-            break;
-            
-            case "PutAddress":
-            c = new InsertAddressDetailsCommand();     
             break;
             
             case "ChangeUsername":

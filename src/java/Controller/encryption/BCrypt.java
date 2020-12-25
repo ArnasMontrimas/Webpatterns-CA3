@@ -1,4 +1,4 @@
-package Encryption;
+package encryption;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 /*

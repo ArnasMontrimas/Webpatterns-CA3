@@ -19,32 +19,15 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-
-/**
- * @author Sam Ponik
- */
 public class UserDao extends Dao implements UserDaoInterface, SendMailInterface {
-    
-    // Define the BCrypt workload to use when generating password hashes. 10-31 is a valid value.
-    private static int workload = 15;
-    
+    private static int workload = 10;
     
     public UserDao() {
         super();
     }
     
-    /**
-     * initializes a UserDao to access the specified database name
-     * @param databaseName The name of the MySQL database to be accessed (this database should
-     * be running on localhost and listening on port 3306).
-     */
     public UserDao(String databaseName) {
         super(databaseName);
-    }
-    
-    
-    public UserDao(String databaseName,String poolName) {
-        super(databaseName,poolName);
     }
     
     /**
@@ -85,181 +68,16 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
 
             return(password_verified);
     }
-    
-    /**
-     * Returns true if the username is valid (if the username does not exist in the database)
-     * 
-     * @param username The username to validate
-     * @return boolean true/false
-     */
-    @Override
-    public boolean validateUsername(String username) {
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        boolean validUsername = true;
-
-        try{
-            con = getConnection();
-            String query = "SELECT username FROM users WHERE username = ?";
-            ps = con.prepareStatement(query);
-            ps.setString(1,username);
-            rs = ps.executeQuery();
-
-            if (rs.next()){
-                // There is a user with that same username
-                String name = rs.getString("username");
-                if (name.equals(username)){
-                    validUsername = false;
-                }
-            }
-        }
-        catch(SQLException ex){
-           
-            ex.printStackTrace();
-        }
-        finally{
-            if(rs != null){
-                try {
-                    rs.close();
-                } catch (SQLException ex) {
-                   
-                    ex.printStackTrace();
-                }
-            }
-            if(ps != null){
-                try {
-                    ps.close();
-                } catch (SQLException ex) {
-                   
-                    ex.printStackTrace();
-                }
-            }
-            if(con != null){
-                freeConnection(con);
-            }
-        }
-        return validUsername;
-    }
-    
-     /**
-     * Returns the id (primary key) of the user by the specified username
-     * Returns 0 if no user exists by that username
-     * 
-     * @param username The username
-     * @return int 0 if no user by that name else return the unique id
-     */
-    @Override
-    public int getIDByUsername(String username) {
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        int id = 0;
-
-        try{
-            con = getConnection();
-            String query = "SELECT userID FROM users WHERE username = ?";
-            ps = con.prepareStatement(query);
-            ps.setString(1,username);
-            rs = ps.executeQuery();
-            
-            if (rs.next()){
-            // There is a user with that same username so get the ID
-            id = rs.getInt("userID");
-            }
-        }
-        catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        finally{
-            if(rs != null){
-                try {
-                    rs.close();
-                } catch (SQLException ex) {
-                   
-                    ex.printStackTrace();
-                }
-            }
-            if(ps != null){
-                try {
-                    ps.close();
-                } catch (SQLException ex) {
-                   
-                    ex.printStackTrace();
-                }
-            }
-            if(con != null){
-                freeConnection(con);
-            }
-        }
-        return id;
-    }
-    
-     /**
-     * Updates the user's username if that username is available
-     * 
-     * @param newUsername The new username to update
-     * @param currentUsername The current username.
-     * @return boolean true/false
-     */
-    @Override
-    public boolean changeUsername(String newUsername,String currentUsername) {
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        boolean changeUsername = false;
-
-        try{
-              // If the username is available
-              if (validateUsername(newUsername)) {
-                con = getConnection();
-                ps = con.prepareStatement("UPDATE users SET username = ? WHERE username = ?");
-                ps.setString(1,newUsername);
-                ps.setString(2,currentUsername);
-                ps.executeUpdate();
-                changeUsername = true;
-              }
-        }
-        catch(SQLException ex){
-           
-            ex.printStackTrace();
-        }
-        finally{
-            if(rs != null){
-                try {
-                    rs.close();
-                } catch (SQLException ex) {
-                   
-                    ex.printStackTrace();
-                }
-            }
-            if(ps != null){
-                try {
-                    ps.close();
-                } catch (SQLException ex) {
-                   
-                    ex.printStackTrace();
-                }
-            }
-            if(con != null){
-                freeConnection(con);
-            }
-        }
-        return changeUsername;
-    }
-
-   
 
     /**
      * Returns The id (primary key) of the user once registered if issue with the server return 0
      * 
-     * @param username The username for the account
      * @param password The password for the account
-     * @param email The email for the account
+     * @param username The email for the account
      * @return int the id of the user or 0
      */
     @Override
-    public int registerUser(String username,String email, String password) {
+    public int registerUser(String username, String password) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet generatedKeys = null;
@@ -638,54 +456,6 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
         }
         
         return false;
-    }
-
-    /**
-     * This methods retrieves users username using his email address
-     * @param userEmail
-     * @return String email address found 
-     */
-    @Override
-    public String getUsernameByEmail(String userEmail) {
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        String username = "";
-        
-        try {
-            con = getConnection();
-            ps = con.prepareStatement("SELECT username FROM users WHERE email = ?;");
-            ps.setString(1, userEmail);
-            rs = ps.executeQuery();
-            
-            if(rs.next()) {
-                username = rs.getString("username");
-            }
-            
-        } catch(SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if(ps != null){
-                try {
-                    ps.close();
-                } catch (SQLException ex) {
-                   
-                    ex.printStackTrace();
-                }
-            }
-            if(rs != null) {
-                try {
-                    rs.close();
-                } catch(SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            if(con != null){
-                freeConnection(con);
-            }
-        }
-                
-        return username;
     }
 }
 
