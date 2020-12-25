@@ -11,3 +11,6 @@ node_modules
 .idea/
 *.iml
 out/
+
+*.pdf
+notes.rtf

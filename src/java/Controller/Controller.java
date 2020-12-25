@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Arnas
  */
-@WebServlet(name = "Controller", urlPatterns = {"/Controller", "/Index", ""})
+@WebServlet(name = "controller", urlPatterns = {"/controller", "/index", ""})
 public class Controller extends HttpServlet {
          /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,21 +29,7 @@ public class Controller extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-        
-        //String action;
-        
-        //Handle request when no action was supplied to the controller
-        //if(request.getParameter("action") != null) action = request.getParameter("action");
-        //else action = "Login.jsp";
-        
-        //String forwardToJsp = "Register.jsp";
-        
-        //Command c = CommandFactory.createCommand(action);
-
-        //forwardToJsp = c.doAction(request, response);
-        
-        // Redirect to the chosen page
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.sendRedirect("index.html");
     }
 
