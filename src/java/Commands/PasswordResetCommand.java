@@ -7,8 +7,6 @@ package Commands;
 
 import Daos.UserDao;
 import Daos.*;
-import static Daos.Dao.DEFAULT_DB;
-import static Daos.Dao.DEFAULT_JDBC;
 
 
 import Dtos.*;
@@ -24,8 +22,7 @@ public class PasswordResetCommand implements Command {
 
     @Override
     public String doAction(HttpServletRequest request, HttpServletResponse response) {
-            UserDao udao = new UserDao(DEFAULT_DB,DEFAULT_JDBC);
-            SecurityAnswersDao sdao = new SecurityAnswersDao(DEFAULT_DB,DEFAULT_JDBC);
+            UserDao udao = new UserDao();
             HttpSession session = request.getSession();
             String forwardToJspPage = "PasswordReset.jsp";
             
@@ -58,18 +55,13 @@ public class PasswordResetCommand implements Command {
                   return forwardToJspPage;
                 }
 
-                 // If the security question they answered is correct.
-                 if (sdao.validateSecurityQuestion(answer,question,u.getUserID())) {
-                     //If the old password matches the one in database
-                     if (udao.passwordReset(currentPassword,newPassword,u.getUsername())) {
-                       session.setAttribute("Message","Your password has been reset !");
-                     }  else 
-                     {
-                       session.setAttribute("Message","Current password is incorrect !");
-                     } 
-                 } else {
-                   session.setAttribute("Message","Security answer is not correct you can choose a different question."); 
-                 }        
+                //If the old password matches the one in database
+                if (udao.passwordReset(currentPassword,newPassword,u.getUsername())) {
+                  session.setAttribute("Message","Your password has been reset !");
+                }  else
+                {
+                  session.setAttribute("Message","Current password is incorrect !");
+                }
              } else {
                 session.setAttribute("Message","Missing data supplied for the fields !");
             }

@@ -24,10 +24,6 @@ public class PaymentDetailsDao extends Dao implements PaymentDetailsDaoInterface
     public PaymentDetailsDao(String databaseName) {
         super(databaseName);
     }
-   
-    public PaymentDetailsDao(String databaseName,String poolName) {
-        super(databaseName,poolName);
-    }
 
     /**
      * Inserts a payment details of the user into the payment details table

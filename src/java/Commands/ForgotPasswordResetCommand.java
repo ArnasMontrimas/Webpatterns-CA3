@@ -7,8 +7,6 @@ package Commands;
 
 import Daos.UserDao;
 import Daos.*;
-import static Daos.Dao.DEFAULT_DB;
-import static Daos.Dao.DEFAULT_JDBC;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -21,9 +19,8 @@ public class ForgotPasswordResetCommand implements Command {
 
     @Override
     public String doAction(HttpServletRequest request, HttpServletResponse response) {            
-            PasswordResetDao psdao = new PasswordResetDao(DEFAULT_DB,DEFAULT_JDBC);
-            UserDao udao = new UserDao(DEFAULT_DB,DEFAULT_JDBC);
-            SecurityAnswersDao sdao = new SecurityAnswersDao(DEFAULT_DB,DEFAULT_JDBC);
+            PasswordResetDao psdao = new PasswordResetDao();
+            UserDao udao = new UserDao();
             String forwardToJspPage = "ForgotPassword.jsp";
             HttpSession session = request.getSession();
             String username = request.getParameter("Username"); 
@@ -77,18 +74,10 @@ public class ForgotPasswordResetCommand implements Command {
 
             
              if(username != null && answer != null && !username.isEmpty() && !answer.isEmpty()){
-                 
-                 // If the security question they answered is correct.
-                 if (sdao.validateSecurityQuestion(answer,question,udao.getIDByUsername(username))) {
-                     
-                     // Correct username with the security answer corresponding to the security question chosen
-                     // So let them update / choose a new password
-                     session.setAttribute("ShowPassInput","true");
-                     session.setAttribute("Username",username);
-                     
-                 } else {
-                   session.setAttribute("Message","Either the security answer or the username is not correct"); 
-                 }        
+                 // Correct username with the security answer corresponding to the security question chosen
+                 // So let them update / choose a new password
+                 session.setAttribute("ShowPassInput","true");
+                 session.setAttribute("Username",username);
              } else {
                 session.setAttribute("Message","Missing data supplied for the fields !");
             }

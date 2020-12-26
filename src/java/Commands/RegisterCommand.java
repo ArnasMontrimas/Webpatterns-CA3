@@ -21,10 +21,9 @@ public class RegisterCommand implements Command {
     @Override
     public String doAction(HttpServletRequest request, HttpServletResponse response) {
         
-        UserDao udao = new UserDao(DEFAULT_DB,DEFAULT_JDBC);
-        SecurityAnswersDao sdao = new SecurityAnswersDao(DEFAULT_DB,DEFAULT_JDBC);
+        UserDao udao = new UserDao();
         HttpSession session = request.getSession();
-        String forwardToJspPage = "Register.jsp";
+        String forwardToJspPage = "register.jsp";
         
         // Get info for the users table.
         String username = request.getParameter("username");
@@ -71,35 +70,25 @@ public class RegisterCommand implements Command {
                   return forwardToJspPage;
               }
 
-              // If username is unique and not taken
-              if (udao.validateUsername(username)) 
-              {   
-                  // If email is unique and not taken
-                  if (!udao.validateEmail(email)) {
-                  
-                  int result = udao.registerUser(username,email,password);
+              // If email is unique and not taken
+              if (!udao.validateEmail(email)) {
 
-                  // If the user has been sucessfully registered
-                  if (result != 0) {
-                      // Insert answers into security table
-                      sdao.insertSecurityAnswers(result, schoolAnswer, foodAnswer, placeAnswer);
-                      // Insert payment details
-                      PaymentDetailsDao pdao = new PaymentDetailsDao(DEFAULT_DB,DEFAULT_JDBC);
-                      pdao.insertPaymentDetails(result, cardNumber, cardCvv, ownerName, expirationDate);
+              int result = udao.registerUser(username,email,password);
 
-                      forwardToJspPage = "Login.jsp";
-                      session.setAttribute("Message","You have been registered please login !");
-                  } else 
-                  {  // Perhaps some internal problem with server at that time just in case.
-                      session.setAttribute("errorMessage","Could not be registered at this time please try again later.");
-                  }
-                  } else {
-                     session.setAttribute("errorMessage","Email already in use !"); 
-                  }
+              // If the user has been sucessfully registered
+              if (result != 0) {
+                  // Insert payment details
+                  PaymentDetailsDao pdao = new PaymentDetailsDao();
+                  pdao.insertPaymentDetails(result, cardNumber, cardCvv, ownerName, expirationDate);
 
-
-              } else{
-                  session.setAttribute("errorMessage","Username already exist !");
+                  forwardToJspPage = "Login.jsp";
+                  session.setAttribute("Message","You have been registered please login !");
+              } else
+              {  // Perhaps some internal problem with server at that time just in case.
+                  session.setAttribute("errorMessage","Could not be registered at this time please try again later.");
+              }
+              } else {
+                 session.setAttribute("errorMessage","Email already in use !");
               }
           } else{
                   session.setAttribute("errorMessage","Missing data supplied for the fields !");

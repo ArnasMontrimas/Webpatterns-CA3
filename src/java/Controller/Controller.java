@@ -29,8 +29,10 @@ public class Controller extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect("index.html");
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {        
+        Command c = CommandFactory.createCommand(request.getParameter("action"));
+        
+        response.sendRedirect(c.doAction(request, response));
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

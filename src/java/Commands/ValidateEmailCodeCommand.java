@@ -7,8 +7,6 @@ package Commands;
 
 import Daos.UserDao;
 import Daos.*;
-import static Daos.Dao.DEFAULT_DB;
-import static Daos.Dao.DEFAULT_JDBC;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -21,7 +19,7 @@ public class ValidateEmailCodeCommand implements Command {
 
     @Override
     public String doAction(HttpServletRequest request, HttpServletResponse response) {            
-            UserDao udao = new UserDao(DEFAULT_DB,DEFAULT_JDBC);
+            UserDao udao = new UserDao();
             HttpSession session = request.getSession();
             String forwardToJspPage = "ForgotUsername.jsp";
             String code = request.getParameter("code");
@@ -33,14 +31,7 @@ public class ValidateEmailCodeCommand implements Command {
             //Information contained in the emial
             String message = "Your Username:\n";
             String subject = "USERNAME RETRIEVED";
-            String username;
-            
-            //Retrieve users username
-            username = udao.getUsernameByEmail(email);
-            
-            //Build message
-            message += username;
-            
+
             // For now only this
             if(code != null && sentCode.equals(code)) {
                     //Make sure email sent successfully

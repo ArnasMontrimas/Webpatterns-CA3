@@ -1,3 +1,10 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    // Redirect if already logged in
+    if (session.getAttribute("user") != null) {
+        response.sendRedirect("index.jsp");
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>

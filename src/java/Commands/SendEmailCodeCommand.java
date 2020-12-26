@@ -6,8 +6,6 @@
 package Commands;
 
 import Daos.UserDao;
-import static Daos.Dao.DEFAULT_DB;
-import static Daos.Dao.DEFAULT_JDBC;
 import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +19,7 @@ public class SendEmailCodeCommand implements Command {
 
     @Override
     public String doAction(HttpServletRequest request, HttpServletResponse response) {            
-            UserDao udao = new UserDao(DEFAULT_DB,DEFAULT_JDBC);
+            UserDao udao = new UserDao();
             HttpSession session = request.getSession();
             String forwardToJspPage = "ForgotUsername.jsp";
             String email = request.getParameter("email");

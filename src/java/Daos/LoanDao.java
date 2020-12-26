@@ -24,11 +24,7 @@ public class LoanDao extends Dao implements LoanDaoInterface{
     public LoanDao(String databaseName) {
         super(databaseName);
     }
-   
-    public LoanDao(String databaseName,String poolName) {
-        super(databaseName,poolName);
-    }
-    
+
      /**
      * Gets all the active user loans or null if no active loans
      * Returns an ArrayList of <code>Loan</code> objects.
@@ -42,7 +38,7 @@ public class LoanDao extends Dao implements LoanDaoInterface{
         PreparedStatement ps = null;
         ResultSet rs = null;
         ArrayList<Loan> loans = new ArrayList<>();
-        BookDao bdao = new BookDao(DEFAULT_DB,DEFAULT_JDBC);
+        BookDao bdao = new BookDao();
 
         try{
             con = getConnection();

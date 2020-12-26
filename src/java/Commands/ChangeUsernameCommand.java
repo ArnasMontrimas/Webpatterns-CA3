@@ -5,8 +5,6 @@
  */
 package Commands;
 
-import static Daos.Dao.DEFAULT_DB;
-import static Daos.Dao.DEFAULT_JDBC;
 import Daos.UserDao;
 import Dtos.User;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +20,7 @@ public class ChangeUsernameCommand implements Command {
     @Override
     public String doAction(HttpServletRequest request, HttpServletResponse response) {
             
-            UserDao udao = new UserDao(DEFAULT_DB,DEFAULT_JDBC);
+            UserDao udao = new UserDao();
             HttpSession session = request.getSession();
             String forwardToJspPage = "ChangeUsername.jsp";
             

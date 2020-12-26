@@ -37,15 +37,6 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
     }
    
     /**
-     * Constructor which connects to a specified database name from a specified connection pool
-     * @param databaseName database name
-     * @param poolName database connection pool
-     */
-    public PasswordResetDao(String databaseName,String poolName) {
-        super(databaseName,poolName);
-    }
-
-    /**
      * This method will add a new user attempt
      * @param ipAddress clients ip address
      * @return true on success false otherwise

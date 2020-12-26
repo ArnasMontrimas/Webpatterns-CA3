@@ -71,13 +71,14 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
 
     /**
      * Returns The id (primary key) of the user once registered if issue with the server return 0
-     * 
+     *
+     * @param username The username for the account
+     * @param email The email used as login for the account
      * @param password The password for the account
-     * @param username The email for the account
-     * @return int the id of the user or 0
+     * @return int 0 if no user by that name else return the unique id
      */
     @Override
-    public int registerUser(String username, String password) {
+    public int registerUser(String username, String email, String password) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet generatedKeys = null;
@@ -86,7 +87,7 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
         try{
             con = getConnection();
             // Simple insert here
-            ps = con.prepareStatement("INSERT into users VALUES(NULL,DEFAULT,?,?,?,current_timestamp(),DEFAULT)",Statement.RETURN_GENERATED_KEYS);
+            ps = con.prepareStatement("INSERT INTO users VALUES(NULL, DEFAULT, ?, ?, ?, current_timestamp(), DEFAULT)",Statement.RETURN_GENERATED_KEYS);
             ps.setString(1,username);
             ps.setString(2,email);
             String hashedPassword = hashPassword(password);
@@ -456,6 +457,56 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
         }
         
         return false;
+    }
+
+    /**
+     * Updates the user's username if that username is available
+     *
+     * @param newUsername The new username to update
+     * @param currentUsername The current username.
+     * @return boolean true/false
+     */
+    @Override
+    public boolean changeUsername(String newUsername, String currentUsername) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean changeUsername = false;
+
+        try{
+            con = getConnection();
+            ps = con.prepareStatement("UPDATE users SET username = ? WHERE username = ?");
+            ps.setString(1,newUsername);
+            ps.setString(2,currentUsername);
+            ps.executeUpdate();
+            changeUsername = true;
+        }
+        catch(SQLException ex){
+
+            ex.printStackTrace();
+        }
+        finally{
+            if(rs != null){
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+
+                    ex.printStackTrace();
+                }
+            }
+            if(ps != null){
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+
+                    ex.printStackTrace();
+                }
+            }
+            if(con != null){
+                freeConnection(con);
+            }
+        }
+        return changeUsername;
     }
 }
 

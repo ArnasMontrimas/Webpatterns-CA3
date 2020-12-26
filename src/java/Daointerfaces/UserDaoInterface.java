@@ -35,10 +35,11 @@ public interface UserDaoInterface {
      * Returns The id (primary key) of the user once registered if issue with the server return 0
      * 
      * @param username The username for the account
+     * @param email The email used as login for the account
      * @param password The password for the account
      * @return int 0 if no user by that name else return the unique id
      */
-    int registerUser(String username, String password);
+    int registerUser(String username, String email, String password);
 
     /**
      *  If username and password don't match return 0
@@ -84,4 +85,13 @@ public interface UserDaoInterface {
      * @return boolean true if found, false otherwise
      */
     boolean validateEmail(String userEmail);
+
+    /**
+     * Updates the user's username if that username is available
+     *
+     * @param newUsername The new username to update
+     * @param currentUsername The current username.
+     * @return boolean true/false
+     */
+    boolean changeUsername(String newUsername, String currentUsername);
 }

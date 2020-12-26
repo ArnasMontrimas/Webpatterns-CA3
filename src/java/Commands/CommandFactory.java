@@ -13,10 +13,6 @@ public class CommandFactory {
             c = new RegisterCommand();    
             break;
             
-            case "login":
-            c = new LoginCommand();
-            break;
-            
             case "logout":        
             c = new LogoutCommand();
             break;
@@ -44,10 +40,10 @@ public class CommandFactory {
             case "ValidateEmailCode":
             c = new ValidateEmailCodeCommand();    
             break;
-                                            
+                      
+            case "login":
             default:
-            // Logic for incorrect action
-            c = new NoActionSuppliedCommand();
+            c = new LoginCommand();
         }
 
         return c;

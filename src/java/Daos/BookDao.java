@@ -22,11 +22,7 @@ public class BookDao extends Dao implements BookDaoInterface{
     public BookDao(String databaseName) {
         super(databaseName);
     }
-   
-    public BookDao(String databaseName,String poolName) {
-        super(databaseName,poolName);
-    }
-    
+
      /**
      * This method will return all the books to be displayed on the page. 
      * 
