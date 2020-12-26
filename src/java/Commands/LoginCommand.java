@@ -23,27 +23,24 @@ public class LoginCommand implements Command {
         String forwardToJspPage = "login.jsp";
 
         // Login Data
-        String user = request.getParameter("email");        
+        String email = request.getParameter("email");        
         String pass = request.getParameter("password");
 
-        if(user != null && pass != null && !user.isEmpty() && !pass.isEmpty()) {
-            int userID = udao.validateLogin(user,pass);
+        if(email != null && pass != null && !email.isEmpty() && !pass.isEmpty()) {
+            User user = udao.validateLogin(email, pass);
+
             // Username and pass incorrect
-            switch (userID) {
-                case 0:
-                    session.setAttribute("Message","Username or password is incorrect !");
-                    break;
-                case -1:
-                    session.setAttribute("Message","That account is no longer active.");
-                    break;
-                default:
-                    User u = udao.getUserByID(userID);
-                    session.setAttribute("user",u);
-                    forwardToJspPage = "index.jsp";
-                    break;
+            if (user == null) {
+              session.setAttribute("errorMessage", "Username or password is incorrect");
+            } else if (!user.isActiveAccount()){
+              // Account is inactive
+              session.setAttribute("errorMessage", "That account is no longer active");
+            } else {
+              session.setAttribute("user", user);
+              forwardToJspPage = "index.jsp";
             }
         } else {
-            session.setAttribute("BadLogin","Missing data supplied for the fields !");
+            session.setAttribute("errorMessage", "Missing username or password");
         }
         
         return forwardToJspPage;

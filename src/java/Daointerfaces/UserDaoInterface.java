@@ -42,14 +42,13 @@ public interface UserDaoInterface {
     int registerUser(String username, String email, String password);
 
     /**
-     *  If username and password don't match return 0
-     *  If the account is inactive return -1
+     * Get user from it's credentials
      * 
      * @param email The username for login.
-     * @param plaintext_password The password for login.
-     * @return int Returns the unique ID of the user if Username and password match or -1 for inactive or 0 for bad login
+     * @param password The password for login.
+     * @return User if correct, null if not
      */
-    int validateLogin(String email,String plaintext_password);
+    User validateLogin(String email,String password);
     
      /**
      * Gets the user object by the primary key which is the ID
@@ -57,7 +56,7 @@ public interface UserDaoInterface {
      * @param userID The id of the user
      * @return <code>User</code> the User object
      */
-    User getUserByID(int userID);
+    User getUserById(int userID);
         
      /**
      * Returns true if the password was reset or false if the old password doesn't match the one in the database

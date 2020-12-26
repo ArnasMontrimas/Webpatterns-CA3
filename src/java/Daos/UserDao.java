@@ -122,22 +122,22 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
      *  If username and password don't match return 0
      *  If the account is inactive return -1
      * 
-     * @param username The username for login.
-     * @param plaintext_password The password for login.
+     * @param email The username for login.
+     * @param password The password for login.
      * @return int Returns the unique ID of the user if Username and password match or -1 for inactive or 0 for bad login
      */
     @Override
-    public int validateLogin(String username, String plaintext_password) {
+    public User validateLogin(String email, String password) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        int ID = 0;
+        User user = null;
 
         try{
             con = getConnection();
-            String query = "SELECT userID,activeAccount,password FROM users WHERE username = ?";
+            String query = "SELECT * FROM users WHERE email = ?";
             ps = con.prepareStatement(query);
-            ps.setString(1,username);
+            ps.setString(1, email);
             rs = ps.executeQuery();
 
             // Account with that username exists
@@ -145,23 +145,22 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
                 // Hashed pass from database 
                 String hashedPass = rs.getString("password");
                 // If hashed == the plain text one
-                if (checkPassword(plaintext_password,hashedPass)) {
-                    // Check if the account is active
-                    boolean validAccount = rs.getBoolean("activeAccount");
-                    if (validAccount){
-                        ID = rs.getInt("userID");
-                    } else {
-                        // Inactive account
-                        ID = -1;
-                    }
+                if (checkPassword(password, hashedPass)) {
+                  user = new User(
+                    rs.getInt("id"),
+                    rs.getString("type"),
+                    rs.getString("username"),
+                    email,      
+                    hashedPass,
+                    rs.getDate("dateRegistered"),
+                    rs.getBoolean("activeAccount")
+                  );
                 }
             }
         }
         catch(SQLException ex){
-           
             ex.printStackTrace();
-        }
-        finally{
+        } finally {
             if(rs != null){
                 try {
                     rs.close();
@@ -182,7 +181,7 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
                 freeConnection(con);
             }
         }
-        return ID;
+        return user;
     }
     
      /**
@@ -192,7 +191,7 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
      * @return <code>User</code> the User object
      */
     @Override
-    public User getUserByID(int id) {
+    public User getUserById(int id) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;

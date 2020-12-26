@@ -16,9 +16,12 @@
 
       <main class="container">
         <form class="mt-5">
-          <h2 class="mb-3 fw-normal">Register to the Online Library</h1>
+          <div class="d-flex align-items-center justify-content-between">
+            <h2 class="fw-normal">Register to the Online Library</h1>
+            <a class="btn btn-outline-primary" href="login.jsp">I already have an account</a>
+          </div>
           
-          <div class="row g-3">
+          <div class="row g-3 mt-2">
             <div class="col-12">
               <label for="email" class="form-label">Email</label>
               <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com">
