@@ -32,14 +32,14 @@ public interface UserDaoInterface {
     boolean checkPassword(String password_plaintext, String stored_hash);
     
     /**
-     * Returns The id (primary key) of the user once registered if issue with the server return 0
+     * Register a user
      * 
      * @param username The username for the account
      * @param email The email used as login for the account
      * @param password The password for the account
-     * @return int 0 if no user by that name else return the unique id
+     * @return User if succeed, null if not
      */
-    int registerUser(String username, String email, String password);
+    User registerUser(String username, String email, String password);
 
     /**
      * Get user from it's credentials

@@ -14,7 +14,7 @@
     <body>
       <%@include file="navbar.jsp" %>
 
-      <main class="container">
+      <main class="container pb-5">
         <form class="mt-5 m-auto" style="max-width: 500px;" action="controller">
           <input type="hidden" name="action" value="login">
           
@@ -27,7 +27,7 @@
           <%
             }
             session.removeAttribute("errorMessage");
-          %> 
+          %>
 
           <label for="email" class="visually-hidden">Email address</label>
           <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required autofocus>

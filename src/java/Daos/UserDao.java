@@ -70,26 +70,28 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
     }
 
     /**
-     * Returns The id (primary key) of the user once registered if issue with the server return 0
+     * Register a user
      *
      * @param username The username for the account
      * @param email The email used as login for the account
      * @param password The password for the account
-     * @return int 0 if no user by that name else return the unique id
+     * @return User if succeed, null if not
      */
     @Override
-    public int registerUser(String username, String email, String password) {
+    public User registerUser(String username, String email, String password) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet generatedKeys = null;
-        int returnValue = 0;
+        User user = null;
 
         try{
             con = getConnection();
             // Simple insert here
-            ps = con.prepareStatement("INSERT INTO users VALUES(NULL, DEFAULT, ?, ?, ?, current_timestamp(), DEFAULT)",Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1,username);
-            ps.setString(2,email);
+            ps = con.prepareStatement("INSERT INTO users"
+            + "(email, username, password) VALUES "
+            + "(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1,email);
+            ps.setString(2,username);
             String hashedPassword = hashPassword(password);
             ps.setString(3,hashedPassword);
             ps.executeUpdate();
@@ -97,7 +99,15 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
             // Get the last inserted id if there was no issue inserting
             generatedKeys = ps.getGeneratedKeys();
             if (generatedKeys.next()) {
-                returnValue = generatedKeys.getInt(1);
+              user = new User(
+                generatedKeys.getInt(1),
+                "member",
+                username,
+                email,      
+                password,
+                new Date(),
+                true
+              );
             }
         }catch (SQLException e) {
            
@@ -115,7 +125,7 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
                 e.printStackTrace();
             }
         }
-        return returnValue;
+        return user;
       }
 
     /**
