@@ -17,6 +17,10 @@ public class CommandFactory {
             c = new LogoutCommand();
             break;
             
+            case "loan":        
+            c = new LoanBookCommand();
+            break;
+            
             case "PasswordReset":
             c = new PasswordResetCommand();    
             break;

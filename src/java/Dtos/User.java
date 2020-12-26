@@ -3,9 +3,6 @@ package Dtos;
 import java.util.Date;
 import java.util.Objects;
 
-/**
- * This Class Models the User table from database('creative_library')
- */
 public class User {
     //Variables which model users table
     private int userID;

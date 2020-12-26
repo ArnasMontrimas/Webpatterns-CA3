@@ -2,9 +2,6 @@ package Dtos;
 
 import java.util.Objects;
 
-/**
- * This class models the book table from database('creative_library')
- */
 public class Book {
     //Variables which model book table
     private int bookID;

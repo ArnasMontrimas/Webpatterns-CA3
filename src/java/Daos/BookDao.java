@@ -12,6 +12,7 @@ import java.util.ArrayList;
 /**
  *
  * @author samue
+ * @author Malo
  */
 public class BookDao extends Dao implements BookDaoInterface{
      
@@ -42,15 +43,15 @@ public class BookDao extends Dao implements BookDaoInterface{
             
             while(rs.next()){    
                 books.add(new Book(
-                        rs.getInt("bookID"),
-                        rs.getString("imagePath"),
-                        rs.getString("bookName"),
-                        rs.getString("bookISBN"),
-                        rs.getString("bookDescription"),
-                        rs.getString("author"),
-                        rs.getString("publisher"),
-                        rs.getInt("quantityInStock"),
-                        rs.getString("genre")
+                  rs.getInt("id"),
+                  rs.getString("imagePath"),
+                  rs.getString("bookName"),
+                  rs.getString("bookIsbn"),
+                  rs.getString("bookDescription"),
+                  rs.getString("author"),
+                  rs.getString("publisher"),
+                  rs.getInt("quantityInStock"),
+                  rs.getString("genre")
                 ));
             }
         }
@@ -94,15 +95,15 @@ public class BookDao extends Dao implements BookDaoInterface{
             
             while(rs.next()){
                 books.add(new Book(
-                        rs.getInt("bookID"),
-                        rs.getString("imagePath"),
-                        rs.getString("bookName"),
-                        rs.getString("bookISBN"),
-                        rs.getString("bookDescription"),
-                        rs.getString("author"),
-                        rs.getString("publisher"),
-                        rs.getInt("quantityInStock"),
-                        rs.getString("genre")
+                  rs.getInt("id"),
+                  rs.getString("imagePath"),
+                  rs.getString("bookName"),
+                  rs.getString("bookIsbn"),
+                  rs.getString("bookDescription"),
+                  rs.getString("author"),
+                  rs.getString("publisher"),
+                  rs.getInt("quantityInStock"),
+                  rs.getString("genre")
                 ));
             }
         }
@@ -142,22 +143,22 @@ public class BookDao extends Dao implements BookDaoInterface{
 
         try{
             con = getConnection();
-            ps = con.prepareStatement("SELECT * from books where bookID = ?");
+            ps = con.prepareStatement("SELECT * from books where id = ?");
             ps.setInt(1,bookID);
             rs = ps.executeQuery();
             
             // Book exists by that id
             if(rs.next()){
                 book = new Book(
-                bookID,
-                rs.getString("imagePath"),
-                rs.getString("bookName"),
-                rs.getString("bookISBN"),
-                rs.getString("bookDescription"),
-                rs.getString("author"),
-                rs.getString("publisher"),
-                rs.getInt("quantityInStock"),
-                rs.getString("genre")        
+                  bookID,
+                  rs.getString("imagePath"),
+                  rs.getString("bookName"),
+                  rs.getString("bookIsbn"),
+                  rs.getString("bookDescription"),
+                  rs.getString("author"),
+                  rs.getString("publisher"),
+                  rs.getInt("quantityInStock"),
+                  rs.getString("genre")
                 );   
             }
         }
@@ -181,15 +182,13 @@ public class BookDao extends Dao implements BookDaoInterface{
         return book;
     }
         
-         /**
-         * Method to search books by ISBN, Book name,Author
-         * Returns an ArrayList of <code>Book</code> objects
-         * 
-         * @param name The name to search for 
-         * @return ArrayList of <code>Book</code> objects.
-         */
-        @Override
-        public ArrayList<Book> searchBooksBy_ISBN_Bookname_Author(String name) {
+    /**
+     * Method to search books by ISBN, name or Author
+     * 
+     * @param query Search query string
+     * @return ArrayList of <code>Book</code> objects.
+     */
+    public ArrayList<Book> searchBooks(String query) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -198,23 +197,23 @@ public class BookDao extends Dao implements BookDaoInterface{
         try{
             con = getConnection();
             ps = con.prepareStatement("Select * from books where bookName LIKE ? OR bookISBN LIKE ? OR author LIKE ?");
-            ps.setString(1, "%" + name + "%");
-            ps.setString(2, "%" + name + "%");
-            ps.setString(3, "%" + name + "%");
+            ps.setString(1, "%" + query + "%");
+            ps.setString(2, "%" + query + "%");
+            ps.setString(3, "%" + query + "%");
             rs = ps.executeQuery();
 
             while(rs.next())
             {
                 books.add(new Book(
-                        rs.getInt("bookID"),
-                        rs.getString("imagePath"),
-                        rs.getString("bookName"),
-                        rs.getString("bookISBN"),
-                        rs.getString("bookDescription"),
-                        rs.getString("author"),
-                        rs.getString("publisher"),
-                        rs.getInt("quantityInStock"),
-                        rs.getString("genre")
+                  rs.getInt("id"),
+                  rs.getString("imagePath"),
+                  rs.getString("bookName"),
+                  rs.getString("bookIsbn"),
+                  rs.getString("bookDescription"),
+                  rs.getString("author"),
+                  rs.getString("publisher"),
+                  rs.getInt("quantityInStock"),
+                  rs.getString("genre")
                 ));
             }
         }catch (SQLException e) {
@@ -246,7 +245,7 @@ public class BookDao extends Dao implements BookDaoInterface{
      * @param bookID The book id
      * @param increase To increase or decrease the quantity
      * @return Returns true if quantity was updated false otherwise
-     */    
+     */
     @Override
     public boolean updateBookQuantity(int bookID,int quantity, boolean increase) {
         Connection con = null;
@@ -285,5 +284,45 @@ public class BookDao extends Dao implements BookDaoInterface{
             }
         }
         return rowsAffected != 0;
+    }
+
+    /**
+     * Get all genres with books
+     * @return ArrayList of genres (string)
+     */
+    @Override
+    public ArrayList<String> getAllAvailableGenres() {
+      Connection con = null;
+      PreparedStatement ps = null;
+      ResultSet rs = null;
+      ArrayList<String> genres = new ArrayList<>();
+
+      try{
+          con = getConnection();
+          ps = con.prepareStatement("SELECT DISTINCT(genre) from books");
+          rs = ps.executeQuery();
+          
+          while(rs.next()){    
+              genres.add(rs.getString("genre"));
+          }
+      }
+      catch(SQLException ex){
+          ex.printStackTrace();
+      } finally {
+          try {
+              if (rs != null) {
+                  rs.close();
+              }
+              if (ps != null) {
+                  ps.close();
+              }
+              if (con != null) {
+                  freeConnection(con);
+              }
+          } catch (SQLException e) {
+              System.out.println("Exception occured in the finally section of the getAllBooks() method: " + e.getMessage());
+          }
+      }
+      return genres;
     }
 }

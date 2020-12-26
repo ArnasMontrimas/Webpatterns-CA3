@@ -12,13 +12,12 @@ public interface BookDaoInterface {
     ArrayList<Book> getAllBooks();
     
      /**
-     * Method to search books by ISBN, Book name,Author
-     * Returns an ArrayList of <code>Book</code> objects
+     * Method to search books by ISBN, name or Author
      * 
-     * @param name The name to search for 
+     * @param query Search query string
      * @return ArrayList of <code>Book</code> objects.
      */
-    ArrayList<Book> searchBooksBy_ISBN_Bookname_Author(String name);
+    ArrayList<Book> searchBooks(String query);
     
      /**
      * Gets the Book object by the book id (primary key).
@@ -48,5 +47,10 @@ public interface BookDaoInterface {
      * @return Returns an ArrayList of <code>Book</code> objects.
      */
     ArrayList<Book> getAllBooksByGenre(String genre);
-
+    
+    /**
+     * Get all genres with books
+     * @return ArrayList of genres (string)
+     */
+    ArrayList<String> getAllAvailableGenres();
 }

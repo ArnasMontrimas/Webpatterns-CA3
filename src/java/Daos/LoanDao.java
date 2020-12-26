@@ -91,10 +91,6 @@ public class LoanDao extends Dao implements LoanDaoInterface{
      */
     @Override
     public int loanBook(int bookID, int days, int userID) {
-        // Will not be able to even loan if quantity is 0
-        // Already loaned books should not be displayed on view books 
-        // -1 to reduce quanatity here 
-        
         Connection con = null;
         PreparedStatement ps = null;
         int returnValue = 0;
