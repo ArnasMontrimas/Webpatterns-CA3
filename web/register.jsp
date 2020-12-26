@@ -38,9 +38,27 @@
               <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com">
             </div>
       
-            <div class="col-12">
-              <label for="password" class="form-label">Password</label>
+            <div class="col-12" id="passwordContainer">
+              <label for="password" class="form-label mb-0">Password</label>
+
+              <div class="d-flex flex-column mb-1">
+                <small class="text-success text-danger"><i class="fas fa-times me-1"></i><i class="fas fa-check me-1"></i><b>Password</b> must be at least 12 characters long</small>
+                <small class="text-success text-danger"><i class="fas fa-times me-1"></i><i class="fas fa-check me-1"></i><b>Password</b> must contain both upper and lowercase letters (First letter can't be capitalized)</small>
+                <small class="text-success text-danger"><i class="fas fa-times me-1"></i><i class="fas fa-check me-1"></i><b>Password</b> must have at least one number and one symbol (NOT at end)</small>
+                <small class="text-success text-danger"><i class="fas fa-times me-1"></i><i class="fas fa-check me-1"></i><b>Password</b> can't contain your username</small>
+              </div>
+
               <input type="password" class="form-control" id="password" name="password" placeholder="1234 Main St" required>
+
+              <div id="pwdStrengthMeter">
+                <div class="mt-2">Your password is <span>Invalid</span></div>
+                <div>
+                  <div class="meter-level"></div>
+                  <div class="meter-level"></div>
+                  <div class="meter-level"></div>
+                  <div class="meter-level"></div>
+                </div>
+              </div>
             </div>
       
             <div class="col-12">
@@ -56,7 +74,7 @@
       
               <div class="col-12">
                 <label for="ownerName" class="form-label">Card owner name</label>
-                <input type="text" class="form-control" id="ownerName" name="ownerName" placeholder="Joe Doe" required>
+                <input type="text" pattern="^[A-Za-z\s-]+$" class="form-control" id="ownerName" name="ownerName" placeholder="Joe Doe" required>
               </div>
 
               <div class="col-md-3">
@@ -74,5 +92,7 @@
           </div>
         </form>
       </main>
+
+      <script src="/js/register.js"></script>
     </body>
 </html>

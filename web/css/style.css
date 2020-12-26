@@ -1,0 +1,53 @@
+/* Password validation messages */
+/* No error */
+#passwordContainer small i.fa-times {
+  display: none;
+}
+/* Error */
+#passwordContainer small.text-danger i.fa-check {
+  display: none;
+}
+#passwordContainer small.text-danger i.fa-times {
+  display: inline;
+}
+
+/* Password Strength Meter */
+#pwdStrengthMeter {
+  width: 100%;
+}
+#pwdStrengthMeter > div:last-child {
+  display: flex;
+}
+
+#pwdStrengthMeter div.meter-level {
+  height: 5px;
+  width: 100%;
+  max-width: 50px;
+  background-color: lightgray;
+  margin-right: 4px;
+}
+#pwdStrengthMeter[data-level="1"] div.meter-level:nth-child(1) {
+  background-color: red;
+}
+#pwdStrengthMeter[data-level="2"] div.meter-level:nth-child(-n+2) {
+  background-color: orange;
+}
+#pwdStrengthMeter[data-level="3"] div.meter-level:nth-child(-n+3) {
+  background-color: lightgreen;
+}
+#pwdStrengthMeter[data-level="4"] div.meter-level:nth-child(-n+4) {
+  background-color: green;
+}
+
+#pwdStrengthMeter[data-level="1"] span {
+  color: red;
+}
+#pwdStrengthMeter[data-level="2"] span {
+  color: orange;
+}
+#pwdStrengthMeter[data-level="3"] span {
+  color: lightgreen;
+}
+#pwdStrengthMeter[data-level="4"] span {
+  color: green;
+}

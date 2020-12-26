@@ -79,9 +79,7 @@ public class RegisterCommand implements Command {
                   session.setAttribute("user", user);
 
                   forwardToJspPage = "index.jsp";
-                  session.setAttribute("message","You have been registered please login !");
               } else {  
-                // Perhaps some internal problem with server at that time just in case.
                 session.setAttribute("errorMessage","Could not be registered at this time please try again later.");
               }
             } else {
