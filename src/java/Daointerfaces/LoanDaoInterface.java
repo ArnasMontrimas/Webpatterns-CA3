@@ -32,4 +32,11 @@ public interface LoanDaoInterface {
      */
     boolean checkIfLoaned(int bookID);
     
+    /**
+     * 
+     * @param user
+     * @return 
+     */
+    ArrayList<Loan> getAllPreviousUserLoans(User user);
+    
 }

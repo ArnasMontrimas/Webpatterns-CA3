@@ -81,6 +81,64 @@ public class LoanDao extends Dao implements LoanDaoInterface{
         }
         return loans;
     }
+       /**
+     * Gets all the previous user loans for a specific user
+     * This is NOT including current active loans this is all the loans since joining the library
+     * where the user has loaned and returned the a book.
+     * Returns an ArrayList of <code>Loan</code> objects.
+     * 
+     * @param user The user Object
+     * @return ArrayList of <code>Loan</code> objects or null.
+     */
+    @Override
+    public ArrayList<Loan> getAllPreviousUserLoans(User user) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Loan> loans = new ArrayList<>();
+        BookDao bdao = new BookDao();
+
+        try{
+            con = getConnection();
+            ps = con.prepareStatement("SELECT * FROM loans WHERE loanUserID = ? AND loanReturned IS NOT NULL");
+            ps.setInt(1,user.getUserID());
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                
+                int bookID = rs.getInt("loanBookID");
+                Book book = bdao.getBookByID(bookID);
+                
+                loans.add(new Loan(
+                        rs.getInt("loanID"),
+                        user,
+                        book,
+                        rs.getDate("loanStarted"),
+                        rs.getDate("loanEnds"),
+                        rs.getDate("loanReturned"),
+                        rs.getDouble("feesPaid")
+                ));
+            }
+        }
+        catch(SQLException ex){
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception occured in the finally section of the getAllActiveUserLoans() method: " + e.getMessage());
+            }
+        }
+        return loans;
+    }
     
     /**
      * This method loans a book to a specified user for a specified number of days

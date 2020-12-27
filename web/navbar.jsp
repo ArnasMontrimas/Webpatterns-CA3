@@ -18,6 +18,9 @@
             <a class="nav-link" href="loans.jsp">Loans</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="previousLoans.jsp">Loans History</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="#">Profile</a>
           </li>
           <li class="nav-item">
