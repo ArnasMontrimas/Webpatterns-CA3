@@ -1,8 +1,8 @@
 
 package daotests;
 
-import dtos.*;
-import daos.*;
+import Dtos.*;
+import Daos.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * @author samue
  */
 public class SecurityAnswersDaoTest {
-
+    /**
     private final SecurityAnswersDao sdao = new SecurityAnswersDao("creative_library_test");
 
     // Testing when the user answers a security question correctly
@@ -75,4 +75,6 @@ public class SecurityAnswersDaoTest {
       assertEquals(true,sdao.insertSecurityAnswers(id, "Test1", "Test2", "Test3"));
 
     }
+    **/
 }
+

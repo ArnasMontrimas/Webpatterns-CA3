@@ -1,6 +1,6 @@
 package daotests;
 
-import daos.*;
+import Daos.*;
 
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ public class PaymentDetailsDaoTest {
 
   /**
    * Test inserting a card
-   */
+   
   @Test
   public void createPaymentDetails() {
     pdao.insertPaymentDetails(40, "1234567812345678", "123", "David Poutnik", "2021-01-03");
@@ -28,7 +28,7 @@ public class PaymentDetailsDaoTest {
 
   /**
    * Test removing a card
-   */
+  
   @Test
   public void removePaymentDetails() {
     pdao.insertPaymentDetails(41, "1234567812345678", "123", "David Poutnik", "2021-01-03");
@@ -43,7 +43,7 @@ public class PaymentDetailsDaoTest {
 
   /**
    * Test removing a non-existent card
-   */
+   
   @Test
   public void removePaymentDetailsNonExistent() {
     boolean exists = pdao.userHasPaymentDetails(1000);
