@@ -33,11 +33,13 @@
           </li>
         <% } %>
       </ul>
-
+      <% if (session.getAttribute("user") != null) { %>
+      <!-- Only Logged in Users can search for books -->
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search for books" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
+      <% } %>
     </div>
   </div>
 </nav>
