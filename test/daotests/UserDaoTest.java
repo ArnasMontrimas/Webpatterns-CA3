@@ -21,6 +21,7 @@ public class UserDaoTest {
     * Test of validateUsername method, of class UserDao.
     */
    // Testing for a username that is already in the database
+  /**
   @Test
   public void testUnavailableUsername() {
       System.out.println("Unavailable username test");
@@ -37,7 +38,7 @@ public class UserDaoTest {
 
       assertEquals(true,dao.validateUsername(username));
   }
-
+  **/
   // Testing for registering a user into the users table
   // Validation for all the fields would be done before this method would be called
   // So test for INSERT I then select it if its actually been added.
@@ -89,7 +90,7 @@ public class UserDaoTest {
 
         assertTrue(nonExistent && !removed);
     }
-    */
+    
 
   // Testing for a valid login
   @Test
@@ -244,4 +245,5 @@ public class UserDaoTest {
        // Reset it back otherwise test would fail
        assertEquals(true,dao.forgotPasswordReset(old_plaintext_pass,username));
    }
+   **/
 }
