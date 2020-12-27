@@ -21,7 +21,7 @@
             <a class="nav-link" href="previousLoans.jsp">Loans History</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Profile</a>
+            <a class="nav-link" href="profile.jsp">Profile</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="controller?action=logout">Logout</a>
