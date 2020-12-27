@@ -38,7 +38,7 @@ public class BookDao extends Dao implements BookDaoInterface{
 
         try{
             con = getConnection();
-            ps = con.prepareStatement("SELECT * from books");
+            ps = con.prepareStatement("SELECT * FROM books");
             rs = ps.executeQuery();
             
             while(rs.next()){    
@@ -188,6 +188,7 @@ public class BookDao extends Dao implements BookDaoInterface{
      * @param query Search query string
      * @return ArrayList of <code>Book</code> objects.
      */
+    @Override
     public ArrayList<Book> searchBooks(String query) {
         Connection con = null;
         PreparedStatement ps = null;
@@ -196,7 +197,7 @@ public class BookDao extends Dao implements BookDaoInterface{
 
         try{
             con = getConnection();
-            ps = con.prepareStatement("Select * from books where bookName LIKE ? OR bookISBN LIKE ? OR author LIKE ?");
+            ps = con.prepareStatement("Select * from books where bookName LIKE ? OR bookIsbn LIKE ? OR author LIKE ?");
             ps.setString(1, "%" + query + "%");
             ps.setString(2, "%" + query + "%");
             ps.setString(3, "%" + query + "%");
@@ -256,13 +257,13 @@ public class BookDao extends Dao implements BookDaoInterface{
             con = getConnection();
             // If increase is wanted
             if (increase) {
-            ps = con.prepareStatement("UPDATE books SET quantityInStock = quantityInStock + ? WHERE bookID = ?");
+            ps = con.prepareStatement("UPDATE books SET quantityInStock = quantityInStock + ? WHERE id = ?");
             ps.setInt(1,quantity);
             ps.setInt(2,bookID);
             rowsAffected = ps.executeUpdate();   
             } else {
             // Decrease wanted
-            ps = con.prepareStatement("UPDATE books SET quantityInStock = quantityInStock - ? WHERE bookID = ?");
+            ps = con.prepareStatement("UPDATE books SET quantityInStock = quantityInStock - ? WHERE id = ?");
             ps.setInt(1,quantity);
             ps.setInt(2,bookID);
             rowsAffected = ps.executeUpdate();

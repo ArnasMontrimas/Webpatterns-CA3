@@ -21,6 +21,10 @@ public class CommandFactory {
             c = new LoanBookCommand();
             break;
             
+            case "returnLoan":
+            c = new ReturnLoanCommand();
+            break;
+            
             case "PasswordReset":
             c = new PasswordResetCommand();    
             break;
@@ -44,7 +48,11 @@ public class CommandFactory {
             case "ValidateEmailCode":
             c = new ValidateEmailCodeCommand();    
             break;
-                      
+            
+            case "searchBook":
+            c = new SearchBookCommand();
+            break;    
+            
             case "login":
             default:
             c = new LoginCommand();

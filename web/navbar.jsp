@@ -15,13 +15,13 @@
             <a class="nav-link" href="books.jsp">Books</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Loans</a>
+            <a class="nav-link" href="loans.jsp">Loans</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Logout</a>
+            <a class="nav-link" href="controller?action=logout">Logout</a>
           </li>
         <% } else { %>
           <!-- Logged out -->
@@ -35,8 +35,9 @@
       </ul>
       <% if (session.getAttribute("user") != null) { %>
       <!-- Only Logged in Users can search for books -->
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search for books" aria-label="Search">
+      <form action="controller" method="post" class="d-flex">
+          <input type="hidden" name="action" value="searchBook">
+        <input class="form-control me-2" type="search" name="query" placeholder="Search for books" aria-label="Search" required>
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
       <% } %>

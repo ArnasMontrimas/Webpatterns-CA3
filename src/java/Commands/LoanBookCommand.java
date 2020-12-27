@@ -44,18 +44,12 @@ public class LoanBookCommand implements Command {
         LoanDao loanDao = new LoanDao();
 
         // Check if user loans this book
-        ArrayList<Book> loanedBooks = new ArrayList<>();
-        ArrayList<Loan> loans = loanDao.getAllActiveUserLoans(user);
-
-        for (Loan loan : loans) {
-          loanedBooks.add(loan.getLoanBook());
-        }
-
-        if (loanedBooks.contains(book)) {
+        if (loanDao.checkIfLoaned(bookId)) {
           session.setAttribute("errorMessage", "You already loan a copy of this book");
         } else {
-          // Loan the book for the user
           loanDao.loanBook(bookId, 7, user.getUserID());
+          //Update book quantity after loaning book
+          bookDao.updateBookQuantity(bookId, 1, false);
           session.setAttribute("message", "Successfully loaned " + "<b>" + book.getBookName() + "</b>");
         }
       }

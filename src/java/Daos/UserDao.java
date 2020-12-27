@@ -363,6 +363,7 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
         ResultSet rs = null;
         String email = "";
         
+        
         try {
             con = getConnection();
             ps = con.prepareStatement("SELECT email FROM users WHERE email = ?;");
@@ -373,6 +374,7 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
                 email = rs.getString("email");
                 return email.equalsIgnoreCase(userEmail);
             }
+            
             
         } catch(SQLException e) {
             e.printStackTrace();

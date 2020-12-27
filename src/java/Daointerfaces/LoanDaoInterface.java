@@ -24,6 +24,12 @@ public interface LoanDaoInterface {
      * @return int integer number representing different errors and if succseful or not
      */
     int loanBook(int bookID,int days,int userID);
-
-
+    
+    /**
+     * 
+     * @param bookID
+     * @return 
+     */
+    boolean checkIfLoaned(int bookID);
+    
 }

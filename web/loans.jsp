@@ -19,7 +19,7 @@
       <%@include file="navbar.jsp" %>
 
       <main class="container pt-3 pb-5" id="booksPage">
-        <h1>Books</h1>
+        <h1>Current Loans</h1>
         
         <% if (session.getAttribute("errorMessage") != null) { %>
           <div class="alert alert-danger" role="alert">
@@ -44,7 +44,7 @@
 
             ArrayList<Book> books = (new BookDao()).getAllBooks();
             for (Book book : books) {
-              if (loanDao.checkIfLoaned(book.getBookID())) continue;
+              if (!loanDao.checkIfLoaned(book.getBookID())) continue;
           %> 
             <div class="card mx-2" style="width: 18rem;">
               <img src="./images/books/<%= book.getImagePath() %>" class="card-img-top w-100" alt="<%= book.getBookName() %>">
@@ -53,7 +53,7 @@
                 <h6><%= book.getAuthor() %></h6>
                 <p class="card-text"><%= book.getBookDescription() %></p>
                 <% if (book.getQuantityInStock() > 0) { %>
-                  <a href="controller?action=loan&bookId=<%= book.getBookID() %>" class="btn btn-primary">Loan book</a>
+                  <a href="controller?action=returnLoan&bookId=<%= book.getBookID() %>" class="btn btn-primary">Return book</a>
                 <% } else { %>
                   <button class="btn btn-outline-primary" disabled aria-disabled="true">Unavailable</button>
                 <% } %>

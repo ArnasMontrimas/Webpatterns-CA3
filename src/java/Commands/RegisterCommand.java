@@ -50,7 +50,7 @@ public class RegisterCommand implements Command {
             boolean numberCheck = password.matches(".*[0-9].*[^0-9]$");
             boolean symbolCheck = password.matches(".*[\\!\"#$%&'()*+,-./:;<=>?@\\Q[]|\\E^_`{}~\\s].*[^\\!\"#$%&'()*+,-./:;<=>?@\\Q[]|\\E^_`{}~\\s]$");
             boolean notUserName = !password.toLowerCase().contains(username.toLowerCase());
-
+            //TODO NEED VALIDATION ON THE BACKEND FOR EXPIRATION DATE (Validation in HTML can be easiliy bypassed)
             // Check if password conditions aren't respected
             if (!lengthCheck || !lowerCheck || !upperCheck || !numberCheck || !symbolCheck || !notUserName) {
               session.setAttribute("errorMessage", "Password conditions aren't respected");

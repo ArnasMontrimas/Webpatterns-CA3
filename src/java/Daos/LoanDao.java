@@ -121,5 +121,42 @@ public class LoanDao extends Dao implements LoanDaoInterface{
         return returnValue;
     }
     
-     
+    /**
+     * 
+     * @param bookID
+     * @return 
+     */
+    @Override
+    public boolean checkIfLoaned(int bookID) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try{
+            con = getConnection();
+            ps = con.prepareStatement("SELECT * FROM loans WHERE loanBookID = ?;");
+            ps.setInt(1, bookID);
+            rs = ps.executeQuery();
+            
+            if(rs.next()) {
+                return true;
+            }
+            
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return false;
+    }
 }
