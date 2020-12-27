@@ -41,10 +41,11 @@
         <div class="row justify-content-around">
           <%
             LoanDao loanDao = new LoanDao();
-
-            ArrayList<Book> books = (new BookDao()).getAllBooks();
-            for (Book book : books) {
-              if (!loanDao.checkIfLoaned(book.getBookID())) continue;
+            User user = (User) session.getAttribute("user");
+            
+            ArrayList<Loan> loans = loanDao.getAllActiveUserLoans(user);
+            for (Loan loan: loans) {
+              Book book = loan.getLoanBook();
           %> 
             <div class="card mx-2" style="width: 18rem;">
               <img src="./images/books/<%= book.getImagePath() %>" class="card-img-top w-100" alt="<%= book.getBookName() %>">

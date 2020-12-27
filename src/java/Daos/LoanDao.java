@@ -58,7 +58,7 @@ public class LoanDao extends Dao implements LoanDaoInterface{
                         rs.getDate("loanStarted"),
                         rs.getDate("loanEnds"),
                         rs.getDate("loanReturned"),
-                        rs.getDouble("fees")
+                        rs.getDouble("feesPaid")
                 ));
             }
         }
