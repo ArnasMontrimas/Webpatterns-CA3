@@ -471,14 +471,14 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
     }
 
     /**
-     * Updates the user's username if that username is available
+     * Change user's username
      *
+     * @param user The current username.
      * @param newUsername The new username to update
-     * @param currentUsername The current username.
-     * @return boolean true/false
+     * @return true/false for success/failure
      */
     @Override
-    public boolean changeUsername(String newUsername, String currentUsername) {
+    public boolean changeUsername(User user, String newUsername) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -486,9 +486,9 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
 
         try{
             con = getConnection();
-            ps = con.prepareStatement("UPDATE users SET username = ? WHERE username = ?");
-            ps.setString(1,newUsername);
-            ps.setString(2,currentUsername);
+            ps = con.prepareStatement("UPDATE users SET username = ? WHERE id = ?");
+            ps.setString(1, newUsername);
+            ps.setInt(2, user.getUserID());
             ps.executeUpdate();
             changeUsername = true;
         }

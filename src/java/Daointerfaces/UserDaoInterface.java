@@ -86,11 +86,11 @@ public interface UserDaoInterface {
     boolean validateEmail(String userEmail);
 
     /**
-     * Updates the user's username if that username is available
+     * Change user's username
      *
+     * @param user The current username.
      * @param newUsername The new username to update
-     * @param currentUsername The current username.
-     * @return boolean true/false
+     * @return true/false for success/failure
      */
-    boolean changeUsername(String newUsername, String currentUsername);
+    boolean changeUsername(User user, String currentUsername);
 }

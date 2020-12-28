@@ -56,7 +56,7 @@
 
                 <div>
                   <div>
-                    <a href="#" class="btn btn-primary">Edit Profile</a>
+                    <a href="editProfile.jsp" class="btn btn-primary">Edit Profile</a>
                     <a href="changePassword.jsp" class="btn btn-warning">Change Password</a>
                   </div>
                   <div class="mt-3">

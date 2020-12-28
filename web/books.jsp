@@ -74,7 +74,7 @@
 
                 <% if (loanDao.checkIfLoaned(user.getUserID(), book.getBookID())) { %>
                   <!-- Book is loaned -->
-                  <a href="loans.jsp" class="btn btn-outline-warning">See loans</a>
+                  <a href="loans.jsp" class="btn btn-outline-warning">View loans</a>
                 <% } else if (book.getQuantityInStock() > 0) { %>
                   <a href="controller?action=loan&bookId=<%= book.getBookID() %>" class="btn btn-primary">Loan book</a>
                 <% } else { %>

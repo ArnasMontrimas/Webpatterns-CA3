@@ -33,8 +33,8 @@ public class CommandFactory {
             c = new ChangeLanguageCommand();     
             break;
             
-            case "ChangeUsername":
-            c = new ChangeUsernameCommand();     
+            case "editProfile":
+            c = new EditProfileCommand();     
             break;
             
             case "ForgotPasswordReset":
