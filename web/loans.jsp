@@ -1,6 +1,10 @@
 <%@ page import="Dtos.*" %>
 <%@ page import="Daos.*" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.nio.charset.StandardCharsets" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.util.Calendar" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     // Redirect if not logged in
@@ -56,17 +60,35 @@
               for (Loan loan: loans) {
                 Book book = loan.getLoanBook();
           %> 
-            <div class="card mx-2" style="width: 18rem;">
-              <img src="./images/books/<%= book.getImagePath() %>" class="card-img-top w-100" alt="<%= book.getBookName() %>">
+            <div class="card mx-2 px-0" style="width: 18rem;">
+              <a href="controller?action=searchBook&query=<%= URLEncoder.encode(book.getBookName(), StandardCharsets.UTF_8) %>">
+                <img src="./images/books/<%= book.getImagePath() %>" class="card-img-top w-100" alt="<%= book.getBookName() %>">
+              </a>
               <div class="card-body">
-                <h5 class="card-title mb-0"><%= book.getBookName() %></h5>
+                <a class="text-decoration-none text-dark" href="controller?query=<%= URLEncoder.encode(book.getBookName(), StandardCharsets.UTF_8) %>"><h5 class="card-title mb-0"><%= book.getBookName() %></h5></a>
                 <h6><%= book.getAuthor() %></h6>
-                <p class="card-text"><%= book.getBookDescription() %></p>
-                <% if (book.getQuantityInStock() > 0) { %>
-                  <a href="controller?action=returnLoan&bookId=<%= book.getBookID() %>" class="btn btn-primary">Return book</a>
-                <% } else { %>
-                  <button class="btn btn-outline-primary" disabled aria-disabled="true">Unavailable</button>
-                <% } %>
+
+                <p>
+                    <strong>Loaned:&nbsp;</strong><%= loan.getLoanStarted() %>
+                </p>
+                <p>
+                    <%
+                      boolean returnLate = (new Date()).compareTo(loan.getLoanEnds()) > 0;
+                    %>
+                    <strong>Return date:&nbsp;</strong><span class="<%= returnLate ? "text-danger" : "" %>"><%= loan.getLoanEnds() %></span>
+                </p>
+                
+                <%
+                if (returnLate) {
+                %>
+                  <p>
+                    <strong>Fees:&nbsp;</strong><span class="text-danger"><%= loan.calculateFees() %>€</span>
+                  </p>
+                <%
+                }
+                %>
+
+                <a href="controller?action=searchBook&bookId=<%= book.getBookID() %>" class="btn btn-primary">Return book</a>
               </div>
             </div>
           <%

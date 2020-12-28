@@ -1,10 +1,13 @@
 
 package Dtos;
 
+import java.time.Duration;
 import java.util.Date;
 import java.util.Objects;
 
 public class Loan {
+    // Fees cost for each day late after return date
+    private static double feesPerLateDay = 5.5;
     
     private int loanID;
     private User loanUserID;
@@ -12,25 +15,25 @@ public class Loan {
     private Date loanStarted;
     private Date loanEnds;
     private Date loanReturned;
-    private double fees;
+    private double feesPaid;
 
-    public Loan(int loanID, User loanUserID, Book loanBook, Date loanStarted, Date loanEnds, Date loanReturned, double fees) {
+    public Loan(int loanID, User loanUserID, Book loanBook, Date loanStarted, Date loanEnds, Date loanReturned, double feesPaid) {
         this.loanID = loanID;
         this.loanUserID = loanUserID;
         this.loanBook = loanBook;
         this.loanStarted = loanStarted;
         this.loanEnds = loanEnds;
         this.loanReturned = loanReturned;
-        this.fees = fees;
+        this.feesPaid = feesPaid;
     }
 
-    public Loan(User loanUserID, Book loanBook, Date loanStarted, Date loanEnds, Date loanReturned, double fees) {
+    public Loan(User loanUserID, Book loanBook, Date loanStarted, Date loanEnds, Date loanReturned, double feesPaid) {
         this.loanUserID = loanUserID;
         this.loanBook = loanBook;
         this.loanStarted = loanStarted;
         this.loanEnds = loanEnds;
         this.loanReturned = loanReturned;
-        this.fees = fees;
+        this.feesPaid = feesPaid;
     }
 
     public int getLoanID() {
@@ -81,12 +84,24 @@ public class Loan {
         this.loanReturned = loanReturned;
     }
 
-    public double getFees() {
-        return fees;
+    public double getFeesPaid() {
+        return feesPaid;
     }
 
-    public void setFees(double fees) {
-        this.fees = fees;
+    public void setFeesPaid(double feesPaid) {
+        this.feesPaid = feesPaid;
+    }
+
+    /**
+     * Calculate fees that have to be paid at the moment of the call
+     * @return fees to be paid if returned now, compared to when it should have been returned
+     */
+    public double calculateFees() {
+      int daysLate = (int) (((new Date()).getTime() - this.loanEnds.getTime()) / (1000 * 60 * 60 * 24));
+      return (new Date()).compareTo(this.loanEnds) > 0
+        // Fees rounded to 2 decimals
+        ? Math.floor((daysLate * feesPerLateDay) * 100)  / 100
+        : 0;
     }
 
     @Override
@@ -111,7 +126,7 @@ public class Loan {
                 ", loanStarted=" + loanStarted +
                 ", loanEnds=" + loanEnds +
                 ", loanReturned=" + loanReturned +
-                ", fees=" + fees +
+                ", feesPaid=" + feesPaid +
                 '}';
     } 
 }
