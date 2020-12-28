@@ -34,7 +34,7 @@ public class SearchBookCommand implements Command {
             session.setAttribute("query", query);
         }
         
-        return "searchedBooks.jsp";
+        return "books.jsp";
     }
     
 }
