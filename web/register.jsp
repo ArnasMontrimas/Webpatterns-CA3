@@ -2,7 +2,7 @@
 <%
     // Redirect if already logged in
     if (session.getAttribute("user") != null) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("loans.jsp");
     }
 %>
 <!DOCTYPE html>
@@ -53,7 +53,7 @@
                 <small class="text-success text-danger"><i class="fas fa-times me-1"></i><i class="fas fa-check me-1"></i><b>Password</b> can't contain your username</small>
               </div>
 
-              <input type="password" class="form-control" id="password" name="password" placeholder="1234 Main St" required>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
 
               <div id="pwdStrengthMeter">
                 <div class="mt-2">Your password is <span>Invalid</span></div>
@@ -87,7 +87,7 @@
             </div>
       
             <div>
-              <button class="btn btn-outline-primary mt-2" type="submit">Register</button>
+              <button class="btn btn-outline-primary mt-2" type="submit" id="registerSubmit" disabled>Register</button>
             </div>
           </div>
         </form>

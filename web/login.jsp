@@ -2,7 +2,7 @@
 <%
     // Redirect if already logged in
     if (session.getAttribute("user") != null) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("loans.jsp");
     }
 %>
 <!DOCTYPE html>

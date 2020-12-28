@@ -25,8 +25,8 @@ public class CommandFactory {
             c = new ReturnLoanCommand();
             break;
             
-            case "PasswordReset":
-            c = new PasswordResetCommand();    
+            case "changePassword":
+            c = new ChangePasswordCommand();    
             break;
 
             case "changeLanguage":
@@ -54,8 +54,11 @@ public class CommandFactory {
             break;    
             
             case "login":
-            default:
             c = new LoginCommand();
+            break;
+
+            default:
+            c = new LoginCommand(true);
         }
 
         return c;

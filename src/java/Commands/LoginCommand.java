@@ -15,12 +15,22 @@ import javax.servlet.http.HttpSession;
  * @author Samuel and Malo
  */
 public class LoginCommand implements Command {
+    private boolean fromIndex = false;
+
+    public LoginCommand() {
+    }
+
+    public LoginCommand(boolean fromIndex) {
+      this.fromIndex = fromIndex;
+    }
 
     @Override
     public String doAction(HttpServletRequest request, HttpServletResponse response) {
         UserDao udao = new UserDao();
         HttpSession session = request.getSession();
         String forwardToJspPage = "login.jsp";
+
+        if (fromIndex) return forwardToJspPage;
 
         // Login Data
         String email = request.getParameter("email");        
@@ -37,7 +47,7 @@ public class LoginCommand implements Command {
               session.setAttribute("errorMessage", "That account is no longer active");
             } else {
               session.setAttribute("user", user);
-              forwardToJspPage = "index.jsp";
+              forwardToJspPage = "loans.jsp";
             }
         } else {
             session.setAttribute("errorMessage", "Missing username or password");

@@ -18,7 +18,7 @@
     <body>
       <%@include file="navbar.jsp" %>
 
-      <main class="container pt-3 pb-5" id="booksPage">
+      <main class="container pt-3 pb-5">
         <h1>Previous Loans</h1>
         
         <% if (session.getAttribute("errorMessage") != null) { %>

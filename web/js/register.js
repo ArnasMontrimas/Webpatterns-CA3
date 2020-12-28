@@ -4,39 +4,41 @@ $(() => {
   const cvvInput = $('input[name="cardCvv"]')[0];
   const expirationDate = $('input[name="expirationDate"]')[0];
 
-  // Change card input validation message
-  cardNumInput.oninvalid = function () {
-    this.setCustomValidity("Card numbers must be 16 digits long.");
+  if (cardNumInput) {
+    // Change card input validation message
+    cardNumInput.oninvalid = function () {
+      this.setCustomValidity("Card numbers must be 16 digits long.");
+    }
+    cardNumInput.oninput = function () {
+      this.setCustomValidity("");
+    };
+  
+    ownerNameInput.oninvalid = function () {
+      this.setCustomValidity("Only names from basaic characters are allowed");
+    }
+    ownerNameInput.oninput = function () {
+      this.setCustomValidity("");
+    };
+  
+    cvvInput.oninvalid = function () {
+      this.setCustomValidity("CVV can only contains 3 or 4 digits.");
+    }
+    cvvInput.oninput = function () {
+      this.setCustomValidity("");
+    };
+  
+    expirationDate.oninvalid = function () {
+      this.setCustomValidity("Expiration should in the format MM/YY");
+    }
+    expirationDate.oninput = function () {
+      this.setCustomValidity("");
+    };
   }
-  cardNumInput.oninput = function () {
-    this.setCustomValidity("");
-  };
-
-  ownerNameInput.oninvalid = function () {
-    this.setCustomValidity("Only names from basaic characters are allowed");
-  }
-  ownerNameInput.oninput = function () {
-    this.setCustomValidity("");
-  };
-
-  cvvInput.oninvalid = function () {
-    this.setCustomValidity("CVV can only contains 3 or 4 digits.");
-  }
-  cvvInput.oninput = function () {
-    this.setCustomValidity("");
-  };
-
-  expirationDate.oninvalid = function () {
-    this.setCustomValidity("Expiration should in the format MM/YY");
-  }
-  expirationDate.oninput = function () {
-    this.setCustomValidity("");
-  };
 
   const pwdContainer = $('#passwordContainer')
   const pwdInput = $('#password')
   const pwdStrengthMeter = $('#pwdStrengthMeter')
-  const submitBtn = $('#submitInput')
+  const submitBtn = $('#registerSubmit')
   const usernameInput = $('#username')
   const conditionMsg = pwdContainer.find('small')
 
@@ -63,6 +65,16 @@ $(() => {
       notUserName
     ]
 
+    // When changing password, can't contain current password
+    if (conditionMsg.length === 6) {
+      inputChecks.push(
+        !password.includes($("#currentPassword").val())
+      )
+      inputChecks.push(
+        password === $("#confirmPassword").val()
+      )
+    }
+
     let errors = 0
     for (let i = 0; i < inputChecks.length; i++) {
       // Condition isn't respected
@@ -83,7 +95,7 @@ $(() => {
     }
 
     // Check password strength
-    const resultStrength = zxcvbn(password, [usernameInput.val()])
+    const resultStrength = zxcvbn(password, [usernameInput.val(), $("#oldPassword").val() || ""])
     const passwordScore = errors > 0 ? 0 : (resultStrength.score === 0 ? 1 : resultStrength.score)
     const scoreText = ['Invalid', 'Very weak', 'Weak', 'Good', 'Very Good']
     pwdStrengthMeter.attr('data-level', passwordScore)
@@ -94,6 +106,18 @@ $(() => {
    * When username changes, check that password isn't equal
    */
   usernameInput.on('change input paste', function () {
+    if (pwdInput.val()) {
+      // Trigger password input verification
+      pwdInput.trigger('change')
+    }
+  })
+  $("#currentPassword").on('change input paste', function () {
+    if (pwdInput.val()) {
+      // Trigger password input verification
+      pwdInput.trigger('change')
+    }
+  })
+  $("#confirmPassword").on('change input paste', function () {
     if (pwdInput.val()) {
       // Trigger password input verification
       pwdInput.trigger('change')

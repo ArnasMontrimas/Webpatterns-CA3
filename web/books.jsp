@@ -21,7 +21,7 @@
     <body>
       <%@include file="navbar.jsp" %>
 
-      <main class="container pt-3 pb-5" id="booksPage">
+      <main class="container pt-3 pb-5">
         <div class="row justify-content-between mb-3">
           <h1 class="col-sm-4">Books</h1>
           
@@ -73,8 +73,9 @@
                 </div>
 
                 <% if (loanDao.checkIfLoaned(user.getUserID(), book.getBookID())) { %>
+                  <!-- Book is loaned -->
                   <a href="loans.jsp" class="btn btn-outline-warning">See loans</a>
-                  <% } else if (book.getQuantityInStock() > 0) { %>
+                <% } else if (book.getQuantityInStock() > 0) { %>
                   <a href="controller?action=loan&bookId=<%= book.getBookID() %>" class="btn btn-primary">Loan book</a>
                 <% } else { %>
                   <button class="btn btn-outline-secondary" disabled aria-disabled="true">Unavailable</button>

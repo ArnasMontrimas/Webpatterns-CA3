@@ -78,7 +78,7 @@ public class RegisterCommand implements Command {
                   // Log in user
                   session.setAttribute("user", user);
 
-                  forwardToJspPage = "index.jsp";
+                  forwardToJspPage = "loans.jsp";
               } else {  
                 session.setAttribute("errorMessage","Could not be registered at this time please try again later.");
               }
