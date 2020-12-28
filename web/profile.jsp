@@ -38,7 +38,7 @@
                     <strong>Registered:&nbsp;</strong><%= user.getDateRegistered() %>
                 </p>
                 <p>
-                    <strong>Type:&nbsp;</strong><%= user.getType() %>
+                    <strong>Type:&nbsp;</strong><span class="text-capitalize"><%= user.getType() %></span>
                 </p>
                 <a href="previousLoans.jsp" class="btn btn-outline-primary">Loan History</a>
                 <a href="loans.jsp" class="btn btn-outline-primary">Current Loans</a>

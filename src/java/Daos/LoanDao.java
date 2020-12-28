@@ -14,6 +14,8 @@ import java.util.ArrayList;
 /**
  *
  * @author samue
+ * @author Arnas
+ * @author Malo
  */
 public class LoanDao extends Dao implements LoanDaoInterface{
     
@@ -42,23 +44,23 @@ public class LoanDao extends Dao implements LoanDaoInterface{
 
         try{
             con = getConnection();
-            ps = con.prepareStatement("SELECT * FROM loans WHERE loanUserID = ? AND loanReturned IS NULL");
+            ps = con.prepareStatement("SELECT * FROM loans WHERE userId = ? AND returned IS NULL");
             ps.setInt(1,user.getUserID());
             rs = ps.executeQuery();
             
             while(rs.next()){
                 
-                int bookID = rs.getInt("loanBookID");
+                int bookID = rs.getInt("bookId");
                 Book book = bdao.getBookByID(bookID);
                 
                 loans.add(new Loan(
-                        rs.getInt("loanID"),
-                        user,
-                        book,
-                        rs.getDate("loanStarted"),
-                        rs.getDate("loanEnds"),
-                        rs.getDate("loanReturned"),
-                        rs.getDouble("feesPaid")
+                  rs.getInt("id"),
+                  user,
+                  book,
+                  rs.getDate("starts"),
+                  rs.getDate("ends"),
+                  rs.getDate("returned"),
+                  rs.getDouble("feesPaid")
                 ));
             }
         }
@@ -100,23 +102,23 @@ public class LoanDao extends Dao implements LoanDaoInterface{
 
         try{
             con = getConnection();
-            ps = con.prepareStatement("SELECT * FROM loans WHERE loanUserID = ? AND loanReturned IS NOT NULL");
+            ps = con.prepareStatement("SELECT * FROM loans WHERE userId = ? AND returned IS NOT NULL");
             ps.setInt(1,user.getUserID());
             rs = ps.executeQuery();
             
             while(rs.next()){
                 
-                int bookID = rs.getInt("loanBookID");
+                int bookID = rs.getInt("bookId");
                 Book book = bdao.getBookByID(bookID);
                 
                 loans.add(new Loan(
-                        rs.getInt("loanID"),
-                        user,
-                        book,
-                        rs.getDate("loanStarted"),
-                        rs.getDate("loanEnds"),
-                        rs.getDate("loanReturned"),
-                        rs.getDouble("feesPaid")
+                  rs.getInt("id"),
+                  user,
+                  book,
+                  rs.getDate("starts"),
+                  rs.getDate("ends"),
+                  rs.getDate("returned"),
+                  rs.getDouble("feesPaid")
                 ));
             }
         }
@@ -155,7 +157,7 @@ public class LoanDao extends Dao implements LoanDaoInterface{
 
         try{
             con = getConnection();
-            ps = con.prepareStatement("INSERT into loans VALUES(NULL,?,?,current_timestamp(),DATE_ADD(current_timestamp(),INTERVAL ? DAY),DEFAULT,DEFAULT)");
+            ps = con.prepareStatement("INSERT into loans VALUES(NULL, ?, ?, current_timestamp(), DATE_ADD(current_timestamp(), INTERVAL ? DAY), DEFAULT, DEFAULT)");
             ps.setInt(1,userID);
             ps.setInt(2,bookID);
             ps.setInt(3,days);
@@ -180,20 +182,21 @@ public class LoanDao extends Dao implements LoanDaoInterface{
     }
     
     /**
-     * 
-     * @param bookID
+     * Check if a user loans a specific book
+     * @param userID User's loans to check
+     * @param bookID Book to check if user's loans
      * @return 
      */
-    @Override
-    public boolean checkIfLoaned(int bookID) {
+    public boolean checkIfLoaned(int userID, int bookID) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         
         try{
             con = getConnection();
-            ps = con.prepareStatement("SELECT * FROM loans WHERE loanBookID = ?;");
+            ps = con.prepareStatement("SELECT * FROM loans WHERE bookId = ? AND userId = ?;");
             ps.setInt(1, bookID);
+            ps.setInt(2, userID);
             rs = ps.executeQuery();
             
             if(rs.next()) {

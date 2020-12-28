@@ -4,7 +4,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     // Redirect if not logged in
-    if (session.getAttribute("user") == null) {
+    User user = (User) session.getAttribute("user");
+    if (user == null) {
         response.sendRedirect("login.jsp");
         return;
     }
@@ -44,9 +45,9 @@
 
             ArrayList<Book> books = (new BookDao()).getAllBooks();
             for (Book book : books) {
-              if (loanDao.checkIfLoaned(book.getBookID())) continue;
+              if (loanDao.checkIfLoaned(user.getUserID(), book.getBookID())) continue;
           %> 
-            <div class="card mx-2" style="width: 18rem;">
+            <div class="card mx-2 mb-5" style="width: 18rem;">
               <img src="./images/books/<%= book.getImagePath() %>" class="card-img-top w-100" alt="<%= book.getBookName() %>">
               <div class="card-body">
                 <h5 class="card-title mb-0"><%= book.getBookName() %></h5>

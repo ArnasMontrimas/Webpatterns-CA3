@@ -26,11 +26,12 @@ public interface LoanDaoInterface {
     int loanBook(int bookID,int days,int userID);
     
     /**
-     * 
-     * @param bookID
+     * Check if a user loans a specific book
+     * @param userID User's loans to check
+     * @param bookID Book to check if user's loans
      * @return 
      */
-    boolean checkIfLoaned(int bookID);
+    boolean checkIfLoaned(int userID, int bookID);
     
     /**
      * 

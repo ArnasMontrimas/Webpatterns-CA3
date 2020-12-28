@@ -1,22 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.9.3
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 27, 2020 at 10:41 PM
--- Server version: 10.4.6-MariaDB
--- PHP Version: 7.3.9
+-- Host: localhost:3306
+-- Generation Time: Dec 28, 2020 at 10:31 AM
+-- Server version: 5.7.26
+-- PHP Version: 7.4.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `library_prod`
@@ -30,7 +22,6 @@ USE `library_prod`;
 -- Table structure for table `books`
 --
 
-DROP TABLE IF EXISTS `books`;
 CREATE TABLE `books` (
   `id` int(11) NOT NULL,
   `imagePath` varchar(250) NOT NULL,
@@ -40,7 +31,7 @@ CREATE TABLE `books` (
   `author` varchar(35) NOT NULL,
   `publisher` varchar(35) NOT NULL,
   `quantityInStock` int(80) NOT NULL,
-  `genre` enum('Fantasy','Comedy','Horror','Romance','Adventure','Thriller','Cooking','History','Health','Science Fiction','Motivational') NOT NULL DEFAULT 'Fantasy'
+  `genre` enum('Fantasy','Comedy','Horror','Romance','Adventure','Thriller','Cooking','History','Health','Science Fiction','Motivational') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -49,7 +40,7 @@ CREATE TABLE `books` (
 
 INSERT INTO `books` (`id`, `imagePath`, `bookName`, `bookIsbn`, `bookDescription`, `author`, `publisher`, `quantityInStock`, `genre`) VALUES
 (1, 'acourtoffrostandstarlight.jpg', 'A Court of Frost and Starlight', '9781408890325', 'A gorgeously written tale as lush and romantic as it is ferocious ... Absolutely spellbinding - New York Times bestselling author Alexandra Bracken In this companion tale to the bestselling A Court of Thorns and Roses series, Feyre, Rhys and their friends are working to rebuild the Night Court and the vastly changed world beyond after the events of A Court of Wings and Ruin . But Winter Solstice is finally near, and with it a hard-earned reprieve.', 'Sarah J. Maas', 'Penguin Random House', 56, 'Fantasy'),
-(2, 'shatterme.jpg', 'Shatter Me', '978-1-60309-025-5', 'This is no ordinary teenager. Juliette is a threat to The Reestablishment\'s power', 'Tahereh Mafi ', 'Penguin Random House', 49, 'Romance'),
+(2, 'shatterme.jpg', 'Shatter Me', '978-1-60309-025-5', 'This is no ordinary teenager. Juliette is a threat to The Reestablishment\'s power', 'Tahereh Mafi ', 'Penguin Random House', 48, 'Romance'),
 (3, 'redqueen.jpg', 'Red Queen', '9781409150725', 'The Reds are commoners, ruled by a Silver elite in possession of god-like superpowers.', 'Victoria Aveyard', 'Harper Collins', 56, 'Fantasy'),
 (4, 'courtofmistandfury.jpg', 'Court of Mist and Fury', '778-1-60309-025-4', 'Alexandra Bracken on A Court of Thorns and Roses Feyre survived Amarantha\'s clutches to return to the Spring Court - but at a steep cost. Though she now possesses the powers of the High Fae, her heart remains human, and it can\'t forget the terrible deeds she performed to save Tamlin\'s people.', 'Sarah J. Maas', 'Harper Collins', 45, 'Fantasy'),
 (5, 'courtofwingsandruin.jpg', 'Court of Wings and Ruin', '978-1-60309-029-4', 'As war bears down upon them all, Feyre must decide who to trust amongst the dazzling and lethal High Lords and hunt for allies in unexpected places.', 'Sarah J. Maas', 'Macmillan Publishers', 15, 'Fantasy'),
@@ -78,14 +69,13 @@ INSERT INTO `books` (`id`, `imagePath`, `bookName`, `bookIsbn`, `bookDescription
 -- Table structure for table `loans`
 --
 
-DROP TABLE IF EXISTS `loans`;
 CREATE TABLE `loans` (
-  `loanID` int(11) NOT NULL,
-  `loanUserID` int(11) NOT NULL,
-  `loanBookID` int(11) NOT NULL,
-  `loanStarted` datetime NOT NULL,
-  `loanEnds` datetime NOT NULL,
-  `loanReturned` datetime DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `bookId` int(11) NOT NULL,
+  `starts` datetime NOT NULL,
+  `ends` datetime NOT NULL,
+  `returned` datetime DEFAULT NULL,
   `feesPaid` double(16,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -93,11 +83,12 @@ CREATE TABLE `loans` (
 -- Dumping data for table `loans`
 --
 
-INSERT INTO `loans` (`loanID`, `loanUserID`, `loanBookID`, `loanStarted`, `loanEnds`, `loanReturned`, `feesPaid`) VALUES
+INSERT INTO `loans` (`id`, `userId`, `bookId`, `starts`, `ends`, `returned`, `feesPaid`) VALUES
 (20, 1, 2, '2020-12-27 20:04:22', '2021-01-03 20:04:22', '2021-02-03 00:00:00', NULL),
 (21, 1, 3, '2020-12-27 20:10:16', '2021-01-03 20:10:16', NULL, NULL),
 (22, 1, 1, '2020-12-27 20:14:35', '2021-01-03 20:14:35', NULL, NULL),
-(23, 1, 4, '2020-12-27 20:17:04', '2021-01-03 20:17:04', NULL, NULL);
+(23, 1, 4, '2020-12-27 20:17:04', '2021-01-03 20:17:04', NULL, NULL),
+(24, 2, 2, '2020-12-28 11:29:59', '2021-01-04 11:29:59', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -105,7 +96,6 @@ INSERT INTO `loans` (`loanID`, `loanUserID`, `loanBookID`, `loanStarted`, `loanE
 -- Table structure for table `payment_details`
 --
 
-DROP TABLE IF EXISTS `payment_details`;
 CREATE TABLE `payment_details` (
   `id` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
@@ -120,7 +110,8 @@ CREATE TABLE `payment_details` (
 --
 
 INSERT INTO `payment_details` (`id`, `userID`, `cardNumber`, `cardOwner`, `expirationDate`, `cardNumberSum`) VALUES
-(1, 1, 0x92d35a411324668651ceb30dbd7ad831d2d23340bed50eaace1a38c5386b5522, 0x7271836b624cb20b461c3d1740e02d44, 0xff2a73797cd92989c01d072aec71e252, 0x0aa28d6cdbc1b0c2088801274c891b69);
+(1, 1, 0x92d35a411324668651ceb30dbd7ad831d2d23340bed50eaace1a38c5386b5522, 0x7271836b624cb20b461c3d1740e02d44, 0xff2a73797cd92989c01d072aec71e252, 0x0aa28d6cdbc1b0c2088801274c891b69),
+(2, 2, 0xe3af04a87c9442d74303d447b35117357d4363ab521bcdfdb0f3d88f287d5cda, 0x7aac5eb859d30b873ff7a79042a3fd21, 0x2ac60b8348b9e2976f974f1a06aed2eb, 0x1d996fb1c3de5d78d8c0b66a72598024);
 
 -- --------------------------------------------------------
 
@@ -128,15 +119,14 @@ INSERT INTO `payment_details` (`id`, `userID`, `cardNumber`, `cardOwner`, `expir
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `email` varchar(320) NOT NULL,
   `password` text NOT NULL,
   `username` varchar(32) NOT NULL,
   `type` varchar(32) NOT NULL DEFAULT 'member',
-  `dateRegistered` datetime NOT NULL DEFAULT current_timestamp(),
-  `activeAccount` tinyint(1) NOT NULL DEFAULT 1
+  `dateRegistered` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `activeAccount` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -144,7 +134,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `password`, `username`, `type`, `dateRegistered`, `activeAccount`) VALUES
-(1, 'arnastest@arnastest.com', '$2a$10$gAzF.awacH9XFud55G08guFPZGyCoOJJ8GbZAFD1ePKFbCOjGkZC2', 'arnastest', 'member', '2020-12-27 19:19:47', 1);
+(1, 'arnastest@arnastest.com', '$2a$10$gAzF.awacH9XFud55G08guFPZGyCoOJJ8GbZAFD1ePKFbCOjGkZC2', 'arnastest', 'member', '2020-12-27 19:19:47', 1),
+(2, 'malo.grall@gmail.com', '$2a$10$LxYLhpkyzfUIfOglDcdTw.rfCWlZc0GwfT9XofbXJz8bmWm333xxG', 'Malo', 'member', '2020-12-28 11:26:03', 1);
 
 --
 -- Indexes for dumped tables
@@ -162,9 +153,9 @@ ALTER TABLE `books`
 -- Indexes for table `loans`
 --
 ALTER TABLE `loans`
-  ADD PRIMARY KEY (`loanID`),
-  ADD KEY `fk_loan_userID` (`loanUserID`),
-  ADD KEY `fk_loan_bookID` (`loanBookID`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_loan_userID` (`userId`),
+  ADD KEY `fk_loan_bookID` (`bookId`);
 
 --
 -- Indexes for table `payment_details`
@@ -195,21 +186,16 @@ ALTER TABLE `books`
 -- AUTO_INCREMENT for table `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `loanID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `payment_details`
 --
 ALTER TABLE `payment_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
