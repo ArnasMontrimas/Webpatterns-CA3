@@ -20,7 +20,15 @@
       <%@include file="navbar.jsp" %>
 
       <main class="container pt-3 pb-5" id="booksPage">
-        <h1>Books</h1>
+        <div class="row justify-content-between mb-3">
+          <h1 class="col-sm-4">Books</h1>
+          
+          <form action="controller" method="post" class="d-flex col-sm-8 col-lg-5 mb-2 mb-sm-0">
+            <input type="hidden" name="action" value="searchBook">
+            <input class="form-control me-2" type="search" name="query" placeholder="Search for books" aria-label="Search" required>
+            <button class="btn btn-secondary" type="submit">Search</button>
+          </form>
+        </div>
         
         <% if (session.getAttribute("errorMessage") != null) { %>
           <div class="alert alert-danger" role="alert">

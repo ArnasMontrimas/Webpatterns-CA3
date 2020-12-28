@@ -44,8 +44,17 @@
             User user = (User) session.getAttribute("user");
             
             ArrayList<Loan> loans = loanDao.getAllActiveUserLoans(user);
-            for (Loan loan: loans) {
-              Book book = loan.getLoanBook();
+            
+            if (loans.size() == 0) {
+          %>
+            <div class="d-flex flex-column align-items-center">
+              <h4 class="text-black-50">No loaned books.</h4>
+              <a href="books.jsp" class="btn btn-outline-primary">See all books</a>
+            </div>
+          <%
+            } else {
+              for (Loan loan: loans) {
+                Book book = loan.getLoanBook();
           %> 
             <div class="card mx-2" style="width: 18rem;">
               <img src="./images/books/<%= book.getImagePath() %>" class="card-img-top w-100" alt="<%= book.getBookName() %>">
@@ -61,6 +70,7 @@
               </div>
             </div>
           <%
+              }
             }
           %>
         </div>

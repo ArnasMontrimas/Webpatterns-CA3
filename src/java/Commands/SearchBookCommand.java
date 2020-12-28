@@ -31,6 +31,7 @@ public class SearchBookCommand implements Command {
             ArrayList<Book> books = bookDao.searchBooks(query);
             if(books.isEmpty()) books = null;
             session.setAttribute("books", books);
+            session.setAttribute("query", query);
         }
         
         return "searchedBooks.jsp";

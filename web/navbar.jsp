@@ -41,7 +41,7 @@
       <form action="controller" method="post" class="d-flex">
           <input type="hidden" name="action" value="searchBook">
         <input class="form-control me-2" type="search" name="query" placeholder="Search for books" aria-label="Search" required>
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <button class="btn btn-secondary" type="submit">Search</button>
       </form>
       <% } %>
     </div>

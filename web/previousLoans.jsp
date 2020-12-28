@@ -45,8 +45,16 @@
             
             ArrayList<Loan> loans = loanDao.getAllPreviousUserLoans(user);
             
-            for (Loan loan: loans) {
-              Book book = loan.getLoanBook();
+            if (loans.size() == 0) {
+          %>
+            <div class="d-flex flex-column align-items-center">
+              <h4 class="text-black-50">No previously loaned books.</h4>
+              <a href="loans.jsp" class="btn btn-outline-primary">See current loans</a>
+            </div>
+          <%
+            } else {
+              for (Loan loan: loans) {
+                Book book = loan.getLoanBook();
           %> 
             <div class="card mx-2" style="width: 18rem;">
               <img src="./images/books/<%= book.getImagePath() %>" class="card-img-top w-100" alt="<%= book.getBookName() %>">
@@ -57,6 +65,7 @@
               </div>
             </div>
           <%
+              }
             }
           %>
         </div>
