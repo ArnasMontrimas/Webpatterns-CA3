@@ -10,14 +10,14 @@ public class Loan {
     private static double feesPerLateDay = 5.5;
     
     private int loanID;
-    private User loanUserID;
-    private Book loanBook;
+    private int loanUserID;
+    private int loanBook;
     private Date loanStarted;
     private Date loanEnds;
     private Date loanReturned;
     private double feesPaid;
 
-    public Loan(int loanID, User loanUserID, Book loanBook, Date loanStarted, Date loanEnds, Date loanReturned, double feesPaid) {
+    public Loan(int loanID, int loanUserID, int loanBook, Date loanStarted, Date loanEnds, Date loanReturned, double feesPaid) {
         this.loanID = loanID;
         this.loanUserID = loanUserID;
         this.loanBook = loanBook;
@@ -27,7 +27,7 @@ public class Loan {
         this.feesPaid = feesPaid;
     }
 
-    public Loan(User loanUserID, Book loanBook, Date loanStarted, Date loanEnds, Date loanReturned, double feesPaid) {
+    public Loan(int loanUserID, int loanBook, Date loanStarted, Date loanEnds, Date loanReturned, double feesPaid) {
         this.loanUserID = loanUserID;
         this.loanBook = loanBook;
         this.loanStarted = loanStarted;
@@ -44,19 +44,19 @@ public class Loan {
         this.loanID = loanID;
     }
 
-    public User getLoanUserID() {
+    public int getLoanUserID() {
         return loanUserID;
     }
 
-    public void setLoanUserID(User loanUserID) {
+    public void setLoanUserID(int loanUserID) {
         this.loanUserID = loanUserID;
     }
 
-    public Book getLoanBook() {
+    public int getLoanBook() {
         return loanBook;
     }
 
-    public void setLoanBook(Book loanBook) {
+    public void setLoanBook(int loanBook) {
         this.loanBook = loanBook;
     }
 
@@ -122,7 +122,7 @@ public class Loan {
         return "Loan{" +
                 "loanID=" + loanID +
                 ", loanUserID=" + loanUserID +
-                ", loanBookID=" + loanBook.getBookID() +
+                ", loanBookID=" + loanBook +
                 ", loanStarted=" + loanStarted +
                 ", loanEnds=" + loanEnds +
                 ", loanReturned=" + loanReturned +

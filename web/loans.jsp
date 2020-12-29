@@ -58,7 +58,8 @@
           <%
             } else {
               for (Loan loan: loans) {
-                Book book = loan.getLoanBook();
+                BookDao bookDao = new BookDao();
+                Book book = bookDao.getBookByID(loan.getLoanBook());
           %> 
             <div class="card mx-2 px-0" style="width: 18rem;">
               <a href="controller?action=searchBook&query=<%= URLEncoder.encode(book.getBookName(), StandardCharsets.UTF_8) %>">
@@ -88,7 +89,7 @@
                 }
                 %>
 
-                <a href="controller?action=searchBook&bookId=<%= book.getBookID() %>" class="btn btn-primary">Return book</a>
+                <a href="controller?action=returnLoan&bookId=<%= book.getBookID() %>" class="btn btn-primary">Return book</a>
               </div>
             </div>
           <%

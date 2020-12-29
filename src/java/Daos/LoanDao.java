@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -55,8 +56,8 @@ public class LoanDao extends Dao implements LoanDaoInterface{
                 
                 loans.add(new Loan(
                   rs.getInt("id"),
-                  user,
-                  book,
+                  user.getUserID(),
+                  book.getBookID(),
                   rs.getDate("starts"),
                   rs.getDate("ends"),
                   rs.getDate("returned"),
@@ -113,8 +114,8 @@ public class LoanDao extends Dao implements LoanDaoInterface{
                 
                 loans.add(new Loan(
                   rs.getInt("id"),
-                  user,
-                  book,
+                  user.getUserID(),
+                  book.getBookID(),
                   rs.getDate("starts"),
                   rs.getDate("ends"),
                   rs.getDate("returned"),
@@ -180,44 +181,99 @@ public class LoanDao extends Dao implements LoanDaoInterface{
         }
         return returnValue;
     }
+
+    /**
+     * Get a user's specific loan
+     * @param userID User's loans to check
+     * @param bookID Book to check if user's loans
+     * @return null if not found
+     */
+    public Loan getLoan(int userId, int bookId) {
+      Connection con = null;
+      PreparedStatement ps = null;
+      ResultSet rs = null;
+      Loan loan = null;
+      
+      try{
+          con = getConnection();
+          ps = con.prepareStatement("SELECT * FROM loans WHERE bookId = ? AND userId = ?;");
+          ps.setInt(1, bookId);
+          ps.setInt(2, userId);
+          rs = ps.executeQuery();
+          
+          if(rs.next()) {
+              loan = new Loan(
+                rs.getInt("id"),
+                userId,
+                bookId,
+                rs.getDate("starts"),
+                rs.getDate("ends"),
+                rs.getDate("returned"),
+                rs.getDouble("feesPaid")
+              );
+          }
+          
+      }catch (SQLException e) {
+          e.printStackTrace();
+      } finally {
+          try {
+              if (ps != null) {
+                  ps.close();
+              }
+              if (con != null) {
+                  freeConnection(con);
+              }
+          } catch (SQLException e) {
+              e.printStackTrace();
+          }
+      }
+      
+      return loan;
+    }
     
     /**
      * Check if a user loans a specific book
      * @param userID User's loans to check
      * @param bookID Book to check if user's loans
-     * @return 
+     * @return false if not found
      */
-    public boolean checkIfLoaned(int userID, int bookID) {
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        
-        try{
-            con = getConnection();
-            ps = con.prepareStatement("SELECT * FROM loans WHERE bookId = ? AND userId = ?;");
-            ps.setInt(1, bookID);
-            ps.setInt(2, userID);
-            rs = ps.executeQuery();
-            
-            if(rs.next()) {
-                return true;
-            }
-            
-        }catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (con != null) {
-                    freeConnection(con);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        
-        return false;
+    public boolean checkIfLoaned(int userId, int bookId) {
+        return getLoan(userId, bookId) != null;
+    }
+
+    /**
+     * Return a loan
+     * @param loan Loan to be returned
+     * @return true if success, false if failure
+     */
+    public boolean returnLoan(Loan loan) {
+      Connection con = null;
+      PreparedStatement ps = null;
+      int rowsAffected = 0;
+
+      try{
+          con = getConnection();
+          // If increase is wanted
+          ps = con.prepareStatement("UPDATE loans SET returned = NOW(), feesPaid = ? WHERE id = ?");
+          ps.setDouble(1, loan.calculateFees());
+          ps.setInt(2, loan.getLoanID());
+          rowsAffected = ps.executeUpdate();
+          
+      }catch (SQLException e) {
+          e.printStackTrace();
+      } finally {
+          try {
+              if (ps != null) {
+                  ps.close();
+              }
+              if (con != null) {
+                  freeConnection(con);
+              }
+          } catch (SQLException e) {
+          
+              e.printStackTrace();
+          }
+      }
+      return rowsAffected != 0;
     }
 }

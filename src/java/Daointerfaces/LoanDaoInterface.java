@@ -24,6 +24,14 @@ public interface LoanDaoInterface {
      * @return int integer number representing different errors and if succseful or not
      */
     int loanBook(int bookID,int days,int userID);
+
+    /**
+     * Get a user's specific loan
+     * @param userID User's loans to check
+     * @param bookID Book to check if user's loans
+     * @return null if not found
+     */
+    Loan getLoan(int userId, int bookId);
     
     /**
      * Check if a user loans a specific book
@@ -39,5 +47,11 @@ public interface LoanDaoInterface {
      * @return 
      */
     ArrayList<Loan> getAllPreviousUserLoans(User user);
-    
+
+    /**
+     * Return a loan
+     * @param loan Loan to be returned
+     * @return true if success, false if failure
+     */
+    boolean returnLoan(Loan loan);
 }
