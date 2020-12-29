@@ -65,7 +65,7 @@
                 <img src="./images/books/<%= book.getImagePath() %>" class="card-img-top w-100" alt="<%= book.getBookName() %>">
               </a>
               <div class="card-body">
-                <a class="text-decoration-none text-dark" href="controller?query=<%= URLEncoder.encode(book.getBookName(), StandardCharsets.UTF_8) %>"><h5 class="card-title mb-0"><%= book.getBookName() %></h5></a>
+                <a class="text-decoration-none text-dark" href="controller?action=searchBook&query=<%= URLEncoder.encode(book.getBookName(), StandardCharsets.UTF_8) %>"><h5 class="card-title mb-0"><%= book.getBookName() %></h5></a>
                 <h6><%= book.getAuthor() %></h6>
 
                 <p>
