@@ -1,6 +1,9 @@
 <%@ page import="Dtos.*" %>
 <%@ page import="Daos.*" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.nio.charset.StandardCharsets" %>
+<%@ page import="java.util.Date" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     // Redirect if not logged in
@@ -53,15 +56,27 @@
             </div>
           <%
             } else {
+              BookDao bookDao = new BookDao();
               for (Loan loan: loans) {
-                Book book = loan.getLoanBook();
+                Book book = bookDao.getBookByID(loan.getLoanBook());
           %> 
-            <div class="card mx-2" style="width: 18rem;">
-              <img src="./images/books/<%= book.getImagePath() %>" class="card-img-top w-100" alt="<%= book.getBookName() %>">
+            <div class="card mx-2 px-0" style="width: 18rem;">
+              <a href="controller?action=searchBook&query=<%= URLEncoder.encode(book.getBookName(), StandardCharsets.UTF_8) %>">
+                <img src="./images/books/<%= book.getImagePath() %>" class="card-img-top w-100" alt="<%= book.getBookName() %>">
+              </a>
               <div class="card-body">
-                <h5 class="card-title mb-0"><%= book.getBookName() %></h5>
+                <a class="text-decoration-none text-dark" href="controller?query=<%= URLEncoder.encode(book.getBookName(), StandardCharsets.UTF_8) %>"><h5 class="card-title mb-0"><%= book.getBookName() %></h5></a>
                 <h6><%= book.getAuthor() %></h6>
-                <p class="card-text"><%= book.getBookDescription() %></p>
+
+                <p>
+                    <strong>Loaned:&nbsp;</strong><%= loan.getLoanStarted() %>
+                </p>
+                <p>
+                    <strong>Returned:&nbsp;</strong><%= loan.getLoanEnds() %>
+                </p>
+                <p>
+                  <strong>Fees Paid:&nbsp;</strong><%= loan.getFeesPaid() %>€
+                </p>
               </div>
             </div>
           <%

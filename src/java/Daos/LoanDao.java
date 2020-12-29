@@ -238,7 +238,8 @@ public class LoanDao extends Dao implements LoanDaoInterface{
      * @return false if not found
      */
     public boolean checkIfLoaned(int userId, int bookId) {
-        return getLoan(userId, bookId) != null;
+        Loan loan = getLoan(userId, bookId);
+        return loan != null && loan.getLoanReturned() == null;
     }
 
     /**

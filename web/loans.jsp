@@ -57,8 +57,8 @@
             </div>
           <%
             } else {
+              BookDao bookDao = new BookDao();
               for (Loan loan: loans) {
-                BookDao bookDao = new BookDao();
                 Book book = bookDao.getBookByID(loan.getLoanBook());
           %> 
             <div class="card mx-2 px-0" style="width: 18rem;">
