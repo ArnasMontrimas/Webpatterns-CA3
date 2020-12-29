@@ -53,6 +53,9 @@
                 <p>
                     <strong>Type:&nbsp;</strong><span class="text-capitalize"><%= user.getType() %></span>
                 </p>
+                <p>
+                    1 saved payment card
+                </p>
 
                 <div>
                   <div>
