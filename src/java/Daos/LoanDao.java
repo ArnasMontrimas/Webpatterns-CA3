@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  *
@@ -183,12 +182,12 @@ public class LoanDao extends Dao implements LoanDaoInterface{
     }
 
     /**
-     * Get a user's specific loan
+     * Get a user's specific loan not returned
      * @param userID User's loans to check
      * @param bookID Book to check if user's loans
      * @return null if not found
      */
-    public Loan getLoan(int userId, int bookId) {
+    public Loan getActiveLoan(int userId, int bookId) {
       Connection con = null;
       PreparedStatement ps = null;
       ResultSet rs = null;
@@ -196,7 +195,7 @@ public class LoanDao extends Dao implements LoanDaoInterface{
       
       try{
           con = getConnection();
-          ps = con.prepareStatement("SELECT * FROM loans WHERE bookId = ? AND userId = ?;");
+          ps = con.prepareStatement("SELECT * FROM loans WHERE bookId = ? AND userId = ? AND returned IS NULL;");
           ps.setInt(1, bookId);
           ps.setInt(2, userId);
           rs = ps.executeQuery();
@@ -238,7 +237,7 @@ public class LoanDao extends Dao implements LoanDaoInterface{
      * @return false if not found
      */
     public boolean checkIfLoaned(int userId, int bookId) {
-        Loan loan = getLoan(userId, bookId);
+        Loan loan = getActiveLoan(userId, bookId);
         return loan != null && loan.getLoanReturned() == null;
     }
 

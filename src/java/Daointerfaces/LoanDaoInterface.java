@@ -31,7 +31,7 @@ public interface LoanDaoInterface {
      * @param bookID Book to check if user's loans
      * @return null if not found
      */
-    Loan getLoan(int userId, int bookId);
+    Loan getActiveLoan(int userId, int bookId);
     
     /**
      * Check if a user loans a specific book

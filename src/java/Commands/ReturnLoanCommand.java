@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import Daos.BookDao;
 import Daos.LoanDao;
+import Daos.PaymentDetailsDao;
 import Dtos.Loan;
 import Dtos.User;
 import javax.servlet.http.HttpSession;
@@ -30,21 +31,37 @@ public class ReturnLoanCommand implements Command {
         int bookId = 0;
         try {
           bookId = Integer.parseInt(bookIdStr);
-        } catch (Exception e) {
-          session.setAttribute("errorMessage", e.getMessage());
-        }
+        } catch (Exception e) {}
 
         if (bookId != 0) {
           LoanDao loanDao = new LoanDao();
           BookDao bookDao = new BookDao();
-          Loan loan = loanDao.getLoan(user.getUserID(), bookId);
-          session.setAttribute("message", loan.calculateFees() + ", " + loan.getLoanID());
-          
-          if (loanDao.returnLoan(loan)) {
-            session.setAttribute("message", "Successfully returned <strong>" + bookDao.getBookByID(loan.getLoanBook()).getBookName() + "</strong>");
+          Loan loan = loanDao.getActiveLoan(user.getUserID(), bookId);
+
+          // Check of returned too late
+          if (loan.calculateFees() > 0) {
+            PaymentDetailsDao pDetailsDao = new PaymentDetailsDao();
+            
+            String cardCvv = request.getParameter("cardCvv");
+
+            // Check security code
+            if (cardCvv != null && !cardCvv.isEmpty()) {
+              String[] pDetails = pDetailsDao.getUserPaymentDetails(user.getUserID(), cardCvv);
+
+              if (pDetails != null && loanDao.returnLoan(loan)) {
+                session.setAttribute("message", "Successfully returned <strong>" + bookDao.getBookByID(loan.getLoanBook()).getBookName() + "</strong>");
+              } else {
+                session.setAttribute("errorMessage", "The card security code is invalid");
+              }
+            } else {
+              session.setAttribute("errorMessage", "Missing card security code");
+            }
+          } else {
+            if (loanDao.returnLoan(loan)) {
+              session.setAttribute("message", "Successfully returned <strong>" + bookDao.getBookByID(loan.getLoanBook()).getBookName() + "</strong>");
+            }
           }
         }
-        // session.setAttribute("message", Integer.toString(bookId));
         
         return forwardToJspPage;
     }

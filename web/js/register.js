@@ -7,28 +7,28 @@ $(() => {
   if (cardNumInput) {
     // Change card input validation message
     cardNumInput.oninvalid = function () {
-      this.setCustomValidity("Card numbers must be 16 digits long.");
+      this.setCustomValidity("Card number must be 16 digits long.");
     }
     cardNumInput.oninput = function () {
       this.setCustomValidity("");
     };
   
     ownerNameInput.oninvalid = function () {
-      this.setCustomValidity("Only names from basaic characters are allowed");
+      this.setCustomValidity("Only names from basic characters are allowed");
     }
     ownerNameInput.oninput = function () {
       this.setCustomValidity("");
     };
   
     cvvInput.oninvalid = function () {
-      this.setCustomValidity("CVV can only contains 3 or 4 digits.");
+      this.setCustomValidity("CVV can only contain 3 or 4 digits.");
     }
     cvvInput.oninput = function () {
       this.setCustomValidity("");
     };
   
     expirationDate.oninvalid = function () {
-      this.setCustomValidity("Expiration should in the format MM/YY");
+      this.setCustomValidity("Expiration date should in the format MM/YY");
     }
     expirationDate.oninput = function () {
       this.setCustomValidity("");

@@ -83,7 +83,7 @@
             </div>
             <div class="col-md-3">
               <label for="cardCvv" class="form-label">Security Code</label>
-              <input type="text" pattern="^[0-9]{3,4}$" maxlength="4" class="form-control" id="cardCvv" name="cardCvv" placeholder="1243" required>
+              <input type="text" maxlength="4" class="form-control" id="cardCvv" name="cardCvv" placeholder="1243" required>
             </div>
       
             <div>

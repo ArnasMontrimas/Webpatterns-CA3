@@ -15,6 +15,7 @@ public interface PaymentDetailsDaoInterface {
     boolean insertPaymentDetails(int userID, String cardNumber, String cardCvv, String cardOwner, String expirationDate);
 
     /**
+     * Get and decrypt user's payment details from CVV
      * @param userID owner of the card
      * @param cardCvv card security code
      * @return null if not found or invalid code, array [cardNumber, owner, expiration] if correct CVV
