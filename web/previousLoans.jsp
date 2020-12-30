@@ -60,7 +60,7 @@
               for (Loan loan: loans) {
                 Book book = bookDao.getBookByID(loan.getLoanBook());
           %> 
-            <div class="card mx-2 px-0" style="width: 18rem;">
+            <div class="card mx-2 mb-5 px-0" style="width: 18rem;">
               <a href="controller?action=searchBook&query=<%= URLEncoder.encode(book.getBookName(), StandardCharsets.UTF_8) %>">
                 <img src="./images/books/<%= book.getImagePath() %>" class="card-img-top w-100" alt="<%= book.getBookName() %>">
               </a>
@@ -77,6 +77,54 @@
                 <p>
                   <strong>Fees Paid:&nbsp;</strong><%= loan.getFeesPaid() %>€
                 </p>
+
+                <%
+                OpinionsDao oDao = new OpinionsDao();
+                Opinion opinion = oDao.checkIfUserHasOpinion(user.getUserID(), book.getBookID());
+                if (opinion != null) {
+                  // Display rating
+                %>
+                  <div>
+                    <strong>Your rating:&nbsp;</strong><div class="starrr rated" data-rating="<%= opinion.getRating() %>"></div>
+                  </div>
+                <%
+                } else {
+                %>
+                  <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#rateBook<%= loan.getLoanID() %>">Rate book</button>
+                  <div class="modal fade rate-book-modal" id="rateBook<%= loan.getLoanID() %>" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Rate and comment book <strong><%= book.getBookName() %></strong></h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <p>After loaning this book you can rate the book and write a comment for the next readers</p>
+
+                          <form action="controller">
+                            <input type="hidden" name="action" value="rateBook">
+                            <input type="hidden" name="bookId" value="<%= book.getBookID() %>">
+                            <input type="hidden" name="rating" value="">
+
+                            <label>Rate your read</label>
+                            <div class="starrr"></div>
+                            
+                            <div class="form-floating mt-2">
+                              <textarea class="form-control" placeholder="Leave a comment here" id="comment<%= loan.getLoanID() %>" name="comment"></textarea>
+                              <label for="comment<%= loan.getLoanID() %>">Comment</label>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <button type="button" class="btn btn-primary submit-button">Submit</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <%
+                }
+                %>
               </div>
             </div>
           <%
@@ -84,6 +132,9 @@
             }
           %>
         </div>
+
+        <script src="./js/starrr.js"></script>
+        <script src="./js/previousLoans.js"></script>
       </main>
     </body>
 </html>

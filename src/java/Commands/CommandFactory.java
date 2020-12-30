@@ -25,6 +25,10 @@ public class CommandFactory {
             c = new ReturnLoanCommand();
             break;
             
+            case "rateBook":
+            c = new RateBookCommand();
+            break;
+            
             case "changePassword":
             c = new ChangePasswordCommand();    
             break;

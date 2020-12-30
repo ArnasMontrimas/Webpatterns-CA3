@@ -61,7 +61,7 @@
               for (Loan loan: loans) {
                 Book book = bookDao.getBookByID(loan.getLoanBook());
           %> 
-            <div class="card mx-2 px-0" style="width: 18rem;">
+            <div class="card mx-2 mb-5 px-0" style="width: 18rem;">
               <a href="controller?action=searchBook&query=<%= URLEncoder.encode(book.getBookName(), StandardCharsets.UTF_8) %>">
                 <img src="./images/books/<%= book.getImagePath() %>" class="card-img-top w-100" alt="<%= book.getBookName() %>">
               </a>

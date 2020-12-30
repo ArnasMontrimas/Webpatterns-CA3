@@ -38,11 +38,12 @@ public class PaymentDetailsDao extends Dao implements PaymentDetailsDaoInterface
     public boolean insertPaymentDetails(int userID, String cardNumber, String cardCvv, String cardOwner, String expirationDate) {
         Connection con = null;
         PreparedStatement ps = null;
+        boolean success = true;
 
         try{
             con = getConnection();
             // Simple insert here
-            ps = con.prepareStatement("INSERT into payment_details" +
+            ps = con.prepareStatement("INSERT INTO payment_details" +
                     "(userId, cardNumber, cardOwner, expirationDate, cardNumberSum)" +
                     "VALUES (?, ?, ?, ?, ?)");
             ps.setInt(1, userID);
@@ -73,6 +74,7 @@ public class PaymentDetailsDao extends Dao implements PaymentDetailsDaoInterface
 
         }catch (Exception e) {
             e.printStackTrace();
+            success = false;
         } finally {
             try {
                 if (ps != null) {
@@ -82,11 +84,11 @@ public class PaymentDetailsDao extends Dao implements PaymentDetailsDaoInterface
                     freeConnection(con);
                 }
             } catch (SQLException e) {
-
                 e.printStackTrace();
+                success = false;
             }
         }
-        return true;
+        return success;
     }
 
     /**
