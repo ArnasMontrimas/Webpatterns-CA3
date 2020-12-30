@@ -2,16 +2,16 @@
 -- version 4.9.3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Dec 28, 2020 at 10:31 AM
--- Server version: 5.7.26
--- PHP Version: 7.4.2
+-- Hôte : localhost:3306
+-- Généré le :  mer. 30 déc. 2020 à 15:39
+-- Version du serveur :  5.7.26
+-- Version de PHP :  7.4.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Database: `library_prod`
+-- Base de données :  `library_prod`
 --
 CREATE DATABASE IF NOT EXISTS `library_prod` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `library_prod`;
@@ -19,7 +19,7 @@ USE `library_prod`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `books`
+-- Structure de la table `books`
 --
 
 CREATE TABLE `books` (
@@ -35,13 +35,13 @@ CREATE TABLE `books` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `books`
+-- Déchargement des données de la table `books`
 --
 
 INSERT INTO `books` (`id`, `imagePath`, `bookName`, `bookIsbn`, `bookDescription`, `author`, `publisher`, `quantityInStock`, `genre`) VALUES
 (1, 'acourtoffrostandstarlight.jpg', 'A Court of Frost and Starlight', '9781408890325', 'A gorgeously written tale as lush and romantic as it is ferocious ... Absolutely spellbinding - New York Times bestselling author Alexandra Bracken In this companion tale to the bestselling A Court of Thorns and Roses series, Feyre, Rhys and their friends are working to rebuild the Night Court and the vastly changed world beyond after the events of A Court of Wings and Ruin . But Winter Solstice is finally near, and with it a hard-earned reprieve.', 'Sarah J. Maas', 'Penguin Random House', 56, 'Fantasy'),
 (2, 'shatterme.jpg', 'Shatter Me', '978-1-60309-025-5', 'This is no ordinary teenager. Juliette is a threat to The Reestablishment\'s power', 'Tahereh Mafi ', 'Penguin Random House', 48, 'Romance'),
-(3, 'redqueen.jpg', 'Red Queen', '9781409150725', 'The Reds are commoners, ruled by a Silver elite in possession of god-like superpowers.', 'Victoria Aveyard', 'Harper Collins', 56, 'Fantasy'),
+(3, 'redqueen.jpg', 'Red Queen', '9781409150725', 'The Reds are commoners, ruled by a Silver elite in possession of god-like superpowers.', 'Victoria Aveyard', 'Harper Collins', 54, 'Fantasy'),
 (4, 'courtofmistandfury.jpg', 'Court of Mist and Fury', '778-1-60309-025-4', 'Alexandra Bracken on A Court of Thorns and Roses Feyre survived Amarantha\'s clutches to return to the Spring Court - but at a steep cost. Though she now possesses the powers of the High Fae, her heart remains human, and it can\'t forget the terrible deeds she performed to save Tamlin\'s people.', 'Sarah J. Maas', 'Harper Collins', 45, 'Fantasy'),
 (5, 'courtofwingsandruin.jpg', 'Court of Wings and Ruin', '978-1-60309-029-4', 'As war bears down upon them all, Feyre must decide who to trust amongst the dazzling and lethal High Lords and hunt for allies in unexpected places.', 'Sarah J. Maas', 'Macmillan Publishers', 15, 'Fantasy'),
 (6, 'courtofthornsandroses.jpg', 'Court of Thorns and Roses', '978-1-60309-089-4', 'Dragged away from her family for the murder of a faerie, Feyre discovers that her captor, his face obscured by a jewelled mask, is hiding even more than his piercing green eyes suggest.', 'Sarah J. Maas', 'Macmillan Publishers', 0, 'Fantasy'),
@@ -66,7 +66,7 @@ INSERT INTO `books` (`id`, `imagePath`, `bookName`, `bookIsbn`, `bookDescription
 -- --------------------------------------------------------
 
 --
--- Table structure for table `loans`
+-- Structure de la table `loans`
 --
 
 CREATE TABLE `loans` (
@@ -80,7 +80,7 @@ CREATE TABLE `loans` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `loans`
+-- Déchargement des données de la table `loans`
 --
 
 INSERT INTO `loans` (`id`, `userId`, `bookId`, `starts`, `ends`, `returned`, `feesPaid`) VALUES
@@ -88,12 +88,35 @@ INSERT INTO `loans` (`id`, `userId`, `bookId`, `starts`, `ends`, `returned`, `fe
 (21, 1, 3, '2020-12-27 20:10:16', '2021-01-03 20:10:16', NULL, NULL),
 (22, 1, 1, '2020-12-27 20:14:35', '2021-01-03 20:14:35', NULL, NULL),
 (23, 1, 4, '2020-12-27 20:17:04', '2021-01-03 20:17:04', NULL, NULL),
-(24, 2, 2, '2020-12-28 11:29:59', '2021-01-04 11:29:59', NULL, NULL);
+(25, 2, 3, '2020-12-28 13:08:22', '2020-12-31 13:08:22', '2020-12-29 23:01:11', 0.00),
+(26, 2, 3, '2020-12-29 17:00:14', '2020-12-16 17:00:14', '2020-12-29 23:18:06', 71.50);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `payment_details`
+-- Structure de la table `opinions`
+--
+
+CREATE TABLE `opinions` (
+  `id` int(11) NOT NULL,
+  `bookId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `rating` tinyint(4) NOT NULL,
+  `comment` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `opinions`
+--
+
+INSERT INTO `opinions` (`id`, `bookId`, `userId`, `date`, `rating`, `comment`) VALUES
+(1, 3, 2, '2020-12-30 11:21:30', 4, '');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `payment_details`
 --
 
 CREATE TABLE `payment_details` (
@@ -106,7 +129,7 @@ CREATE TABLE `payment_details` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `payment_details`
+-- Déchargement des données de la table `payment_details`
 --
 
 INSERT INTO `payment_details` (`id`, `userID`, `cardNumber`, `cardOwner`, `expirationDate`, `cardNumberSum`) VALUES
@@ -116,7 +139,7 @@ INSERT INTO `payment_details` (`id`, `userID`, `cardNumber`, `cardOwner`, `expir
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Structure de la table `users`
 --
 
 CREATE TABLE `users` (
@@ -130,19 +153,19 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `users`
+-- Déchargement des données de la table `users`
 --
 
 INSERT INTO `users` (`id`, `email`, `password`, `username`, `type`, `dateRegistered`, `activeAccount`) VALUES
 (1, 'arnastest@arnastest.com', '$2a$10$gAzF.awacH9XFud55G08guFPZGyCoOJJ8GbZAFD1ePKFbCOjGkZC2', 'arnastest', 'member', '2020-12-27 19:19:47', 1),
-(2, 'malo.grall@gmail.com', '$2a$10$LxYLhpkyzfUIfOglDcdTw.rfCWlZc0GwfT9XofbXJz8bmWm333xxG', 'Malo', 'member', '2020-12-28 11:26:03', 1);
+(2, 'malo.grall@gmail.com', '$2a$10$nj75EsbAlhGY/Splq2aknuBRddE3FV8AGQH/58f77cBdGcH2pmJ5y', 'Malo', 'member', '2020-12-28 11:26:03', 1);
 
 --
--- Indexes for dumped tables
+-- Index pour les tables déchargées
 --
 
 --
--- Indexes for table `books`
+-- Index pour la table `books`
 --
 ALTER TABLE `books`
   ADD PRIMARY KEY (`id`),
@@ -150,7 +173,7 @@ ALTER TABLE `books`
   ADD UNIQUE KEY `book_isbn` (`bookIsbn`);
 
 --
--- Indexes for table `loans`
+-- Index pour la table `loans`
 --
 ALTER TABLE `loans`
   ADD PRIMARY KEY (`id`),
@@ -158,7 +181,15 @@ ALTER TABLE `loans`
   ADD KEY `fk_loan_bookID` (`bookId`);
 
 --
--- Indexes for table `payment_details`
+-- Index pour la table `opinions`
+--
+ALTER TABLE `opinions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fb_opinion_userId` (`userId`) USING BTREE,
+  ADD KEY `fb_opinion_bookId` (`bookId`) USING BTREE;
+
+--
+-- Index pour la table `payment_details`
 --
 ALTER TABLE `payment_details`
   ADD PRIMARY KEY (`id`),
@@ -166,36 +197,53 @@ ALTER TABLE `payment_details`
   ADD KEY `fk_payment_userID` (`userID`);
 
 --
--- Indexes for table `users`
+-- Index pour la table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
--- AUTO_INCREMENT for table `books`
+-- AUTO_INCREMENT pour la table `books`
 --
 ALTER TABLE `books`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
--- AUTO_INCREMENT for table `loans`
+-- AUTO_INCREMENT pour la table `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
--- AUTO_INCREMENT for table `payment_details`
+-- AUTO_INCREMENT pour la table `opinions`
+--
+ALTER TABLE `opinions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `payment_details`
 --
 ALTER TABLE `payment_details`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `opinions`
+--
+ALTER TABLE `opinions`
+  ADD CONSTRAINT `opinions_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `books` (`id`),
+  ADD CONSTRAINT `opinions_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
