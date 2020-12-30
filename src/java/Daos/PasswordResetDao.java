@@ -38,11 +38,11 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
    
     /**
      * This method will add a new user attempt
-     * @param ipAddress clients ip address
+     * @param id clients id
      * @return true on success false otherwise
      */
     @Override
-    public boolean addNewUserAttempt(String ipAddress) {
+    public boolean addNewUserAttempt(int id) {
         Connection con = null;
         PreparedStatement ps = null;
         int count = 0;
@@ -50,8 +50,8 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
         try {
             con = getConnection();
             
-            ps = con.prepareStatement("INSERT INTO password_reset (id,ip_address,attempts) VALUES (null,?,?)");
-            ps.setString(1, ipAddress);
+            ps = con.prepareStatement("INSERT INTO password_reset (id,user_id,attempts) VALUES (null,?,?)");
+            ps.setInt(1, id);
             ps.setInt(2, 1);
             count = ps.executeUpdate();
             
@@ -77,27 +77,27 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
     }
     
     /**
-     * Gets the clients ip address from the database
-     * @param ipAddress clients ip address
+     * Gets the clients id from the database
+     * @param id clients id
      * @return true on success false otherwise
      */
     @Override
-    public boolean getIpAddress(String ipAddress) {
+    public boolean getUserid(int id) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String ip = "";
+        int userId = -1;
         
         try {
             con = getConnection();
-            ps = con.prepareStatement("SELECT ip_address FROM password_reset WHERE ip_address = ?;");
-            ps.setString(1, ipAddress);
+            ps = con.prepareStatement("SELECT user_id FROM password_reset WHERE user_id = ?;");
+            ps.setInt(1, id);
             
             rs = ps.executeQuery();
             
             if(rs.next()) {
-                ip = rs.getString("ip_address");
-                return (ip.equals(ipAddress));
+                userId = rs.getInt("user_id");
+                return userId == id;
             }
             else return false;
             
@@ -124,19 +124,19 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
     
     /**
      * Updates password_reset table adding 1 attempt to attempts column
-     * @param ipAddress clients ip address
+     * @param id clients id
      * @return true on success false otherwise
      */
     @Override
-    public boolean addAttempt(String ipAddress) {
+    public boolean addAttempt(int id) {
         Connection con = null;
         PreparedStatement ps = null;
         int count = 0;
         
         try {
             con = getConnection();
-            ps = con.prepareStatement("UPDATE password_reset SET attempts = (attempts + 1) WHERE ip_address = ?;");
-            ps.setString(1, ipAddress);
+            ps = con.prepareStatement("UPDATE password_reset SET attempts = (attempts + 1) WHERE user_id = ?;");
+            ps.setInt(1, id);
             count = ps.executeUpdate();
             
             //Check if query worked
@@ -162,11 +162,11 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
     
     /**
      * Gets clients attempts from the database
-     * @param ipAddress
+     * @param id
      * @return the number of attempts, 0 is returned if nothing found
      */
     @Override
-    public int getAttempts(String ipAddress) {
+    public int getAttempts(int id) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -174,8 +174,8 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
         
         try {
             con = getConnection();
-            ps = con.prepareStatement("SELECT attempts FROM password_reset WHERE ip_address = ?;");
-            ps.setString(1, ipAddress);
+            ps = con.prepareStatement("SELECT attempts FROM password_reset WHERE user_id = ?;");
+            ps.setInt(1, id);
             rs = ps.executeQuery();
             
             if(rs.next()) {
@@ -205,11 +205,11 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
     
     /**
      * This will updated the password_reset table setting the timeout column
-     * @param ipAddress clients ip address
+     * @param id clients id
      * @return true on success false otherwise
      */
     @Override
-    public boolean addTimeout(String ipAddress) {
+    public boolean addTimeout(int id) {
         Connection con = null;
         PreparedStatement ps = null;
         int count = 0;
@@ -219,9 +219,9 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
         
         try {
             con = getConnection();
-            ps = con.prepareStatement("UPDATE password_reset SET timeout = ? WHERE ip_address = ?;");
+            ps = con.prepareStatement("UPDATE password_reset SET timeout = ? WHERE user_id = ?;");
             ps.setString(1, time.toString());
-            ps.setString(2, ipAddress);
+            ps.setInt(2, id);
             count = ps.executeUpdate();
             
             if(count > 0) return true;
@@ -246,11 +246,11 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
 
     /**
      * Gets the timeout of the client
-     * @param ipAddress clients ip address
+     * @param id clients id
      * @return 
      */
     @Override
-    public LocalDateTime getTimeout(String ipAddress) {
+    public LocalDateTime getTimeout(int id) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -258,8 +258,8 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
         
         try {
             con = getConnection();
-            ps = con.prepareStatement("SELECT timeout FROM password_reset WHERE ip_address = ?;");
-            ps.setString(1, ipAddress);
+            ps = con.prepareStatement("SELECT timeout FROM password_reset WHERE user_id = ?;");
+            ps.setInt(1, id);
             rs = ps.executeQuery();
 
             if(rs.next()) {
@@ -292,11 +292,11 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
     
     /**
      * Removes clients information from the password_reset table
-     * @param ipAddress clients ip address
+     * @param id clients id
      * @return true on success false otherwise
      */
     @Override
-    public boolean removeUserAttempt(String ipAddress) {
+    public boolean removeUserAttempt(int id) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -304,8 +304,8 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
         
         try {
             con = getConnection();
-            ps = con.prepareStatement("DELETE FROM password_reset WHERE ip_address = ?;");
-            ps.setString(1, ipAddress);
+            ps = con.prepareStatement("DELETE FROM password_reset WHERE user_id = ?;");
+            ps.setInt(1, id);
             count = ps.executeUpdate();
             
             if(count > 0) return true;
@@ -333,11 +333,11 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
 
     /**
      * Gets the date of clients first attempt at reseting password
-     * @param ipAddress clients ip address
+     * @param id clients id
      * @return returns the date of when client started making his attempts
      */
     @Override
-    public LocalDateTime getCreatedAt(String ipAddress) {
+    public LocalDateTime getCreatedAt(int id) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -345,8 +345,8 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
         
         try {
             con = getConnection();
-            ps = con.prepareStatement("SELECT created_at FROM password_reset WHERE ip_address = ?;");
-            ps.setString(1, ipAddress);
+            ps = con.prepareStatement("SELECT created_at FROM password_reset WHERE user_id = ?;");
+            ps.setInt(1, id);
             rs = ps.executeQuery();
 
             if(rs.next()) {
@@ -378,58 +378,58 @@ public class PasswordResetDao extends Dao implements PasswordResetDaoInterface {
     
     /**
      * This method incorporates all of the methods above, this method was created to shorten and decouple functionality from "ForgotPasswordResetCommand.java"
-     * @param ipAddress clients ip address
+     * @param id clients id
      * @param session HttpSession object
      * @return true if attempt limit is reached false otherwise
      */
     @Override
-    public boolean handlePasswordResetAttempts(String ipAddress, HttpSession session) {
+    public boolean handlePasswordResetAttempts(int id, HttpSession session) {
             //Store timeout 
-            LocalDateTime timeout = getTimeout(ipAddress);
+            LocalDateTime timeout = getTimeout(id);
             
             //Check if attempt is being made by a new user
-            if(!getIpAddress(ipAddress)) {
+            if(!getUserid(id)) {
                 //Insert details into database for new user (this will be counted as attempt 1)
-                addNewUserAttempt(ipAddress);
+                addNewUserAttempt(id);
             }
             //Another attempt being made by the user (So we will add to his attempts counter)
             else {
                 //Check if 2 hours have passed since user started making attempts
                 //This will prevent a situation where a user makes 2 attempts leaves and comes back tomorrow his attempts will still be at 2
                 //So we will reset attemps if 2 hours have passed since he started making his attempts
-                if(LocalDateTime.now().plusHours(2).isAfter(getCreatedAt(ipAddress))) {
+                if(LocalDateTime.now().plusHours(2).isAfter(getCreatedAt(id))) {
                     //Check if the current user has made 3 attempts if he didnt add attempt
-                    if(getAttempts(ipAddress) >= 3) {
+                    if(getAttempts(id) >= 3) {
                         //Add timeout (How long user has to wait) but first check if timeout is not there already
                         if(timeout == null) {
                             //Add timeout
-                            addTimeout(ipAddress);
+                            addTimeout(id);
                             //Send user back with message telling him how much time is left to wait
-                            Duration duration = Duration.between(LocalDateTime.now(), getTimeout(ipAddress)); //Have to get timeout after adding if 'timeout' variable used will get null pointer exception
-                            session.setAttribute("Message", "You have made to many attempts<br>Please wait " +duration.toMinutes()+ " minutes before trying again");
+                            Duration duration = Duration.between(LocalDateTime.now(), getTimeout(id)); //Have to get timeout after adding if 'timeout' variable used will get null pointer exception
+                            session.setAttribute("errorMessage", "You have made to many attempts<br>Please wait " +duration.toMinutes()+ " minutes before trying again");
                             return true;
                         }
                         else {
                             //Check if timeout has passed
                             if(LocalDateTime.now().isAfter(timeout)) {
-                                removeUserAttempt(ipAddress);
+                                removeUserAttempt(id);
                             }
                             else {
                                 //Send user back with message telling him how much time is left to wait
                                 Duration duration = Duration.between(LocalDateTime.now(), timeout);
-                                session.setAttribute("Message", "You have made to many attempts<br>Please wait " +duration.toMinutes()+ " minutes before trying again");
+                                session.setAttribute("errorMessage", "You have made to many attempts<br>Please wait " +duration.toMinutes()+ " minutes before trying again");
                                 return true;
                             }
                         }
                     }
                     else {
                         //Add attempts
-                        addAttempt(ipAddress);
+                        addAttempt(id);
                     }
                 }
                 else {
                     //Reset the users attempts
-                    removeUserAttempt(ipAddress);
+                    removeUserAttempt(id);
                 }
             }
             

@@ -41,16 +41,12 @@ public class CommandFactory {
             c = new EditProfileCommand();     
             break;
             
-            case "ForgotPasswordReset":
-            c = new ForgotPasswordResetCommand();     
+            case "forgotPasswordRetrieval":
+            c = new ForgotPasswordRetrievalCommand();     
             break;
             
-            case "SendEmailCode":
-            c = new SendEmailCodeCommand();    
-            break;
-            
-            case "ValidateEmailCode":
-            c = new ValidateEmailCodeCommand();    
+            case "validateEmailCodeSendPassword":
+            c = new ValidateEmailCodeSendPasswordCommand();    
             break;
             
             case "searchBook":

@@ -16,64 +16,65 @@ public interface PasswordResetDaoInterface {
     
     /**
      * This method will add a new user attempt
-     * @param ipAddress clients ip address
+     * @param id clients id
      * @return true on success false otherwise
      */
-    public boolean addNewUserAttempt(String ipAddress);
+    public boolean addNewUserAttempt(int id);
     
     /**
-     * Gets the clients ip address from the database
-     * @param ipAddress clients ip address
+     * Gets the clients id from the database
+     * @param id clients id
      * @return true on success false otherwise
      */
-    public boolean getIpAddress(String ipAddress);
+    public boolean getUserid(int id);
     
     /**
      * Updates password_reset table adding 1 attempt to attempts column
-     * @param ipAddress clients ip address
+     * @param id clients id
      * @return true on success false otherwise
      */
-    public boolean addAttempt(String ipAddress);
+    public boolean addAttempt(int id);
     
     /**
      * Gets clients attempts from the database
-     * @param ipAddress
+     * @param id client id
      * @return the number of attempts, 0 is returned if nothing found
      */
-    public int getAttempts(String ipAddress);
+    public int getAttempts(int id);
     
     /**
      * This will updated the password_reset table setting the timeout column
-     * @param ipAddress clients ip address
+     * @param id clients id
      * @return true on success false otherwise
      */
-    public boolean addTimeout(String ipAddress);
+    public boolean addTimeout(int id);
     
     /**
      * Gets the timeout of the client
-     * @param ipAddress clients ip address
+     * @param id clients id
      * @return 
      */
-    public LocalDateTime getTimeout(String ipAddress);
+    public LocalDateTime getTimeout(int id);
     
     /**
      * Removes clients information from the password_reset table
-     * @param ipAddress clients ip address
+     * @param id clients id
      * @return true on success false otherwise
      */
-    public boolean removeUserAttempt(String ipAddress);
+    public boolean removeUserAttempt(int id);
     
     /**
      * Gets the date of clients first attempt at reseting password
-     * @param ipAddress clients ip address
+     * @param id clients id
      * @return returns the date of when client started making his attempts
      */
-    public LocalDateTime getCreatedAt(String ipAddress);
+    public LocalDateTime getCreatedAt(int id);
     
     /**
      * This method incorporates all of the methods above, this method was created to shorten and decouple functionality from "ForgotPasswordResetCommand.java"
-     * @param ipAddress clients ip address
+     * @param id clients id
+     * @param session HttpSession object
      * @return true if attempt limit is reached false otherwise
      */
-    public boolean handlePasswordResetAttempts(String ipAddress, HttpSession session);
+    public boolean handlePasswordResetAttempts(int id, HttpSession session);
 }

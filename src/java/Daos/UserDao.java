@@ -11,6 +11,7 @@ import Encryption.BCrypt;
 import java.sql.Statement;
 import java.util.Date;
 import java.util.Properties;
+import java.util.Random;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
@@ -448,7 +449,7 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
             msg.addHeader("format", "flowed");
             msg.addHeader("Content-Transfer-Encoding", "8bit");
 
-            msg.setFrom(new InternetAddress(from, "Creative Library LLC"));
+            msg.setFrom(new InternetAddress(from, "Online Library LLC"));
             
             msg.setReplyTo(InternetAddress.parse(from, false));
 
@@ -518,6 +519,125 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
             }
         }
         return changeUsername;
+    }
+    
+    /**
+     * This method will retrieve users id using his email as identifier
+     * @param email user email address
+     * @return id
+     */
+    @Override
+    public int getUserIdByEamil(String email) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        //Quick null check to avoid errors
+        String userEmail = email != null ? email : "";
+        
+        try{
+            con = getConnection();
+            ps = con.prepareStatement("SELECT id FROM users WHERE email = ?;");
+            ps.setString(1, userEmail);
+            rs = ps.executeQuery();
+            
+            if(rs.next()) return rs.getInt("id");
+            
+        }
+        catch(SQLException ex){
+
+            ex.printStackTrace();
+        }
+        finally{
+            if(rs != null){
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+
+                    ex.printStackTrace();
+                }
+            }
+            if(ps != null){
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+
+                    ex.printStackTrace();
+                }
+            }
+            if(con != null){
+                freeConnection(con);
+            }
+        }
+        
+        return -1;
+    }
+    
+    /**
+     * This will generate a temporary password to allow the user to change his password
+     * @param id users id
+     * @return String temporary password
+     */
+    @Override
+    public String generateSetNewPassword(int id) {
+        int low;
+        int high;
+        int result;
+        String temporaryPassword = "";
+        String hashedPassword;
+        
+        //Generate random number + 1 Random Letter at a random position (Since we are retrieving a password this will make the code is much harder to guess)
+        Random r = new Random();
+        low = 10;
+        high = 1000;
+        for(int i = 0; i < 5; i++) {
+            result = r.nextInt(high-low) + low;
+            temporaryPassword += String.valueOf(result);
+        }
+
+        //Random Letter
+        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+        high = 25;
+        result = r.nextInt(high);
+        char letter = alphabet[result];
+
+        //Insert letter at a random position replacing a number with that letter
+        high = temporaryPassword.length();
+        result = r.nextInt(high);
+        temporaryPassword = temporaryPassword.replaceFirst(String.valueOf(temporaryPassword.charAt(result)), String.valueOf(letter));
+        
+        hashedPassword = hashPassword(temporaryPassword);
+        
+        //Set the new password in the database
+        Connection con = null;
+        PreparedStatement ps = null;
+        int count = -1;
+
+        try {
+            con = getConnection();
+            ps = con.prepareStatement("UPDATE users SET password = ? WHERE id = ?;");
+            ps.setString(1, hashedPassword);
+            ps.setInt(2, id);
+            count = ps.executeUpdate();
+            
+            if(count > 0) return temporaryPassword;
+        
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return null;
     }
 }
 

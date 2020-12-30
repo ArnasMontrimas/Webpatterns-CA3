@@ -89,8 +89,22 @@ public interface UserDaoInterface {
      * Change user's username
      *
      * @param user The current username.
-     * @param newUsername The new username to update
+     * @param currentUsername The new username to update
      * @return true/false for success/failure
      */
     boolean changeUsername(User user, String currentUsername);
+    
+    /**
+     * This method will retrieve users id using his email as identifier
+     * @param email user email address
+     * @return int users id
+     */
+    int getUserIdByEamil(String email);
+    
+    /**
+     * This will generate a temporary password to allow the user to change his password
+     * @param id users id
+     * @return String temporary password
+     */
+    String generateSetNewPassword(int id);
 }

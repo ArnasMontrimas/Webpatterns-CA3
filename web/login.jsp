@@ -28,6 +28,14 @@
             }
             session.removeAttribute("errorMessage");
           %>
+          <% if (session.getAttribute("message") != null) { %>
+            <div class="alert alert-success" role="alert">
+              ${sessionScope.message}
+            </div>
+          <%
+            }
+            session.removeAttribute("message");
+          %>
 
           <label for="email" class="visually-hidden">Email address</label>
           <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required autofocus>
@@ -35,7 +43,7 @@
           <input type="password" id="password" name="password" class="form-control mt-2" placeholder="Password" required>
 
           <div class="d-flex justify-content-end">
-            <a class="text-decoration-none" href="#">I forgot my password</a>
+            <a class="text-decoration-none" href="resetPassword.jsp">I forgot my password</a>
           </div>
 
           <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Log in</button>
