@@ -23,65 +23,65 @@ public class PasswordResetDaoTest {
     /**
      * Create PasswordResetDao class with connection to test database
      */
-    private final PasswordResetDao prdao = new PasswordResetDao("creative_library_test");
+    private final PasswordResetDao prdao = new PasswordResetDao("library_prod_test");
 
     /**
      * Test of addNewUserAttempt method, of class PasswordResetDao.
-     * Here there is only 1 test as the ip address is not being checked if its a valid ip address or not
-     * but with every request to reset password, ip address has to match with the one in the database
+     * Here there is only 1 test as the user_id is not being checked if its a valid user_id or not
+     * but with every request to reset password, user_id has to match with the one in the database
      * if it does not a new row will be created (will be interpreted as new client if no match found)
      */
     @Test
     public void testAddNewUserAttempt() {
         System.out.println("addNewUserAttempt");
-        String ipAddress = "";
-        boolean actual = prdao.addNewUserAttempt(ipAddress);
+        int id = 1;
+        boolean actual = prdao.addNewUserAttempt(id);
         boolean expected = true;
         
         //This will check that the method worked
         if(actual) {
             //Now lets check that the row was actually added in the database
-            if(checkRowWasAddedToDatabase(ipAddress) == 1){
+            if(checkRowWasAddedToDatabase(id) == 1){
                 //Now lets remove the row and make sure it works
                 //This is here so there are no conflicts when running multiple tests
-                if(removeRowFromDatabase(ipAddress) == 1) {
+                if(removeRowFromDatabase(id) == 1) {
                     actual = true;
                 }
                 else fail("Row was not removed from database");
             }
             else fail("No Row was added in the databse");
         }
-        else fail("addNewUserAttempt(String ipAddress) Method Failed.");
+        else fail("addNewUserAttempt(String id) Method Failed.");
         
         assertEquals(actual,expected);
         
     }
     
     /**
-     * Test of testGetIpAddressWithExistingIpAddress method, of class PasswordResetDao.
+     * Test of testGetidWithExistingid method, of class PasswordResetDao.
      */
     @Test
-    public void testGetIpAddressWithExistingIpAddress() {
-        System.out.println("testGetIpAddressWithExistingIpAddress");
-        String ipAddress = "0:0:0:0:0:1";
+    public void testGetidWithExistingid() {
+        System.out.println("testGetidWithExistingid");
+        int id = 1;
         boolean expected = true;
         boolean actual = false;
         
         //We will add a new row to the database
-        boolean added = prdao.addNewUserAttempt(ipAddress);
+        boolean added = prdao.addNewUserAttempt(id);
         
         //If adding worked
         if(added) {
-            //Now lets check that added ip address is the correct one
-            //This method gets the ip address and also checks if its equal to the one provided as parameter
-            if(prdao.getIpAddress(ipAddress)) {
+            //Now lets check that added user_id is the correct one
+            //This method gets the user_id and also checks if its equal to the one provided as parameter
+            if(prdao.getUserid(id)) {
                 //Everything works lets remove the added row
-                if(removeRowFromDatabase(ipAddress) == 1) {
+                if(removeRowFromDatabase(id) == 1) {
                     actual = true;
                 }
                 else fail("Row was not removed from database");
             }
-            else fail("getIpAddress(String ipAddress) Method failed");
+            else fail("getid(String id) Method failed");
         }
         else fail("No Row was added in the databse");
         
@@ -89,31 +89,31 @@ public class PasswordResetDaoTest {
     }
 
     /**
-     * Test of testGetIpAddressWithNonExistingIpAddress method, of class PasswordResetDao.
+     * Test of testGetidWithNonExistingid method, of class PasswordResetDao.
      */
     @Test
-    public void testGetIpAddressWithNonExistingIpAddress() {
-        System.out.println("testGetIpAddressWithNonExistingIpAddress");
-        String ipAddress = "0:0:0:0:0:1";
-        String ipAddress2 = "0:1:1:1:0:0";
+    public void testGetidWithNonExistingid() {
+        System.out.println("testGetidWithNonExistingid");
+        int id = 1;
+        int id2 = 2;
         boolean expected = true;
         boolean actual = false;
         
         //We will add a new row to the database
-        boolean added = prdao.addNewUserAttempt(ipAddress2);
+        boolean added = prdao.addNewUserAttempt(id2);
         
         //If adding worked
         if(added) {
-            //Now lets check that added ip address is the correct one
-            //This should return false as no ip address should be found
-            if(!prdao.getIpAddress(ipAddress)) {
+            //Now lets check that added user_id is the correct one
+            //This should return false as no user_id should be found
+            if(!prdao.getUserid(id)) {
                 //Everything works lets remove the added row
-                if(removeRowFromDatabase(ipAddress2) == 1) {
+                if(removeRowFromDatabase(id2) == 1) {
                     actual = true;
                 }
                 else fail("Row was not removed from database");
             }
-            else fail("getIpAddress(String ipAddress) Method failed");
+            else fail("getid(String id) Method failed");
         }
         else fail("No Row was added in the databse");
         
@@ -121,29 +121,29 @@ public class PasswordResetDaoTest {
     }
     
     /**
-     * Test of testAddAttemptWithExistingIpAddress method, of class PasswordResetDao.
+     * Test of testAddAttemptWithExistingid method, of class PasswordResetDao.
      */
     @Test
-    public void testAddAttemptWithExistingIpAddress() {
-        System.out.println("testAddAttemptWithExistingIpAddress");
-        String ipAddress = "0:0:0:0:0:1";
+    public void testAddAttemptWithExistingid() {
+        System.out.println("testAddAttemptWithExistingid");
+        int id = 1;
         boolean expected = true;
         boolean actual = false;
         
         //We will add a new row to the database
-        boolean added = prdao.addNewUserAttempt(ipAddress);
+        boolean added = prdao.addNewUserAttempt(id);
         
         //If adding worked
         if(added) {
             //If adding attempt worked
-            if(prdao.addAttempt(ipAddress)) {
+            if(prdao.addAttempt(id)) {
                 //Now lets remove the row
-                if(removeRowFromDatabase(ipAddress) == 1) {
+                if(removeRowFromDatabase(id) == 1) {
                     actual = true;
                 }
                 else fail("Removing row from database failed");
             }
-            else fail("addAttempt(String ipAddress) Method Failed.");
+            else fail("addAttempt(String id) Method Failed.");
         }
         else fail("No row was added in the database");
         
@@ -151,30 +151,30 @@ public class PasswordResetDaoTest {
     }
     
     /**
-     * Test of testAddAttemptWithNonExistingIpAddress method, of class PasswordResetDao.
+     * Test of testAddAttemptWithNonExistingid method, of class PasswordResetDao.
      */
     @Test
-    public void testAddAttemptWithNonExistingIpAddress() {
-        System.out.println("testAddAttemptWithNonExistingIpAddress");
-        String ipAddress = "0:0:0:0:0:1";
-        String ipAddress2 = "0:0:1";
+    public void testAddAttemptWithNonExistingid() {
+        System.out.println("testAddAttemptWithNonExistingid");
+        int id = 1;
+        int id2 = 2;
         boolean expected = true;
         boolean actual = false;
         
         //We will add a new row to the database
-        boolean added = prdao.addNewUserAttempt(ipAddress2);
+        boolean added = prdao.addNewUserAttempt(id2);
         
         //If adding worked
         if(added) {
             //If adding attempt worked
-            if(!prdao.addAttempt(ipAddress)) {
+            if(!prdao.addAttempt(id)) {
                 //Now lets remove the row
-                if(removeRowFromDatabase(ipAddress2) == 1) {
+                if(removeRowFromDatabase(id2) == 1) {
                     actual = true;
                 }
                 else fail("Removing row from database failed");
             }
-            else fail("addAttempt(String ipAddress) Method Failed.");
+            else fail("addAttempt(String id) Method Failed.");
         }
         else fail("No row was added in the database");
         
@@ -183,25 +183,25 @@ public class PasswordResetDaoTest {
     }
 
     /**
-     * Test of testGetAttemptsWithExistingIpAddress method, of class PasswordResetDao.
+     * Test of testGetAttemptsWithExistingid method, of class PasswordResetDao.
     */
     @Test
-    public void testGetAttemptsWithExistingIpAddress() {
-        System.out.println("testGetAttemptsWithExistingIpAddress");
-        String ipAddress = "0:0:0:0:1:2";
+    public void testGetAttemptsWithExistingid() {
+        System.out.println("testGetAttemptsWithExistingid");
+        int id = 1;
         int expected = 1;
         int actual = 0;
         
         //Lets add a new row
-        boolean added = prdao.addNewUserAttempt(ipAddress);
+        boolean added = prdao.addNewUserAttempt(id);
         
         //If added
         if(added) {
             //Now lets get attempts
-            actual = prdao.getAttempts(ipAddress);
+            actual = prdao.getAttempts(id);
             
             //Lets remove the row
-            if(removeRowFromDatabase(ipAddress) != 1) fail("Removing row failed");
+            if(removeRowFromDatabase(id) != 1) fail("Removing row failed");
         }
         else fail("Adding row to database failed");
         
@@ -209,26 +209,26 @@ public class PasswordResetDaoTest {
     }
 
     /**
-     * Test of testGetAttemptsWithNonExistingIpAddress method, of class PasswordResetDao.
+     * Test of testGetAttemptsWithNonExistingid method, of class PasswordResetDao.
     */
     @Test
-    public void testGetAttemptsWithNonExistingIpAddress() {
-        System.out.println("testGetAttemptsWithNonExistingIpAddress");
-        String ipAddress = "0:0:0:0:1";
-        String ipAddress2 = "0:0:1";
+    public void testGetAttemptsWithNonExistingid() {
+        System.out.println("testGetAttemptsWithNonExistingid");
+        int id = 1;
+        int id2 = 2;
         int expected = 0;
         int actual = -1;
        
         //Lets add a new row
-        boolean added = prdao.addNewUserAttempt(ipAddress2);
+        boolean added = prdao.addNewUserAttempt(id2);
         
         //If added
         if(added) {
             //Now lets get attempts
-            actual = prdao.getAttempts(ipAddress);
+            actual = prdao.getAttempts(id);
             
             //Lets remove the row
-            if(removeRowFromDatabase(ipAddress2) != 1) fail("Removing row failed");
+            if(removeRowFromDatabase(id2) != 1) fail("Removing row failed");
         }
         else fail("Adding row to database failed");
         
@@ -236,27 +236,27 @@ public class PasswordResetDaoTest {
     }
     
     /**
-     * Test of testAddTimeoutWithExistingIpAddress method, of class PasswordResetDao
+     * Test of testAddTimeoutWithExistingid method, of class PasswordResetDao
      */
     @Test
-    public void testAddTimeoutWithExistingIpAddress() {
-        System.out.println("testAddTimeoutWithExistingIpAddress");
-        String ipAddress = "0:0:0:0:1";
+    public void testAddTimeoutWithExistingid() {
+        System.out.println("testAddTimeoutWithExistingid");
+        int id = 1;
         boolean expected = true;
         boolean actual = false;
        
         //Lets add a new row
-        boolean added = prdao.addNewUserAttempt(ipAddress);
+        boolean added = prdao.addNewUserAttempt(id);
 
         //If added
         if(added) {
             //Now lets add timeout 
-            if(prdao.addTimeout(ipAddress)) {
+            if(prdao.addTimeout(id)) {
                 actual = true;
             }
-            else fail("addTimeout(String ipAddress) Method Failed.");
+            else fail("addTimeout(String id) Method Failed.");
             //Lets remove the row
-            if(removeRowFromDatabase(ipAddress) != 1) fail("Removing row failed");
+            if(removeRowFromDatabase(id) != 1) fail("Removing row failed");
         }
         else fail("Adding row to database failed");
         
@@ -264,28 +264,28 @@ public class PasswordResetDaoTest {
     }
     
     /**
-     * Test of testAddTimeoutWithNonExistingIpAddress method, of class PasswordResetDao
+     * Test of testAddTimeoutWithNonExistingid method, of class PasswordResetDao
      */
     @Test
-    public void testAddTimeoutWithNonExistingIpAddress() {
-        System.out.println("testAddTimeoutWithNonExistingIpAddress");
-        String ipAddress = "0:0:0:0:1";
-        String ipAddress2 = "0:0";
+    public void testAddTimeoutWithNonExistingid() {
+        System.out.println("testAddTimeoutWithNonExistingid");
+        int id = 1;
+        int id2 = 2;
         boolean expected = true;
         boolean actual = false;
        
         //Lets add a new row
-        boolean added = prdao.addNewUserAttempt(ipAddress2);
+        boolean added = prdao.addNewUserAttempt(id2);
 
         //If added
         if(added) {
             //Now lets add timeout 
-            if(!prdao.addTimeout(ipAddress)) {
+            if(!prdao.addTimeout(id)) {
                 actual = true;
             }
-            else fail("addTimeout(String ipAddress) Method Failed.");
+            else fail("addTimeout(String id) Method Failed.");
             //Lets remove the row
-            if(removeRowFromDatabase(ipAddress2) != 1) fail("Removing row failed");
+            if(removeRowFromDatabase(id2) != 1) fail("Removing row failed");
         }
         else fail("Adding row to database failed");
         
@@ -293,12 +293,12 @@ public class PasswordResetDaoTest {
     }
     
     /**
-     * Test of testGetTimeoutWithExistingIpAddress method, of class PasswordResetDao.
+     * Test of testGetTimeoutWithExistingid method, of class PasswordResetDao.
     */
     @Test
-    public void testGetTimeoutWithExistingIpAddress() {
-        System.out.println("testGetTimeoutWithExistingIpAddress");
-        String ipAddress = "0:0:0:1";
+    public void testGetTimeoutWithExistingid() {
+        System.out.println("testGetTimeoutWithExistingid");
+        int id = 1;
         //We remove the nanoseconds as when we get time from databse nanos is not included
         //Add if the LocalDateTime object created here and the one added to the database do not get created simultaniously the nano seconds will be different so we remove them
         int nanos = LocalDateTime.now().getNano();
@@ -306,16 +306,16 @@ public class PasswordResetDaoTest {
         LocalDateTime actual = null;
         
         //Add new row
-        boolean added = prdao.addNewUserAttempt(ipAddress);
+        boolean added = prdao.addNewUserAttempt(id);
         //Add timeout
-        boolean addedTimeout = prdao.addTimeout(ipAddress);
+        boolean addedTimeout = prdao.addTimeout(id);
         
         //If added
         if(added && addedTimeout) {
             //Lets get the timeout
-            actual = prdao.getTimeout(ipAddress);
+            actual = prdao.getTimeout(id);
             
-            if(removeRowFromDatabase(ipAddress) != 1) fail("Removing row failed");
+            if(removeRowFromDatabase(id) != 1) fail("Removing row failed");
         }
         else fail("Adding row to database failed");
         
@@ -323,13 +323,13 @@ public class PasswordResetDaoTest {
     }
 
     /**
-     * Test of testGetTimeoutWithNonExistingIpAddress method, of class PasswordResetDao.
+     * Test of testGetTimeoutWithNonExistingid method, of class PasswordResetDao.
     */
     @Test
-    public void testGetTimeoutWithNonExistingIpAddress() {
-        System.out.println("testGetTimeoutWithNonExistingIpAddress");
-        String ipAddress = "0:0:0:1";
-        String ipAddress2 = "0:0:1";
+    public void testGetTimeoutWithNonExistingid() {
+        System.out.println("testGetTimeoutWithNonExistingid");
+        int id = 1;
+        int id2 = 2;
         //We remove the nanoseconds as when we get time from databse nanos is not included
         //Add if the LocalDateTime object created here and the one added to the database do not get created simultaniously the nano seconds will be different so we remove them
         int nanos = LocalDateTime.now().getNano();
@@ -337,16 +337,16 @@ public class PasswordResetDaoTest {
         LocalDateTime actual = LocalDateTime.now().plusMinutes(15).minusNanos(nanos);
         
         //Add new row
-        boolean added = prdao.addNewUserAttempt(ipAddress2);
+        boolean added = prdao.addNewUserAttempt(id2);
         //Add timeout
-        boolean addedTimeout = prdao.addTimeout(ipAddress2);
+        boolean addedTimeout = prdao.addTimeout(id2);
         
         //If added
         if(added && addedTimeout) {
             //Lets get the timeout
-            actual = prdao.getTimeout(ipAddress);
+            actual = prdao.getTimeout(id);
             
-            if(removeRowFromDatabase(ipAddress2) != 1) fail("Removing row failed");
+            if(removeRowFromDatabase(id2) != 1) fail("Removing row failed");
         }
         else fail("Adding row to database failed");
         
@@ -354,24 +354,24 @@ public class PasswordResetDaoTest {
     }
     
     /**
-     * Test of testRemoveUserAttemptWithExistingIpAddress method, of class PasswordResetDao.
+     * Test of testRemoveUserAttemptWithExistingid method, of class PasswordResetDao.
     */
     @Test
-    public void testRemoveUserAttemptWithExistingIpAddress() {
-        System.out.println("testRemoveUserAttemptWithExistingIpAddress");
-        String ipAddress = "0:0:0:0";
+    public void testRemoveUserAttemptWithExistingid() {
+        System.out.println("testRemoveUserAttemptWithExistingid");
+        int id = 1;
         boolean expected = true;
         boolean actual = false;
         
         //Lets a a new row
-        boolean added = prdao.addNewUserAttempt(ipAddress);
+        boolean added = prdao.addNewUserAttempt(id);
         
         //If added
         if(added) {
-            actual = prdao.removeUserAttempt(ipAddress);
+            actual = prdao.removeUserAttempt(id);
             
             //Check tha row was removed
-            if(checkRowWasAddedToDatabase(ipAddress) != -1) fail("Row was not removed");
+            if(checkRowWasAddedToDatabase(id) != -1) fail("Row was not removed");
         }
         else fail("Adding new row failed");
         
@@ -379,25 +379,25 @@ public class PasswordResetDaoTest {
     }
     
     /**
-     * Test of testRemoveUserAttemptWithNonExistingIpAddress method, of class PasswordResetDao.
+     * Test of testRemoveUserAttemptWithNonExistingid method, of class PasswordResetDao.
     */
     @Test
-    public void testRemoveUserAttemptWithNonExistingIpAddress() {
-        System.out.println("testRemoveUserAttemptWithNonExistingIpAddress");
-        String ipAddress = "0:0:0:0";
-        String ipAddress2 = "0:0:1";
+    public void testRemoveUserAttemptWithNonExistingid() {
+        System.out.println("testRemoveUserAttemptWithNonExistingid");
+        int id = 1;
+        int id2 = 2;
         boolean expected = false;
         boolean actual = true;
         
         //Lets a a new row
-        boolean added = prdao.addNewUserAttempt(ipAddress2);
+        boolean added = prdao.addNewUserAttempt(id2);
         
         //If added
         if(added) {
-            actual = prdao.removeUserAttempt(ipAddress);
+            actual = prdao.removeUserAttempt(id);
             
             //Check tha row was removed
-            if(removeRowFromDatabase(ipAddress2) != 1) fail("Row was not removed");
+            if(removeRowFromDatabase(id2) != 1) fail("Row was not removed");
         }
         else fail("Adding new row failed");
         
@@ -405,12 +405,12 @@ public class PasswordResetDaoTest {
     }
 
     /**
-     * Test of testGetCreatedAtWithExistingIpAddress method, of class PasswordResetDao.
+     * Test of testGetCreatedAtWithExistingid method, of class PasswordResetDao.
     */
     @Test
-    public void testGetCreatedAtWithExistingIpAddress() {
-        System.out.println("testGetCreatedAtWithExistingIpAddress");
-        String ipAddress = "0:0:1:1";
+    public void testGetCreatedAtWithExistingid() {
+        System.out.println("testGetCreatedAtWithExistingid");
+        int id = 1;
         //We remove the nanoseconds as when we get time from databse nanos is not included
         //Add if the LocalDateTime object created here and the one added to the database do not get created simultaniously the nano seconds will be different so we remove them
         int nanos = LocalDateTime.now().getNano();
@@ -418,14 +418,14 @@ public class PasswordResetDaoTest {
         LocalDateTime actual = null;
         
         //Lets add a new row
-        boolean added = prdao.addNewUserAttempt(ipAddress);
+        boolean added = prdao.addNewUserAttempt(id);
         
         //If added
         if(added) {
-            actual = prdao.getCreatedAt(ipAddress);
+            actual = prdao.getCreatedAt(id);
             
             //Remove row
-            if(removeRowFromDatabase(ipAddress) != 1) fail("Row was not removed");
+            if(removeRowFromDatabase(id) != 1) fail("Row was not removed");
         }
         else fail("Row was not added");
         
@@ -433,13 +433,13 @@ public class PasswordResetDaoTest {
     }
     
     /**
-     * Test of testGetCreatedAtWithNonExistingIpAddress method, of class PasswordResetDao.
+     * Test of testGetCreatedAtWithNonExistingid method, of class PasswordResetDao.
     */
     @Test
-    public void testGetCreatedAtWithNonExistingIpAddress() {
-        System.out.println("testGetCreatedAtWithNonExistingIpAddress");
-        String ipAddress = "0:0:1:1";
-        String ipAddress2 = "0:0";
+    public void testGetCreatedAtWithNonExistingid() {
+        System.out.println("testGetCreatedAtWithNonExistingid");
+        int id = 1;
+        int id2 = 2;
         //We remove the nanoseconds as when we get time from databse nanos is not included
         //Add if the LocalDateTime object created here and the one added to the database do not get created simultaniously the nano seconds will be different so we remove them
         int nanos = LocalDateTime.now().getNano();
@@ -447,14 +447,14 @@ public class PasswordResetDaoTest {
         LocalDateTime actual = LocalDateTime.now().minusNanos(nanos);
         
         //Lets add a new row
-        boolean added = prdao.addNewUserAttempt(ipAddress2);
+        boolean added = prdao.addNewUserAttempt(id2);
         
         //If added
         if(added) {
-            actual = prdao.getCreatedAt(ipAddress);
+            actual = prdao.getCreatedAt(id);
             
             //Remove row
-            if(removeRowFromDatabase(ipAddress2) != 1) fail("Row was not removed");
+            if(removeRowFromDatabase(id2) != 1) fail("Row was not removed");
         }
         else fail("Row was not added");
         
@@ -467,15 +467,15 @@ public class PasswordResetDaoTest {
      * @param identifier this will be used to know which row to get
      * @return will return 1 on success -1 on failure
      */
-    private int checkRowWasAddedToDatabase(String identifier) {
+    private int checkRowWasAddedToDatabase(int identifier) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         
         try {
             con = prdao.getConnection();
-            ps = con.prepareStatement("SELECT * FROM password_reset WHERE ip_address = ?");
-            ps.setString(1, identifier);
+            ps = con.prepareStatement("SELECT * FROM password_reset WHERE user_id = ?");
+            ps.setInt(1, identifier);
             rs = ps.executeQuery();
             
             if(rs.next()) return 1;
@@ -500,7 +500,7 @@ public class PasswordResetDaoTest {
      * @param identifier this will be used to know which row to delete
      * @return  will return 1 on success -1 on failure
      */
-    private int removeRowFromDatabase(String identifier) {
+    private int removeRowFromDatabase(int identifier) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -508,8 +508,8 @@ public class PasswordResetDaoTest {
         
         try {
             con = prdao.getConnection();
-            ps = con.prepareStatement("DELETE FROM password_reset WHERE ip_address = ?");
-            ps.setString(1, identifier);
+            ps = con.prepareStatement("DELETE FROM password_reset WHERE user_id = ?");
+            ps.setInt(1, identifier);
             count = ps.executeUpdate();
             
             if(count == 1) return count;

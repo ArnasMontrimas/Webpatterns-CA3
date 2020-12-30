@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  */
 public class UserDaoTest {
 
-    private final UserDao dao = new UserDao("creative_library_test");
+    private final UserDao dao = new UserDao("library_prod_test");
 
    /**
     * Test of validateUsername method, of class UserDao.
