@@ -7,28 +7,28 @@ $(() => {
   if (cardNumInput) {
     // Change card input validation message
     cardNumInput.oninvalid = function () {
-      this.setCustomValidity("Card number must be 16 digits long.");
+      this.setCustomValidity($(this).data('error-message'));
     }
     cardNumInput.oninput = function () {
       this.setCustomValidity("");
     };
   
     ownerNameInput.oninvalid = function () {
-      this.setCustomValidity("Only names from basic characters are allowed");
+      this.setCustomValidity($(this).data('error-message'));
     }
     ownerNameInput.oninput = function () {
       this.setCustomValidity("");
     };
   
     cvvInput.oninvalid = function () {
-      this.setCustomValidity("CVV can only contain 3 or 4 digits.");
+      this.setCustomValidity($(this).data('error-message'));
     }
     cvvInput.oninput = function () {
       this.setCustomValidity("");
     };
   
     expirationDate.oninvalid = function () {
-      this.setCustomValidity("Expiration date should in the format MM/YY");
+      this.setCustomValidity($(this).data('error-message'));
     }
     expirationDate.oninput = function () {
       this.setCustomValidity("");
@@ -38,9 +38,13 @@ $(() => {
   const pwdContainer = $('#passwordContainer')
   const pwdInput = $('#password')
   const pwdStrengthMeter = $('#pwdStrengthMeter')
+  const scoreText = pwdStrengthMeter.data('levels-text').split(",")
   const submitBtn = $('#registerSubmit')
   const usernameInput = $('#username')
   const conditionMsg = pwdContainer.find('small')
+
+  // Set default password strenght meter
+  pwdStrengthMeter.find('span').text(scoreText[0])
 
   /**
    * Check validity and strength of Password input
@@ -97,7 +101,6 @@ $(() => {
     // Check password strength
     const resultStrength = zxcvbn(password, [usernameInput.val(), $("#oldPassword").val() || ""])
     const passwordScore = errors > 0 ? 0 : (resultStrength.score === 0 ? 1 : resultStrength.score)
-    const scoreText = ['Invalid', 'Very weak', 'Weak', 'Good', 'Very Good']
     pwdStrengthMeter.attr('data-level', passwordScore)
     pwdStrengthMeter.find('span').text(scoreText[passwordScore])
   })
