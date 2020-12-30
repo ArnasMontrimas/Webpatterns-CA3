@@ -66,7 +66,7 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
                     throw new java.lang.IllegalArgumentException("Invalid hash provided for comparison");
 
             password_verified = BCrypt.checkpw(password_plaintext, stored_hash);
-
+            
             return(password_verified);
     }
 
@@ -84,7 +84,10 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
         PreparedStatement ps = null;
         ResultSet generatedKeys = null;
         User user = null;
-
+        
+        //Check that none of the values are null
+        if(username == null || email == null || password == null) return user;
+        
         try{
             con = getConnection();
             // Simple insert here
@@ -135,7 +138,7 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
      * 
      * @param email The username for login.
      * @param password The password for login.
-     * @return int Returns the unique ID of the user if Username and password match or -1 for inactive or 0 for bad login
+     * @return User(Object) Returns the unique ID of the user if Username and password match or -1 for inactive or 0 for bad login
      */
     @Override
     public User validateLogin(String email, String password) {
@@ -210,7 +213,7 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
         
         try{
             con = getConnection();
-            ps = con.prepareStatement("Select * from users where userID = ? ");
+            ps = con.prepareStatement("Select * from users where id = ? ");
             ps.setInt(1,id);
             rs = ps.executeQuery();
 
@@ -316,21 +319,21 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
      * This method will be called when the security answer is correct which is in the security answers dao.
      *  
      * @param new_plaintext_password The users new chosen password
-     * @param username The users username
+     * @param email The users username
      * @return boolean True or false
      */
     @Override
-    public boolean forgotPasswordReset(String new_plaintext_password,String username) {
+    public boolean forgotPasswordReset(String new_plaintext_password,String email) {
         Connection con = null;
         PreparedStatement ps = null;
         int success = 0;
 
         try{
             con = getConnection();
-            ps = con.prepareStatement("UPDATE users SET password = ? WHERE username = ?");
+            ps = con.prepareStatement("UPDATE users SET password = ? WHERE email = ?");
             String newHashedPass = hashPassword(new_plaintext_password);
             ps.setString(1,newHashedPass);
-            ps.setString(2,username);
+            ps.setString(2,email);
             success = ps.executeUpdate();
         }
         catch(SQLException ex){  
@@ -485,6 +488,9 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
         ResultSet rs = null;
         boolean changeUsername = false;
 
+        //Null check
+        if(user == null || newUsername == null) return false;
+        
         try{
             con = getConnection();
             ps = con.prepareStatement("UPDATE users SET username = ? WHERE id = ?");
@@ -638,6 +644,46 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
         }
         
         return null;
+    }
+    
+    /**
+     * This method removes user using his email address
+     * @param email users email
+     * @return true if successful false otherwise
+     */
+    @Override
+    public boolean removeUser(String email) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        int count = 0;
+        
+        //Null check
+        if(email == null) return false;
+        
+        try {
+            con = getConnection();
+            ps = con.prepareStatement("DELETE FROM users WHERE email = ?");
+            ps.setString(1, email);
+            count = ps.executeUpdate();
+            
+            if(count > 0) return true;
+        
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return false;
     }
 }
 

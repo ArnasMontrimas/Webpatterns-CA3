@@ -33,7 +33,6 @@ public class PasswordResetDaoTest {
      */
     @Test
     public void testAddNewUserAttempt() {
-        System.out.println("addNewUserAttempt");
         int id = 1;
         boolean actual = prdao.addNewUserAttempt(id);
         boolean expected = true;
@@ -62,7 +61,6 @@ public class PasswordResetDaoTest {
      */
     @Test
     public void testGetidWithExistingid() {
-        System.out.println("testGetidWithExistingid");
         int id = 1;
         boolean expected = true;
         boolean actual = false;
@@ -93,7 +91,6 @@ public class PasswordResetDaoTest {
      */
     @Test
     public void testGetidWithNonExistingid() {
-        System.out.println("testGetidWithNonExistingid");
         int id = 1;
         int id2 = 2;
         boolean expected = true;
@@ -125,7 +122,6 @@ public class PasswordResetDaoTest {
      */
     @Test
     public void testAddAttemptWithExistingid() {
-        System.out.println("testAddAttemptWithExistingid");
         int id = 1;
         boolean expected = true;
         boolean actual = false;
@@ -155,7 +151,6 @@ public class PasswordResetDaoTest {
      */
     @Test
     public void testAddAttemptWithNonExistingid() {
-        System.out.println("testAddAttemptWithNonExistingid");
         int id = 1;
         int id2 = 2;
         boolean expected = true;
@@ -187,7 +182,6 @@ public class PasswordResetDaoTest {
     */
     @Test
     public void testGetAttemptsWithExistingid() {
-        System.out.println("testGetAttemptsWithExistingid");
         int id = 1;
         int expected = 1;
         int actual = 0;
@@ -213,7 +207,6 @@ public class PasswordResetDaoTest {
     */
     @Test
     public void testGetAttemptsWithNonExistingid() {
-        System.out.println("testGetAttemptsWithNonExistingid");
         int id = 1;
         int id2 = 2;
         int expected = 0;
@@ -240,7 +233,6 @@ public class PasswordResetDaoTest {
      */
     @Test
     public void testAddTimeoutWithExistingid() {
-        System.out.println("testAddTimeoutWithExistingid");
         int id = 1;
         boolean expected = true;
         boolean actual = false;
@@ -268,7 +260,6 @@ public class PasswordResetDaoTest {
      */
     @Test
     public void testAddTimeoutWithNonExistingid() {
-        System.out.println("testAddTimeoutWithNonExistingid");
         int id = 1;
         int id2 = 2;
         boolean expected = true;
@@ -297,12 +288,10 @@ public class PasswordResetDaoTest {
     */
     @Test
     public void testGetTimeoutWithExistingid() {
-        System.out.println("testGetTimeoutWithExistingid");
         int id = 1;
         //We remove the nanoseconds as when we get time from databse nanos is not included
         //Add if the LocalDateTime object created here and the one added to the database do not get created simultaniously the nano seconds will be different so we remove them
-        int nanos = LocalDateTime.now().getNano();
-        LocalDateTime expected = LocalDateTime.now().plusMinutes(15).minusNanos(nanos);
+        LocalDateTime expected = LocalDateTime.now().plusMinutes(15);
         LocalDateTime actual = null;
         
         //Add new row
@@ -319,7 +308,7 @@ public class PasswordResetDaoTest {
         }
         else fail("Adding row to database failed");
         
-        assertEquals(expected, actual);
+        assertEquals(expected.getMinute(), actual.getMinute());
     }
 
     /**
@@ -327,7 +316,6 @@ public class PasswordResetDaoTest {
     */
     @Test
     public void testGetTimeoutWithNonExistingid() {
-        System.out.println("testGetTimeoutWithNonExistingid");
         int id = 1;
         int id2 = 2;
         //We remove the nanoseconds as when we get time from databse nanos is not included
@@ -358,7 +346,6 @@ public class PasswordResetDaoTest {
     */
     @Test
     public void testRemoveUserAttemptWithExistingid() {
-        System.out.println("testRemoveUserAttemptWithExistingid");
         int id = 1;
         boolean expected = true;
         boolean actual = false;
@@ -383,7 +370,6 @@ public class PasswordResetDaoTest {
     */
     @Test
     public void testRemoveUserAttemptWithNonExistingid() {
-        System.out.println("testRemoveUserAttemptWithNonExistingid");
         int id = 1;
         int id2 = 2;
         boolean expected = false;
@@ -409,7 +395,6 @@ public class PasswordResetDaoTest {
     */
     @Test
     public void testGetCreatedAtWithExistingid() {
-        System.out.println("testGetCreatedAtWithExistingid");
         int id = 1;
         //We remove the nanoseconds as when we get time from databse nanos is not included
         //Add if the LocalDateTime object created here and the one added to the database do not get created simultaniously the nano seconds will be different so we remove them
@@ -437,7 +422,6 @@ public class PasswordResetDaoTest {
     */
     @Test
     public void testGetCreatedAtWithNonExistingid() {
-        System.out.println("testGetCreatedAtWithNonExistingid");
         int id = 1;
         int id2 = 2;
         //We remove the nanoseconds as when we get time from databse nanos is not included

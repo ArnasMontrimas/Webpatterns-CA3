@@ -107,4 +107,11 @@ public interface UserDaoInterface {
      * @return String temporary password
      */
     String generateSetNewPassword(int id);
+    
+    /**
+     * This method removes user using his email address
+     * @param email users email
+     * @return true if successful false otherwise
+     */
+    boolean removeUser(String email);
 }
