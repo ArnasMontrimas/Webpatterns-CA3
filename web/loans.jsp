@@ -84,7 +84,7 @@
                   double fees = loan.calculateFees();
                 %>
                   <p>
-                    <strong>Fees:&nbsp;</strong><span class="text-danger"><%= fees %>€</span>
+                    <strong>Fees:&nbsp;</strong><span class="text-danger"><%= curF.format(fees) %></span>
                   </p>
                   <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#payFeesModal<%= loan.getLoanID() %>">Return book and pay fees</button>
                   
@@ -96,7 +96,7 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          <p>Because you didn't return your book on the required day you have to pay <span class="text-danger"><%= fees %>€</span></p>
+                          <p>Because you didn't return your book on the required day you have to pay <span class="text-danger"<%= curF.format(fees) %></span></p>
 
                           <form action="controller">
                             <input type="hidden" name="action" value="returnLoan">

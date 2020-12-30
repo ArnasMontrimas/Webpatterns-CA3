@@ -75,7 +75,7 @@
                     <strong>Returned:&nbsp;</strong><%= loan.getLoanEnds() %>
                 </p>
                 <p>
-                  <strong>Fees Paid:&nbsp;</strong><%= loan.getFeesPaid() %>€
+                  <strong>Fees Paid:&nbsp;</strong><%= curF.format(loan.getFeesPaid()) %>
                 </p>
 
                 <%
