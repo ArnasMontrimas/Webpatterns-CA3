@@ -23,7 +23,7 @@ public class PasswordResetDaoTest {
     /**
      * Create PasswordResetDao class with connection to test database
      */
-    private final PasswordResetDao prdao = new PasswordResetDao("library_prod_test");
+    private final PasswordResetDao prdao = new PasswordResetDao("library_test");
 
     /**
      * Test of addNewUserAttempt method, of class PasswordResetDao.

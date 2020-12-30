@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Malo
+ * @author grallm
  */
 public class EditProfileCommand implements Command {
 

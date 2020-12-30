@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  *
  * @author samue
- * @author Malo
+ * @author grallm
  */
 public class BookDao extends Dao implements BookDaoInterface{
      

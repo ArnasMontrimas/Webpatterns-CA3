@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Malo
+ * @author grallm
  */
 public class RateBookCommand implements Command {
 
@@ -43,11 +43,15 @@ public class RateBookCommand implements Command {
               OpinionsDao oDao = new OpinionsDao();
               BookDao bDao = new BookDao();
 
-              // Try updating username
-              if (oDao.addOpinion(user.getUserID(), bookId, rating, comment)) {
-                session.setAttribute("message", "Successfully shared your opinion for <strong>" + bDao.getBookByID(bookId).getBookName() + "</strong>.");
-              }else{
-                session.setAttribute("errorMessage", "An error occurred, try again later");
+              if (oDao.checkIfUserHasOpinion(user.getUserID(), bookId) != null) {
+                session.setAttribute("errorMessage", "You already gave an opinion for this book");
+              } else {
+                // Try adding opinion
+                if (oDao.addOpinion(user.getUserID(), bookId, rating, comment)) {
+                  session.setAttribute("message", "Successfully shared your opinion for <strong>" + bDao.getBookByID(bookId).getBookName() + "</strong>.");
+                }else{
+                  session.setAttribute("errorMessage", "An error occurred, try again later");
+                }
               }
             } else {
                 session.setAttribute("errorMessage", "All fields are not filled with data");

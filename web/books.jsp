@@ -61,7 +61,10 @@
             ArrayList<Book> books = query == null ? (new BookDao()).getAllBooks() : (ArrayList<Book>) session.getAttribute("books");
 
             if(books != null) {
+              OpinionsDao oDao = new OpinionsDao();
+              UserDao uDao = new UserDao();
               for (Book book : books) {
+                ArrayList<Opinion> opinions = oDao.getBookOpinions(book.getBookID());
           %> 
             <div class="card mx-2 mb-5 px-0" style="width: 18rem;">
               <img src="./images/books/<%= book.getImagePath() %>" class="card-img-top w-100" alt="<%= book.getBookName() %>">
@@ -72,7 +75,44 @@
                   <p class="card-text"><%= book.getBookDescription() %></p>
                 </div>
 
-                <% if (loanDao.checkIfLoaned(user.getUserID(), book.getBookID())) { %>
+                <%
+                if (opinions.size() > 0) {
+                %>
+                  <div class="modal fade" id="bookOpinionsModal<%= book.getBookID() %>" tabindex="-1" aria-labelledby="bookOpinionsModalLabel<%= book.getBookID() %>" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="bookOpinionsModalLabel<%= book.getBookID() %>">Opinions on <strong><%= book.getBookName() %></strong></h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                <%
+                  int sumRatings = 0;
+                          for (Opinion opinion : opinions) {
+                            sumRatings += opinion.getRating();
+                          %>
+                            <div>
+                              <div class="d-inline-block fw-bold"><%= uDao.getUserById(opinion.getUserId()).getUsername() %></div>
+                              <div class="starrr rated" data-rating="<%= opinion.getRating() %>"></div>
+                              <p><%= opinion.getComment() %></p>
+                            </div>
+                          <% } %>
+                            
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <strong>Average rating:</strong><div class="starrr rated" data-rating="<%= sumRatings / opinions.size() %>"></div>
+                    <button type="button" class="btn btn-primary mt-1 w-100" data-bs-toggle="modal" data-bs-target="#bookOpinionsModal<%= book.getBookID() %>">See all opinions (<%= opinions.size() %>)</button>
+                  </div>
+                <%
+                }
+                if (loanDao.checkIfLoaned(user.getUserID(), book.getBookID())) {
+                %>
                   <!-- Book is loaned -->
                   <a href="loans.jsp" class="btn btn-outline-warning">View loans</a>
                 <% } else if (book.getQuantityInStock() > 0) { %>
@@ -105,5 +145,8 @@
           %>
         </div>
       </main>
+
+      <script src="./js/starrr.js"></script>
+      <script src="./js/previousLoans.js"></script>
     </body>
 </html>

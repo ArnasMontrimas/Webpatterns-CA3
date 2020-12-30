@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Malo
+ * @author grallm
  */
 public class ChangePasswordCommand implements Command {
 

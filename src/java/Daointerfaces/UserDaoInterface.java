@@ -68,16 +68,6 @@ public interface UserDaoInterface {
      */
     boolean passwordReset(String old_plaintext_password,String new_plaintext_password,String username);
     
-     /**
-     * This is when the user is forgets his password and knows his username
-     * This method will be called when the security answer is correct which is in the security answers dao.
-     *  
-     * @param new_plaintext_password The users new chosen password
-     * @param username The users username
-     * @return boolean True or false
-     */
-    boolean forgotPasswordReset(String new_plaintext_password,String username);
-    
     /**
      * This method checks if a specified email address exists in the database
      * @param userEmail email address to be found in database

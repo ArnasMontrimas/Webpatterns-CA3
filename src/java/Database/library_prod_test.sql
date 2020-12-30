@@ -19,10 +19,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `library_prod_test`
+-- Database: `library_test`
 --
-CREATE DATABASE IF NOT EXISTS `library_prod_test` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `library_prod_test`;
+CREATE DATABASE IF NOT EXISTS `library_test` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `library_test`;
 
 -- --------------------------------------------------------
 

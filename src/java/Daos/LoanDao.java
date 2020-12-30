@@ -15,7 +15,7 @@ import java.util.ArrayList;
  *
  * @author samue
  * @author Arnas
- * @author Malo
+ * @author grallm
  */
 public class LoanDao extends Dao implements LoanDaoInterface{
     

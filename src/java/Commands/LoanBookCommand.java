@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Loaning a book
- * @author Malo
+ * @author grallm
  */
 public class LoanBookCommand implements Command {
   @Override

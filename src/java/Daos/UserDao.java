@@ -213,23 +213,23 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
         
         try{
             con = getConnection();
-            ps = con.prepareStatement("Select * from users where id = ? ");
+            ps = con.prepareStatement("SELECT * FROM users WHERE id = ? ");
             ps.setInt(1,id);
             rs = ps.executeQuery();
 
             if(rs.next())
             {
-                        user = new User(id,
-                        rs.getString("type"),
-                        rs.getString("username"),
-                        rs.getString("email"),      
-                        rs.getString("password"),
-                        rs.getDate("dateRegistered"),
-                        rs.getBoolean("activeAccount")
+                user = new User(id,
+                  rs.getString("type"),
+                  rs.getString("username"),
+                  rs.getString("email"),      
+                  rs.getString("password"),
+                  rs.getDate("dateRegistered"),
+                  rs.getBoolean("activeAccount")
                 );
             }
         }catch (SQLException e) {
-            System.out.println("Exception occured in the getUserByID() method: " + e.getMessage());
+            e.printStackTrace();
         } finally {
             try {
                 if (rs != null) {
@@ -242,7 +242,7 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
                     freeConnection(con);
                 }
             } catch (SQLException e) {
-                System.out.println("Exception occured in the finally section of the getProductByCode() method: " + e.getMessage());
+                e.printStackTrace();
             }
         }
         return user;
@@ -314,47 +314,6 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
         return success;
     }
     
-     /**
-     * This is when the user is forgets his password and knows his username
-     * This method will be called when the security answer is correct which is in the security answers dao.
-     *  
-     * @param new_plaintext_password The users new chosen password
-     * @param email The users username
-     * @return boolean True or false
-     */
-    @Override
-    public boolean forgotPasswordReset(String new_plaintext_password,String email) {
-        Connection con = null;
-        PreparedStatement ps = null;
-        int success = 0;
-
-        try{
-            con = getConnection();
-            ps = con.prepareStatement("UPDATE users SET password = ? WHERE email = ?");
-            String newHashedPass = hashPassword(new_plaintext_password);
-            ps.setString(1,newHashedPass);
-            ps.setString(2,email);
-            success = ps.executeUpdate();
-        }
-        catch(SQLException ex){  
-            ex.printStackTrace();
-        }
-        finally{
-            if(ps != null){
-                try {
-                    ps.close();
-                } catch (SQLException ex) {
-                   
-                    ex.printStackTrace();
-                }
-            }
-            if(con != null){
-                freeConnection(con);
-            }
-        }
-        return success != 0;
-    }
-
     /**
      * This method checks if a specified email address exists in the database
      * @param userEmail email address to be found in database

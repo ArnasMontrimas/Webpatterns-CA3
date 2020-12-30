@@ -16,7 +16,7 @@ import static Daos.Dao.*;
 /**
  *
  * @author samue
- * @author Malo
+ * @author grallm
  */
 public class RegisterCommand implements Command {
 

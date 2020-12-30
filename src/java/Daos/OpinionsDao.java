@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Malo
+ * @author grallm
  */
 public class OpinionsDao extends Dao implements OpinionsDaoInterface {
      

@@ -1,4 +1,3 @@
-
 package daotests;
 
 import Dtos.*;
@@ -12,7 +11,7 @@ import static org.junit.Assert.*;
  */
 public class UserDaoTest {
 
-    private final UserDao dao = new UserDao("library_prod_test");
+    private final UserDao dao = new UserDao("library_test");
 
   
     /**

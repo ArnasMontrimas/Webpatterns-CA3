@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Malo
+ * @author grallm
  */
 public class ReturnLoanCommand implements Command {
 

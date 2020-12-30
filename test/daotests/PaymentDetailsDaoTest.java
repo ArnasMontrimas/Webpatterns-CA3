@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * @author grallm
  */
 public class PaymentDetailsDaoTest {
-  PaymentDetailsDao pdao = new PaymentDetailsDao("library_prod_test");
+  PaymentDetailsDao pdao = new PaymentDetailsDao("library_test");
 
   /**
    * Test inserting a card
