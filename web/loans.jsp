@@ -70,13 +70,13 @@
                 <h6><%= book.getAuthor() %></h6>
 
                 <p>
-                    <strong>Loaned:&nbsp;</strong><%= loan.getLoanStarted() %>
+                    <strong>Loaned:&nbsp;</strong><%= dateF.format(loan.getLoanStarted()) %>
                 </p>
                 <p>
                     <%
                       boolean returnLate = (new Date()).compareTo(loan.getLoanEnds()) > 0;
                     %>
-                    <strong>Return date:&nbsp;</strong><span class="<%= returnLate ? "text-danger" : "" %>"><%= loan.getLoanEnds() %></span>
+                    <strong>Return date:&nbsp;</strong><span class="<%= returnLate ? "text-danger" : "" %>"><%= dateF.format(loan.getLoanEnds()) %></span>
                 </p>
                 
                 <%

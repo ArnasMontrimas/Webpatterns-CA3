@@ -69,10 +69,10 @@
                 <h6><%= book.getAuthor() %></h6>
 
                 <p>
-                    <strong>Loaned:&nbsp;</strong><%= loan.getLoanStarted() %>
+                    <strong>Loaned:&nbsp;</strong><%= dateF.format(loan.getLoanStarted()) %>
                 </p>
                 <p>
-                    <strong>Returned:&nbsp;</strong><%= loan.getLoanEnds() %>
+                    <strong>Returned:&nbsp;</strong><%= dateF.format(loan.getLoanReturned()) %>
                 </p>
                 <p>
                   <strong>Fees Paid:&nbsp;</strong><%= curF.format(loan.getFeesPaid()) %>
