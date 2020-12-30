@@ -1,5 +1,5 @@
-<%@ page import="Dtos.*" %>
-<%@ page import="Daos.*" %>
+<%@ page import="dtos.*" %>
+<%@ page import="daos.*" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>

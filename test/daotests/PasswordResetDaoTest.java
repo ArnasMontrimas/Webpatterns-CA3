@@ -7,7 +7,7 @@ package daotests;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import Daos.PasswordResetDao;
+import daos.PasswordResetDao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;

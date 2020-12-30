@@ -1,7 +1,7 @@
 package daotests;
 
 import Dtos.*;
-import Daos.*;
+import daos.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
