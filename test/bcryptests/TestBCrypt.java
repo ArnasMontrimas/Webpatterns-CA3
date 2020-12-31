@@ -1,6 +1,6 @@
 
 package bcryptests;
-import Encryption.BCrypt;
+import encryption.BCrypt;
 import junit.framework.TestCase;
 
 /**

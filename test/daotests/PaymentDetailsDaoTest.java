@@ -1,6 +1,6 @@
 package daotests;
 
-import daos.*;
+import daos.PaymentDetailsDao;
 
 import org.junit.Test;
 
