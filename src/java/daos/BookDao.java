@@ -88,6 +88,9 @@ public class BookDao extends Dao implements BookDaoInterface{
         ResultSet rs = null;
         ArrayList<Book> books = new ArrayList<>();
 
+        //Null check
+        if(genre == null) return books;
+        
         try{
             con = getConnection();
             ps = con.prepareStatement("SELECT * from books WHERE genre = ?");
@@ -196,6 +199,9 @@ public class BookDao extends Dao implements BookDaoInterface{
         ResultSet rs = null;
         ArrayList<Book> books = new ArrayList<>();
 
+        //Null Check
+        if(query == null) return books;
+        
         try{
             con = getConnection();
             ps = con.prepareStatement("Select * from books where bookName LIKE ? OR bookIsbn LIKE ? OR author LIKE ?");
@@ -253,7 +259,10 @@ public class BookDao extends Dao implements BookDaoInterface{
         Connection con = null;
         PreparedStatement ps = null;
         int rowsAffected = 0;
-
+        
+        //Make sure quantity is not 0
+        if(quantity == 0 || (increase == true || increase == false) && (quantity <= 0)) return false;
+        
         try{
             con = getConnection();
             // If increase is wanted

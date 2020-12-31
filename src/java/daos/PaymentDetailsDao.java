@@ -16,7 +16,8 @@ import daointerfaces.PaymentDetailsDaoInterface;
 
 public class PaymentDetailsDao extends Dao implements PaymentDetailsDaoInterface {
     private static final String PAYMENT_SALT = ",TT~u]26_b$X?+;t";
-
+    private final UserDao udao = new UserDao();
+    
     public PaymentDetailsDao() {
         super();
     }
@@ -39,7 +40,11 @@ public class PaymentDetailsDao extends Dao implements PaymentDetailsDaoInterface
         Connection con = null;
         PreparedStatement ps = null;
         boolean success = true;
-
+        
+        //Null check
+        if(cardNumber == null || cardCvv == null || cardOwner == null || expirationDate == null || userID <= 0) return false;
+        
+        
         try{
             con = getConnection();
             // Simple insert here

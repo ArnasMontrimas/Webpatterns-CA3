@@ -43,6 +43,9 @@ public class LoanDao extends Dao implements LoanDaoInterface{
         ArrayList<Loan> loans = new ArrayList<>();
         BookDao bdao = new BookDao();
 
+        //Null check
+        if(user == null) return loans;
+        
         try{
             con = getConnection();
             ps = con.prepareStatement("SELECT * FROM loans WHERE userId = ? AND returned IS NULL");
@@ -101,6 +104,9 @@ public class LoanDao extends Dao implements LoanDaoInterface{
         ArrayList<Loan> loans = new ArrayList<>();
         BookDao bdao = new BookDao();
 
+        //Null check
+        if(user == null) return loans;
+        
         try{
             con = getConnection();
             ps = con.prepareStatement("SELECT * FROM loans WHERE userId = ? AND returned IS NOT NULL");
@@ -148,7 +154,7 @@ public class LoanDao extends Dao implements LoanDaoInterface{
      * @param bookID books id number
      * @param days number of days for loan
      * @param userID users id number
-     * @return 0
+     * @return 0 or -1 on failure
      */
     @Override
     public int loanBook(int bookID, int days, int userID) {
@@ -156,6 +162,8 @@ public class LoanDao extends Dao implements LoanDaoInterface{
         PreparedStatement ps = null;
         int returnValue = 0;
 
+        if(days < 0) return -1;
+        
         try{
             con = getConnection();
             ps = con.prepareStatement("INSERT into loans VALUES(NULL, ?, ?, current_timestamp(), DATE_ADD(current_timestamp(), INTERVAL ? DAY), DEFAULT, DEFAULT)");
@@ -184,10 +192,11 @@ public class LoanDao extends Dao implements LoanDaoInterface{
 
     /**
      * Get a user's specific loan not returned
-     * @param userID User's loans to check
-     * @param bookID Book to check if user's loans
+     * @param userId User's loans to check
+     * @param bookId Book to check if user's loans
      * @return null if not found
      */
+    @Override
     public Loan getActiveLoan(int userId, int bookId) {
       Connection con = null;
       PreparedStatement ps = null;
@@ -233,10 +242,11 @@ public class LoanDao extends Dao implements LoanDaoInterface{
     
     /**
      * Check if a user loans a specific book
-     * @param userID User's loans to check
-     * @param bookID Book to check if user's loans
+     * @param userId User's loans to check
+     * @param bookId Book to check if user's loans
      * @return false if not found
      */
+    @Override
     public boolean checkIfLoaned(int userId, int bookId) {
         Loan loan = getActiveLoan(userId, bookId);
         return loan != null && loan.getLoanReturned() == null;
@@ -247,11 +257,14 @@ public class LoanDao extends Dao implements LoanDaoInterface{
      * @param loan Loan to be returned
      * @return true if success, false if failure
      */
+    @Override
     public boolean returnLoan(Loan loan) {
       Connection con = null;
       PreparedStatement ps = null;
       int rowsAffected = 0;
-
+      
+      if(loan == null) return false;
+      
       try{
           con = getConnection();
           // If increase is wanted
@@ -277,4 +290,5 @@ public class LoanDao extends Dao implements LoanDaoInterface{
       }
       return rowsAffected != 0;
     }
+
 }
