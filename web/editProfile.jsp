@@ -19,7 +19,7 @@
     <%@include file="navbar.jsp" %>
 
     <main class="container pt-3 pb-5">
-      <h1>Edit Profile</h1>
+      <h1><%= bundle.getString("edit_profile_title") %></h1>
 
       <% if (session.getAttribute("errorMessage") != null) { %>
         <div class="alert alert-danger" role="alert">
@@ -34,13 +34,13 @@
         <input type="hidden" name="action" value="editProfile">
 
         <div>
-          <label for="username" class="form-label mb-0">Username</label>
-          <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="<%= user.getUsername() %>" required>
+          <label for="username" class="form-label mb-0"><%= bundle.getString("username") %></label>
+          <input type="text" class="form-control" id="username" name="username" placeholder="<%= bundle.getString("username") %>" value="<%= user.getUsername() %>" required>
         </div>
 
         <div class="mt-4">
-          <input type="submit" class="btn btn-primary" value="Save Profile" />
-          <a href="profile.jsp" class="btn btn-outline-danger">Cancel</a>
+          <input type="submit" class="btn btn-primary" value="<%= bundle.getString("edit_profile_save") %>" />
+          <a href="profile.jsp" class="btn btn-outline-danger"><%= bundle.getString("cancel") %></a>
         </div>
       </form>
     </main>
