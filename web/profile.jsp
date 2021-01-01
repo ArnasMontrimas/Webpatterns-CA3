@@ -19,7 +19,7 @@
       <%@include file="navbar.jsp" %>
 
       <main class="container pt-3 pb-5">
-        <h1>Profile Page</h1>
+        <h1><%= bundle.getString("profile_title") %></h1>
         
         <% if (session.getAttribute("errorMessage") != null) { %>
           <div class="alert alert-danger" role="alert">
@@ -41,29 +41,29 @@
         <div class="row justify-content-around">
             <div>
                 <p>
-                    <strong>Email:&nbsp;</strong><%= user.getEmail() %>
+                    <strong><%= bundle.getString("email") %>:&nbsp;</strong><%= user.getEmail() %>
                 </p>
                 <p>
-                    <strong>Username:&nbsp;</strong><%= user.getUsername() %>
+                    <strong><%= bundle.getString("username") %>:&nbsp;</strong><%= user.getUsername() %>
                 </p>
                 <p>
-                    <strong>Registered:&nbsp;</strong><%= user.getDateRegistered() %>
+                    <strong><%= bundle.getString("profile_registered") %>:&nbsp;</strong><%= user.getDateRegistered() %>
                 </p>
                 <p>
-                    <strong>Type:&nbsp;</strong><span class="text-capitalize"><%= user.getType() %></span>
+                    <strong><%= bundle.getString("profile_type") %>:&nbsp;</strong><span class="text-capitalize"><%= user.getType() %></span>
                 </p>
                 <p>
-                    1 saved payment card
+                  <%= bundle.getString("profile_saved_cards") %>
                 </p>
 
                 <div>
                   <div>
-                    <a href="editProfile.jsp" class="btn btn-primary">Edit Profile</a>
-                    <a href="changePassword.jsp" class="btn btn-warning">Change Password</a>
+                    <a href="editProfile.jsp" class="btn btn-primary"><%= bundle.getString("edit_profile_title") %></a>
+                    <a href="changePassword.jsp" class="btn btn-warning"><%= bundle.getString("change_pwd_title") %></a>
                   </div>
                   <div class="mt-3">
-                    <a href="previousLoans.jsp" class="btn btn-outline-primary">Loan History</a>
-                    <a href="loans.jsp" class="btn btn-outline-primary">Current Loans</a>
+                    <a href="previousLoans.jsp" class="btn btn-outline-primary"><%= bundle.getString("ploans_title") %></a>
+                    <a href="loans.jsp" class="btn btn-outline-primary"><%= bundle.getString("loans_title") %></a>
                   </div>
                 </div>
             </div>
