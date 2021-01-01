@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
     <a class="navbar-brand" href="#"><%= bundle.getString("navbar_title") %></a>
@@ -35,6 +36,16 @@
             <a class="nav-link" href="register.jsp"><%= bundle.getString("register") %></a>
           </li>
         <% } %>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <%= clientLocale.getLanguage().equals("fr") ? "🇫🇷 Français" : "🇺🇸 English" %>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="langDropdown">
+            <li><a class="dropdown-item" href="controller?action=changeLanguage&lang=en">🇺🇸 English</a></li>
+            <li><a class="dropdown-item" href="controller?action=changeLanguage&lang=fr">🇫🇷 Français</a></li>
+          </ul>
+        </li>
       </ul>
       <% if (session.getAttribute("user") != null) { %>
       <!-- Only Logged in Users can search for books -->

@@ -13,20 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
  * @author samue
+ * @author grallm
  */
 public class ChangeLanguageCommand implements Command {
 
     @Override
     public String doAction(HttpServletRequest request, HttpServletResponse response) {
-        
             HttpSession session = request.getSession();
             String forwardToJspPage = null;
             
-            String language = request.getParameter("language");
+            String language = request.getParameter("lang");
             if(language != null){
-                Locale currentLocale = new Locale(language);
+                Locale currentLocale = new Locale(language.equals("fr") ? "fr" : "en");
                 session.setAttribute("currentLocale", currentLocale);
             }
             try{
@@ -34,8 +33,7 @@ public class ChangeLanguageCommand implements Command {
                 String[] pathPieces = refererPage.split("/");
                 forwardToJspPage = pathPieces[pathPieces.length-1];
             } catch (URISyntaxException ex){
-                System.out.println("An error occured when trying to get the page that sent the client here: " + ex.getMessage());
-                forwardToJspPage = "Register.jsp";
+                forwardToJspPage = "loans.jsp";
             }
             
             return forwardToJspPage;
