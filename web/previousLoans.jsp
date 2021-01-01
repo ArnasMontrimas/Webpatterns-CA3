@@ -21,7 +21,7 @@
       <%@include file="navbar.jsp" %>
 
       <main class="container pt-3 pb-5">
-        <h1>Previous Loans</h1>
+        <h1><%= bundle.getString("ploans_title") %></h1>
         
         <% if (session.getAttribute("errorMessage") != null) { %>
           <div class="alert alert-danger" role="alert">
@@ -50,8 +50,8 @@
             if (loans.size() == 0) {
           %>
             <div class="d-flex flex-column align-items-center">
-              <h4 class="text-black-50">No previously loaned books.</h4>
-              <a href="loans.jsp" class="btn btn-outline-primary">See current loans</a>
+              <h4 class="text-black-50"><%= bundle.getString("ploans_none") %></h4>
+              <a href="loans.jsp" class="btn btn-outline-primary"><%= bundle.getString("ploans_see_current") %></a>
             </div>
           <%
             } else {
@@ -68,13 +68,13 @@
                 <h6><%= book.getAuthor() %></h6>
 
                 <p>
-                    <strong>Loaned:&nbsp;</strong><%= dateF.format(loan.getLoanStarted()) %>
+                    <strong><%= bundle.getString("ploans_loaned") %>&nbsp;</strong><%= dateF.format(loan.getLoanStarted()) %>
                 </p>
                 <p>
-                    <strong>Returned:&nbsp;</strong><%= dateF.format(loan.getLoanReturned()) %>
+                    <strong><%= bundle.getString("ploans_returned") %>&nbsp;</strong><%= dateF.format(loan.getLoanReturned()) %>
                 </p>
                 <p>
-                  <strong>Fees Paid:&nbsp;</strong><%= curF.format(loan.getFeesPaid()) %>
+                  <strong><%= bundle.getString("ploans_paid") %>&nbsp;</strong><%= curF.format(loan.getFeesPaid()) %>
                 </p>
 
                 <%
@@ -84,39 +84,39 @@
                   // Display rating
                 %>
                   <div>
-                    <strong>Your rating:&nbsp;</strong><div class="starrr rated" data-rating="<%= opinion.getRating() %>"></div>
+                    <strong><%= bundle.getString("ploans_your_rating") %>&nbsp;</strong><div class="starrr rated" data-rating="<%= opinion.getRating() %>"></div>
                   </div>
                 <%
                 } else {
                 %>
-                  <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#rateBook<%= loan.getLoanID() %>">Rate book</button>
+                  <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#rateBook<%= loan.getLoanID() %>"><%= bundle.getString("ploans_rate") %></button>
                   <div class="modal fade rate-book-modal" id="rateBook<%= loan.getLoanID() %>" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title">Rate and comment book <strong><%= book.getBookName() %></strong></h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          <h5 class="modal-title"><%= bundle.getString("ploans_rate_comment") %> <strong><%= book.getBookName() %></strong></h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= bundle.getString("close") %>"></button>
                         </div>
                         <div class="modal-body">
-                          <p>After loaning this book you can rate the book and write a comment for the next readers</p>
+                          <p><%= bundle.getString("ploans_explain_rate") %></p>
 
                           <form action="controller">
                             <input type="hidden" name="action" value="rateBook">
                             <input type="hidden" name="bookId" value="<%= book.getBookID() %>">
                             <input type="hidden" name="rating" value="">
 
-                            <label>Rate your read</label>
+                            <label><%= bundle.getString("ploans_rate") %></label>
                             <div class="starrr"></div>
                             
                             <div class="form-floating mt-2">
-                              <textarea class="form-control" placeholder="Leave a comment here" id="comment<%= loan.getLoanID() %>" name="comment"></textarea>
-                              <label for="comment<%= loan.getLoanID() %>">Comment</label>
+                              <textarea class="form-control" placeholder="<%= bundle.getString("ploans_leave_comment") %>" id="comment<%= loan.getLoanID() %>" name="comment"></textarea>
+                              <label for="comment<%= loan.getLoanID() %>"><%= bundle.getString("ploans_comment") %></label>
                             </div>
                           </form>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                          <button type="button" class="btn btn-primary submit-button">Submit</button>
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= bundle.getString("cancel") %></button>
+                          <button type="button" class="btn btn-primary submit-button"><%= bundle.getString("submit") %></button>
                         </div>
                       </div>
                     </div>

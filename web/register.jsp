@@ -77,11 +77,11 @@
             </div>
 
             <div class="col-md-3">
-              <label for="expirationDate" class="form-label"><%= bundle.getString("register_card_card_cvv") %></label>
+              <label for="expirationDate" class="form-label"><%= bundle.getString("register_card_card_date") %></label>
               <input type="text" pattern="^[0-9]{2}\/[0-9]{2}$" class="form-control" id="expirationDate" name="expirationDate" placeholder="03/23" data-error-message="<%= bundle.getString("register_invalid_card_cvv") %>" required>
             </div>
             <div class="col-md-3">
-              <label for="cardCvv" class="form-label"><%= bundle.getString("register_card_card_date") %></label>
+              <label for="cardCvv" class="form-label"><%= bundle.getString("register_card_card_cvv") %></label>
               <input type="text" maxlength="4" class="form-control" id="cardCvv" name="cardCvv" placeholder="1243" data-error-message="<%= bundle.getString("register_invalid_card_date") %>" required>
             </div>
       
