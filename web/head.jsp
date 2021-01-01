@@ -31,4 +31,5 @@ if(clientLocale == null){
 NumberFormat numF = NumberFormat.getInstance(clientLocale);
 DateFormat dateF = DateFormat.getDateInstance(DateFormat.DEFAULT,clientLocale);
 NumberFormat curF = NumberFormat.getCurrencyInstance(clientLocale);
-%> 
+%>
+<title><%= bundle.getString("site_title") %></title>

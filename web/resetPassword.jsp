@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Online Library</title>
         <%@include file="head.jsp" %>
     </head>
     <body>

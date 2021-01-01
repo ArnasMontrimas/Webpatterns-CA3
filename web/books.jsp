@@ -15,7 +15,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Online Library</title>
         <%@include file="head.jsp" %>
     </head>
     <body>
@@ -23,12 +22,12 @@
 
       <main class="container pt-3 pb-5">
         <div class="row justify-content-between mb-3">
-          <h1 class="col-sm-4">Books</h1>
+          <h1 class="col-sm-4"><%= bundle.getString("books") %></h1>
           
           <form action="controller" method="post" class="d-flex col-sm-8 col-lg-5 mb-2 mb-sm-0">
             <input type="hidden" name="action" value="searchBook">
-            <input class="form-control me-2" type="search" name="query" placeholder="Search for books" aria-label="Search" required>
-            <button class="btn btn-secondary" type="submit">Search</button>
+            <input class="form-control me-2" type="search" name="query" placeholder="<%= bundle.getString("search_placeholder") %>" aria-label="<%= bundle.getString("search") %>" required>
+            <button class="btn btn-secondary" type="submit"><%= bundle.getString("search") %></button>
           </form>
         </div>
         
@@ -50,7 +49,7 @@
 
           if (query != null) {
         %>
-          <h4 class="text-black-50">Books found for "<span class="text-dark"><%= query %></span>"</h4>
+          <h4 class="text-black-50"><%= bundle.getString("books_query_text") %> "<span class="text-dark"><%= query %></span>"</h4>
         <% } %>
 
         <div class="row justify-content-around">
@@ -82,8 +81,8 @@
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="bookOpinionsModalLabel<%= book.getBookID() %>">Opinions on <strong><%= book.getBookName() %></strong></h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          <h5 class="modal-title" id="bookOpinionsModalLabel<%= book.getBookID() %>"><%= bundle.getString("books_opinions_title") %> <strong><%= book.getBookName() %></strong></h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= bundle.getString("close") %>"></button>
                         </div>
                         <div class="modal-body">
                 <%
@@ -100,25 +99,25 @@
                             
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal"><%= bundle.getString("close") %></button>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="mb-3">
-                    <strong>Average rating:</strong><div class="starrr rated" data-rating="<%= sumRatings / opinions.size() %>"></div>
-                    <button type="button" class="btn btn-primary mt-1 w-100" data-bs-toggle="modal" data-bs-target="#bookOpinionsModal<%= book.getBookID() %>">See all opinions (<%= opinions.size() %>)</button>
+                    <strong><%= bundle.getString("books_average_rating") %></strong><div class="starrr rated" data-rating="<%= sumRatings / opinions.size() %>"></div>
+                    <button type="button" class="btn btn-primary mt-1 w-100" data-bs-toggle="modal" data-bs-target="#bookOpinionsModal<%= book.getBookID() %>"><%= bundle.getString("books_all_opinions") %> (<%= opinions.size() %>)</button>
                   </div>
                 <%
                 }
                 if (loanDao.checkIfLoaned(user.getUserID(), book.getBookID())) {
                 %>
                   <!-- Book is loaned -->
-                  <a href="loans.jsp" class="btn btn-outline-warning">View loans</a>
+                  <a href="loans.jsp" class="btn btn-outline-warning"><%= bundle.getString("books_view_loans") %></a>
                 <% } else if (book.getQuantityInStock() > 0) { %>
-                  <a href="controller?action=loan&bookId=<%= book.getBookID() %>" class="btn btn-primary">Loan book</a>
+                  <a href="controller?action=loan&bookId=<%= book.getBookID() %>" class="btn btn-primary"><%= bundle.getString("books_loan_book") %></a>
                 <% } else { %>
-                  <button class="btn btn-outline-secondary" disabled aria-disabled="true">Unavailable</button>
+                  <button class="btn btn-outline-secondary" disabled aria-disabled="true"><%= bundle.getString("books_unavailable") %></button>
                 <% } %>
               </div>
             </div>
@@ -128,14 +127,14 @@
               // Searched and found nothing
           %>
             <div class="d-flex flex-column align-items-center">
-              <h4 class="text-black-50">No books found.</h4>
-              <a href="books.jsp" class="btn btn-outline-primary">See all books</a>
+              <h4 class="text-black-50"><%= bundle.getString("books_no_found") %></h4>
+              <a href="books.jsp" class="btn btn-outline-primary"><%= bundle.getString("books_see_all") %></a>
             </div>
           <%
             } else {
           %>
             <div class="d-flex flex-column align-items-center">
-              <h4 class="text-black-50">No books</h4>
+              <h4 class="text-black-50"><%= bundle.getString("books_no_books") %></h4>
             </div>
           <%
             }
