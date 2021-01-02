@@ -10,6 +10,9 @@ import daos.OpinionsDao;
 import daos.UserDao;
 import dtos.User;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,6 +28,10 @@ public class RateBookCommand implements Command {
             
             UserDao udao = new UserDao();
             HttpSession session = request.getSession();
+        
+            Locale clientLocale = (Locale) session.getAttribute("currentLocale");
+            ResourceBundle bundle = ResourceBundle.getBundle("languages.libraryTranslation", clientLocale);
+    
             String forwardToJspPage = "previousLoans.jsp";
 
             User user = (User) session.getAttribute("user");
@@ -45,17 +52,17 @@ public class RateBookCommand implements Command {
               BookDao bDao = new BookDao();
 
               if (oDao.checkIfUserHasOpinion(user.getUserID(), bookId) != null) {
-                session.setAttribute("errorMessage", "You already gave an opinion for this book");
+                session.setAttribute("errorMessage", bundle.getString("rate_already"));
               } else {
                 // Try adding opinion
                 if (oDao.addOpinion(user.getUserID(), bookId, rating, comment)) {
-                  session.setAttribute("message", "Successfully shared your opinion for <strong>" + bDao.getBookByID(bookId).getBookName() + "</strong>.");
+                  session.setAttribute("message", bundle.getString("rate_success") + " <strong>" + bDao.getBookByID(bookId).getBookName() + "</strong>.");
                 }else{
-                  session.setAttribute("errorMessage", "An error occurred, try again later");
+                  session.setAttribute("errorMessage", bundle.getString("general_error"));
                 }
               }
             } else {
-                session.setAttribute("errorMessage", "All fields are not filled with data");
+                session.setAttribute("errorMessage", bundle.getString("missing_params"));
             }
          return forwardToJspPage;
     }
