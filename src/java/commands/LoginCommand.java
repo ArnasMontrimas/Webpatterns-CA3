@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Samuel
+ * @author arnas
  * @author grallm 
  */
 public class LoginCommand implements Command {
@@ -36,6 +36,7 @@ public class LoginCommand implements Command {
         HttpSession session = request.getSession();
         
         Locale clientLocale = (Locale) session.getAttribute("currentLocale");
+        if(clientLocale == null) clientLocale = request.getLocale();
         ResourceBundle bundle = ResourceBundle.getBundle("languages.libraryTranslation", clientLocale);
 
         String forwardToJspPage = "login.jsp";
