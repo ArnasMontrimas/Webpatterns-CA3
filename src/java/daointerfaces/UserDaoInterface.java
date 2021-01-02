@@ -5,7 +5,9 @@ import dtos.*;
 
 
 /**
- * @author Sam Ponik and Malo and Arnas
+ * @author Sam Ponik
+ * @author grallm
+ * @author Arnas
  */
 public interface UserDaoInterface {
     /**

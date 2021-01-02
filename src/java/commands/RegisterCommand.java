@@ -8,6 +8,10 @@ package commands;
 import daos.PaymentDetailsDao;
 import daos.UserDao;
 import dtos.User;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,6 +28,10 @@ public class RegisterCommand implements Command {
         
         UserDao udao = new UserDao();
         HttpSession session = request.getSession();
+        
+        Locale clientLocale = (Locale) session.getAttribute("currentLocale");
+        ResourceBundle bundle = ResourceBundle.getBundle("languages.libraryTranslation", clientLocale);
+        
         String forwardToJspPage = "register.jsp";
         
         // Get info for the users table.
@@ -52,7 +60,7 @@ public class RegisterCommand implements Command {
             //TODO NEED VALIDATION ON THE BACKEND FOR EXPIRATION DATE (Validation in HTML can be easiliy bypassed)
             // Check if password conditions aren't respected
             if (!lengthCheck || !lowerCheck || !upperCheck || !numberCheck || !symbolCheck || !notUserName) {
-              session.setAttribute("errorMessage", "Password conditions aren't respected");
+              session.setAttribute("errorMessage", bundle.getString("password_conditions_fail"));
               return forwardToJspPage;
             }
 
@@ -60,7 +68,7 @@ public class RegisterCommand implements Command {
             boolean cardNumberCheck = cardNumber.matches("[0-9]{16}");
             boolean cardCvvCheck = cardCvv.matches("[0-9]{3,4}");
             if (!cardNumberCheck || !cardCvvCheck) {
-                session.setAttribute("errorMessage", "Card number or Card security code are incorrect");
+                session.setAttribute("errorMessage", bundle.getString("cvv_incorrect"));
                 return forwardToJspPage;
             }
 
@@ -79,13 +87,13 @@ public class RegisterCommand implements Command {
 
                   forwardToJspPage = "loans.jsp";
               } else {  
-                session.setAttribute("errorMessage","Could not be registered at this time please try again later.");
+                session.setAttribute("errorMessage",bundle.getString("register_fail"));
               }
             } else {
-                session.setAttribute("errorMessage","Email already in use !");
+                session.setAttribute("errorMessage",bundle.getString("register_email_used"));
             }
         } else{
-            session.setAttribute("errorMessage", "All required fields are not filled");
+            session.setAttribute("errorMessage", bundle.getString("missing_params"));
         }
         
         return forwardToJspPage;

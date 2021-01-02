@@ -4,8 +4,12 @@
  * and open the template in the editor.
  */
 package commands;
+
 import daos.UserDao;
 import dtos.User;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +17,8 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Samuel and Malo
+ * @author Samuel
+ * @author grallm 
  */
 public class LoginCommand implements Command {
     private boolean fromIndex = false;
@@ -29,6 +34,10 @@ public class LoginCommand implements Command {
     public String doAction(HttpServletRequest request, HttpServletResponse response) {
         UserDao udao = new UserDao();
         HttpSession session = request.getSession();
+        
+        Locale clientLocale = (Locale) session.getAttribute("currentLocale");
+        ResourceBundle bundle = ResourceBundle.getBundle("languages.libraryTranslation", clientLocale);
+
         String forwardToJspPage = "login.jsp";
 
         if (fromIndex) return forwardToJspPage;
@@ -42,16 +51,16 @@ public class LoginCommand implements Command {
 
             // Username and pass incorrect
             if (user == null) {
-              session.setAttribute("errorMessage", "Username or password is incorrect");
+              session.setAttribute("errorMessage", bundle.getString("login_credentials_incorrect"));
             } else if (!user.isActiveAccount()){
               // Account is inactive
-              session.setAttribute("errorMessage", "That account is no longer active");
+              session.setAttribute("errorMessage", bundle.getString("login_inactive"));
             } else {
               session.setAttribute("user", user);
               forwardToJspPage = "loans.jsp";
             }
         } else {
-            session.setAttribute("errorMessage", "Missing username or password");
+            session.setAttribute("errorMessage", bundle.getString("missing_params"));
         }
         
         return forwardToJspPage;
