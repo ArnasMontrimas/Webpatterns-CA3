@@ -59,7 +59,7 @@
                 <div>
                   <div>
                     <a href="editProfile.jsp" class="btn btn-primary"><%= bundle.getString("edit_profile_title") %></a>
-                    <a href="changePassword.jsp" class="btn btn-warning"><%= bundle.getString("change_pwd_title") %></a>
+                    <a href="changePassword.jsp" class="btn btn-warning"><%= bundle.getString("change_pwd_change") %></a>
                   </div>
                   <div class="mt-3">
                     <a href="previousLoans.jsp" class="btn btn-outline-primary"><%= bundle.getString("ploans_title") %></a>

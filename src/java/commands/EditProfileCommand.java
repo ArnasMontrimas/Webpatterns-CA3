@@ -8,6 +8,9 @@ package commands;
 import daos.UserDao;
 import dtos.User;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,6 +26,10 @@ public class EditProfileCommand implements Command {
             
             UserDao udao = new UserDao();
             HttpSession session = request.getSession();
+        
+            Locale clientLocale = (Locale) session.getAttribute("currentLocale");
+            ResourceBundle bundle = ResourceBundle.getBundle("languages.libraryTranslation", clientLocale);
+    
             String forwardToJspPage = "editProfile.jsp";
 
             User user = (User) session.getAttribute("user");
@@ -35,14 +42,14 @@ public class EditProfileCommand implements Command {
               if (udao.changeUsername(user, newUsername)) {  
                 // Update session object 
                 user.setUsername(newUsername);
-                session.setAttribute("message", "Username has been updated.");
+                session.setAttribute("message", bundle.getString("editprofilecmd_success"));
                 
                 forwardToJspPage = "profile.jsp";
               }else{
-                session.setAttribute("errorMessage", "An error occurred, try again later");
+                session.setAttribute("errorMessage", bundle.getString("general_error"));
               }
             } else {
-                session.setAttribute("errorMessage", "All fields are not filled with data");
+                session.setAttribute("errorMessage", bundle.getString("missing_params"));
             }
          return forwardToJspPage;
     }

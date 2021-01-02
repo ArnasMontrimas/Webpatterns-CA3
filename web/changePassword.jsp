@@ -19,7 +19,7 @@
     <%@include file="navbar.jsp" %>
 
     <main class="container pt-3 pb-5">
-      <h1><%= bundle.getString("change_pwd_title") %></h1>
+      <h1><%= bundle.getString("change_pwd_change") %></h1>
 
       <% if (session.getAttribute("errorMessage") != null) { %>
         <div class="alert alert-danger" role="alert">

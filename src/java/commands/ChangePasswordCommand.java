@@ -8,6 +8,9 @@ package commands;
 import daos.UserDao;
 import dtos.*;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,6 +25,10 @@ public class ChangePasswordCommand implements Command {
     public String doAction(HttpServletRequest request, HttpServletResponse response) {
             UserDao udao = new UserDao();
             HttpSession session = request.getSession();
+        
+            Locale clientLocale = (Locale) session.getAttribute("currentLocale");
+            ResourceBundle bundle = ResourceBundle.getBundle("languages.libraryTranslation", clientLocale);
+    
             String forwardToJspPage = "changePassword.jsp";
             
             // Get both password data
@@ -41,19 +48,19 @@ public class ChangePasswordCommand implements Command {
 
               // Check if password conditions aren't respected
               if (!lengthCheck || !lowerCheck || !upperCheck || !numberCheck || !symbolCheck || !notUserName || !notOldPwd) {
-                session.setAttribute("errorMessage", "Password conditions aren't respected");
+                session.setAttribute("errorMessage", bundle.getString("changecmd_conditions"));
                 return forwardToJspPage;
               }
 
               //If the old password matches the one in database
               if (udao.passwordReset(currentPassword,newPassword,user.getUsername())) {
-                session.setAttribute("message","Your password has been reset !");
+                session.setAttribute("message", bundle.getString("changecmd_success"));
                 forwardToJspPage = "profile.jsp";
               } else {
-                session.setAttribute("errorMessage","Current password is incorrect !");
+                session.setAttribute("errorMessage", bundle.getString("changecmd_current_incorrect"));
               }
             } else {
-              session.setAttribute("errorMessage","Missing data supplied for the fields !");
+              session.setAttribute("errorMessage", bundle.getString("missing_params"));
             }
             
             return forwardToJspPage;
