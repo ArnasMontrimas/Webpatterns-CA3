@@ -165,4 +165,45 @@ public class OpinionsDao extends Dao implements OpinionsDaoInterface {
 
         return opinion;
     }
+
+    /**
+     * Remove an opinion by giving user and book
+     * @param userId user id
+     * @param bookId book id
+     * @return true if successful false otherwise
+     */
+    @Override
+    public boolean removeOpinion(int userId, int bookId) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        int count = 0;
+        boolean success = true;
+        
+        try {
+            con = getConnection();
+            ps = con.prepareStatement("DELETE FROM opinions WHERE userId = ? AND bookId = ?");
+            ps.setInt(1, userId);
+            ps.setInt(2, bookId);
+            count = ps.executeUpdate();
+            
+            if(count == 0) success = false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            success = false;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                success = false;
+            }
+        }
+        
+        return success;
+    }
 }

@@ -30,4 +30,12 @@ public interface OpinionsDaoInterface {
      * @return Opinion if found, null if not
      */
     Opinion checkIfUserHasOpinion(int userId, int bookId);
+
+    /**
+     * Remove an opinion by giving user and book
+     * @param userId user id
+     * @param bookId book id
+     * @return true if successful false otherwise
+     */
+    boolean removeOpinion(int userId, int bookId);
 }
