@@ -9,7 +9,10 @@ import daos.PasswordResetDao;
 import daos.UserDao;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Random;
+import java.util.ResourceBundle;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,9 +26,14 @@ public class ForgotPasswordRetrievalCommand implements Command {
     @Override
     public String doAction(HttpServletRequest request, HttpServletResponse response) {            
         UserDao udao = new UserDao();
-        HttpSession session = request.getSession();
         PasswordResetDao prd = new PasswordResetDao();
+        HttpSession session = request.getSession();
+        
+        Locale clientLocale = (Locale) session.getAttribute("currentLocale");
+        ResourceBundle bundle = ResourceBundle.getBundle("languages.libraryTranslation", clientLocale);
+
         String forwardToJspPage = "resetPassword.jsp";
+
         String email = request.getParameter("email"); 
 
         int id = udao.getUserIdByEamil(email);
@@ -34,13 +42,13 @@ public class ForgotPasswordRetrievalCommand implements Command {
         int result = 0;
 
         //Information contained in the email
-        String message = "Retrieve Password\nUse this code: ";
+        String message = bundle.getString("forgotpwdcmd_message");
         String code = "";
-        String subject = "RETRIEVE PASSWORD (CODE)";
+        String subject = bundle.getString("forgotpwdcmd_subject");
 
         //Check that email is valid
         if(id == -1) {
-            session.setAttribute("errorMessage", "Email Address was not found try again");
+            session.setAttribute("errorMessage", bundle.getString("forgotpwdcmd_email_notfound"));
             return forwardToJspPage;
         }
 
@@ -86,14 +94,14 @@ public class ForgotPasswordRetrievalCommand implements Command {
                 prd.removeUserAttempt(id);
             }
             else {
-                session.setAttribute("errorMessage", "Email could not be sent try again");
+                session.setAttribute("errorMessage", bundle.getString("forgotpwdcmd_notsent"));
                 return forwardToJspPage;
             }
         }
         else {
             //Let the user know how long he has to wait
             Duration duration = Duration.between(LocalDateTime.now(), timeout);
-            session.setAttribute("errorMessage", "You have made to many attempts<br>Please wait " +duration.toMinutes()+ " minutes before trying again");
+            session.setAttribute("errorMessage", bundle.getString("forgotpwdcmd_toomany_1") + " " +duration.toMinutes()+ " " + bundle.getString("forgotpwdcmd_toomany_2"));
         }
         return forwardToJspPage;
         
