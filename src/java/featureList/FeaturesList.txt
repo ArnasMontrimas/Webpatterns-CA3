@@ -1,60 +1,73 @@
 DOCUMENTATION
 
-PROGRAMMER DEFINED FEATURE - Sam Ponik
-The feature I have chosen to do is to filter the books by a given genre with ajax 
-for nice user interface. 
-The files associated with the features
-/src/java/ajax/Ajax.java 
-/src/java/daos/BookDao.java
-/web/Javascript/ViewBooks.js
 
 PROGRAMMER DEFINED FEATURE - Arnas Montrimas
 
+I implemented functionallity for users to reset their passwords when they dont know their old password
+Classes associated with my functionality can be found here
+DTO: /src/java/dtos/PasswordReset.java
+DAO: /src/java/daos/PasswordResetDao.java
+INTERFACE: /src/java/extrafunctionalityinterfaces/SendMailInterface.java
+#1 COMMAND: /src/java/commands/ValidateEmailCodeSendPasswordCommand.java 
+#2 COMMAND: /src/java/commands/ForgotPasswordRetrievalCommand.java
 
+------------------------------------------------------------------------
 PROGRAMMER DEFINED FEATURE - Malo Grall
 
+I implemented a rating system functionality which i called "opinions"
+Classes associated with my functionality can be found here
+DTO: /src/java/dtos/Opinion.java
+DAO: /src/java/daos/OpinionsDao.java
+COMMAND: /src/java/commands/RateBookCommand.java
 
+------------------------------------------------------------------------
+************CORE FUNCTIONALITY**************
 
-************FUNCTIONALITY**************
-The Algorithm that we have used for encryption is found in
-/src/java/encryption/BCrypt.java
+Functionallity to view all books can be found here
+/src/java/daos/BookDao.java
 
-The methods we have Overriden and used to encrypt and decrypt the passwords are in
-Password reset and change methods are here also as they deal with the user table
-src/java/daos/UserDao.java
+Functionallity to search for a book can be found here
+/src/java/commands/SearchBookCommand.java
 
-Method for inserting security answers and checking a valid answer to a security question is in
-src/java/daos/SecurityAnswersDao.java
+Functionallity to borrow a book can be found here
+/src/java/commands/LoanBookCommand.java
 
-Functionality for resetting password when old password is known is in (when the user is logged in and wishes to change is password)
-src/java/commands/PasswordResetCommand.java
+Functinallity to return a borrowed book can be found here
+/src/java/commands/ReturnLoanCommand.java
 
-Functionality for forgetting password and resetting it is in
-src/java/commands/ForgotPasswordResetCommand.java
+Functionallity to Login to the system can be found here
+/src/java/commands/LoginCommand.java
 
-Back-end register form validation and calling methods to save data
-src/java/commands/RegisterCommand.java
+Functionallity to Register to the system can be found here
+/src/java/commands/RegisterCommand.java
 
-Methods for saving by encrypting and also getting by decrypting payment details
-src/java/daos/PaymentDetailsDao.java
+Functionallity to view users profile can be found here
+/web/profile.jsp
 
-Interface Provides sending mail functionality to 
-a class
-src/java/extraFunctionalityInterfaces/SendMailInterface.java
+Functionallity to edit users profile can be found here
+/src/java/commands/EditProfileCommand.java
 
-Functionality for retrieving forgotten username (There are 2 parts to this functionality)
-PART 1 (Send an email to user with the pass code)
-src/java/commands/SendEmailCodeCommand.java
+Functionallity to view users current loans can be found here
+/web/loans.jsp
 
-PART 2 (Send an email to user with his username)
-src/java/commands/ValidateEmailCodeCommand.java 
+Functionallity to view users previous loans can be found here
+/web/previousLoans.jsp
 
+Functionallity to view users current overdue fees outstanding can be found here
+On line 86 users current fees are being displayed in
+/web/loans.jsp
 
+Functionallity to pay overdue fees can be found here
+On line 76 a check is being made to see if user has overdue fees
+/web/loans.jsp
+On line 88 when button is clicked the book will be returned and fees paid
+/web/loans.jsp
+/src/java/commands/ReturnLoanCommand.java
 
 ************TESTING**************
+
 Testing the Algorithm is in
 /test/bcryptests/TestBCrypt.java
-Test cases start at line 84
 
 Testing payment details methods
 test/daotests/PaymentDetailsDaoTest.java
@@ -62,8 +75,14 @@ test/daotests/PaymentDetailsDaoTest.java
 Testing UserDao methods
 test/daotests/UserDaoTest.java
 
-Testing security answers methods
-test/daotests/SecurityAnswersDaoTest.java
-
 Testing all PasswordResetDao methods is in
 /test/daotests/PasswordResetDaoTest.java
+
+Testing all LoanDao methods is in
+/test/daotests/LoanDaoTest.java
+
+Testing all BookDao methods is in
+/test/daotests/BookDaoTest.java
+
+Testing all OpinionsDao methods is in
+/test/daotests/OpinionsTest.java
