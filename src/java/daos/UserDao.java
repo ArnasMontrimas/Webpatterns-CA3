@@ -380,7 +380,7 @@ public class UserDao extends Dao implements UserDaoInterface, SendMailInterface 
 
         // Sender's email ID needs to be mentioned
         String from = "MaloGrallSamPonikArnasMontrimas@outlook.com";
-        String password = "SoftwareSecurityCA2DemoAccount";
+        //Removed Password Cause Making this public
         
         // Assuming you are sending email from localhost
         String host = "smtp.office365.com";
